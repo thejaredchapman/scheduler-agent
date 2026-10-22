@@ -6,11 +6,16 @@ The AI cannot reach anything in this file. A person looks at a proposal and choo
   reject   - send nothing
   undo     - cancel a send within 10 minutes and free the slot again
 Nothing leaves the demo: "sent" just means added to this list.
+
+A proposal is only a dict, so it is never trusted: every person, room, time and size is
+checked against the world again here, and every name shown is taken from the world.
 """
+import copy
 import itertools
 import time
+from datetime import datetime
 
-from world import get_world, parse_utc
+from world import UTC, get_world, parse_utc, utc_text
 
 UNDO_SECONDS = 600
 
@@ -28,12 +33,66 @@ class Outbox:
             raise ValueError("Only a proposal can be approved, rejected or previewed.")
 
     @staticmethod
-    def _letters(result):
-        """The invites and the room booking, from the code-computed result."""
-        return {"invites": [{"person_id": a["id"], "to": a["name"],
-                             "when": f"{a['local_start']}-{a['local_end']} ({a['time_zone']})"}
-                            for a in result["attendees"]],
-                "room": dict(result["room"]), "start_utc": result["start_utc"], "end_utc": result["end_utc"]}
+    def _need(result, key):
+        value = result.get(key)
+        if value is None:
+            raise ValueError(f"The proposal is missing {key}. Nothing was sent.")
+        return value
+
+    @staticmethod
+    def _moment(text):
+        """A UTC start or end such as '2026-10-26T15:00Z'. Naive or broken times are refused."""
+        message = "The proposal has a bad start or end time. Nothing was sent."
+        if not isinstance(text, str):
+            raise ValueError(message)
+        try:
+            moment = datetime.fromisoformat(text.replace("Z", "+00:00"))
+        except ValueError:
+            raise ValueError(message) from None
+        if moment.tzinfo is None:
+            raise ValueError(message)
+        return moment.astimezone(UTC)
+
+    def _checked(self, result):
+        """Re-check a proposal against the world. Returns the checked facts (no names from the dict)."""
+        self._only_proposals(result)
+        world = self.world
+        attendees = self._need(result, "attendees")
+        if not isinstance(attendees, list) or not attendees:
+            raise ValueError("The proposal has no attendees. Nothing was sent.")
+        ids = []
+        for attendee in attendees:
+            person = attendee.get("id") if isinstance(attendee, dict) else None
+            if not isinstance(person, str) or person not in world.people:
+                raise ValueError(f"Unknown person {person!r} in the proposal. Nothing was sent.")
+            ids.append(person)
+        if len(set(ids)) != len(ids):
+            raise ValueError("The proposal lists someone twice. Nothing was sent.")
+        room = self._need(result, "room")
+        room_id = room.get("id") if isinstance(room, dict) else None
+        if not isinstance(room_id, str) or room_id not in world.rooms:
+            raise ValueError(f"Unknown room {room_id!r} in the proposal. Nothing was sent.")
+        start = self._moment(self._need(result, "start_utc"))
+        end = self._moment(self._need(result, "end_utc"))
+        if start >= end:
+            raise ValueError("The proposal ends before it starts. Nothing was sent.")
+        for person in ids:
+            if not world.within_hours(person, start, end):
+                raise ValueError(f"{world.people[person]['name']} is outside working hours then. Nothing was sent.")
+        if len(ids) > world.rooms[room_id]["capacity"]:
+            raise ValueError(f"Room {room_id} is too small for {len(ids)} people. Nothing was sent.")
+        return {"ids": ids, "room_id": room_id, "start": start, "end": end}
+
+    def _letters(self, checked):
+        """The invites and the room booking, with every name and time computed from the world."""
+        world, start, end = self.world, checked["start"], checked["end"]
+        return {"invites": [{"person_id": p, "to": world.people[p]["name"],
+                             "when": (f"{world.local(p, start).strftime('%a %d %b %H:%M')}-"
+                                      f"{world.local(p, end).strftime('%H:%M')} "
+                                      f"({world.people[p]['time_zone']})")}
+                            for p in checked["ids"]],
+                "room": {"id": checked["room_id"], "name": world.rooms[checked["room_id"]]["name"]},
+                "start_utc": utc_text(start), "end_utc": utc_text(end)}
 
     def active(self):
         return [s for s in self.sent if not s["cancelled"]]
@@ -43,24 +102,24 @@ class Outbox:
                  "start": parse_utc(s["start_utc"]), "end": parse_utc(s["end_utc"])} for s in self.active()]
 
     def dry_run(self, result):
-        self._only_proposals(result)
-        return {"dry_run": True, **self._letters(result)}
+        checked = self._checked(result)
+        return copy.deepcopy({"dry_run": True, **self._letters(checked)})
 
     def approve(self, result):
-        self._only_proposals(result)
-        start, end = parse_utc(result["start_utc"]), parse_utc(result["end_utc"])
-        owners = [a["id"] for a in result["attendees"]] + [result["room"]["id"]]
+        checked = self._checked(result)
+        start, end = checked["start"], checked["end"]
+        owners = checked["ids"] + [checked["room_id"]]
         for owner in owners:  # the world may have changed since the proposal: check again
             if not self.world.is_free(owner, start, end, self._as_holds()):
                 raise ValueError(f"{owner} is no longer free at that time. Nothing was sent.")
         send = {"send_id": f"send-{next(self._numbers)}", "cancelled": False, "sent_at": self.clock(),
-                **self._letters(result)}
+                **self._letters(checked)}
         self.sent.append(send)
-        return dict(send)
+        return copy.deepcopy(send)
 
     def reject(self, result):
         self._only_proposals(result)
-        return {"rejected": True, "hold_id": result["hold_id"]}
+        return {"rejected": True, "hold_id": copy.deepcopy(self._need(result, "hold_id"))}
 
     def undo(self, send_id):
         send = next((s for s in self.sent if s["send_id"] == send_id and not s["cancelled"]), None)
@@ -69,4 +128,4 @@ class Outbox:
         if self.clock() - send["sent_at"] > UNDO_SECONDS:
             raise ValueError("It is too late to undo (more than 10 minutes have passed).")
         send["cancelled"] = True
-        return dict(send)
+        return copy.deepcopy(send)
