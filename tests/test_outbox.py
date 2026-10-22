@@ -3,14 +3,14 @@ import pytest
 
 from outbox import UNDO_SECONDS, Outbox
 from tests.fixtures import fixture_world
-from tools import Workspace, build_result, run_tool
+from tools import Workspace, build_result, question_result, run_tool
 
 
 def proposal(start="2026-10-26T15:00Z"):
     space = Workspace(fixture_world())
     run_tool(space, "place_hold", {"start_utc": start, "duration_minutes": 60, "people": ["ana", "ben"],
                                    "room_id": "loft"})
-    return build_result({"status": "proposed", "hold_id": "hold-1", "summary": "s", "reasons": ["r"],
+    return build_result({"hold_id": "hold-1", "summary": "s", "reasons": ["r"],
                          "tradeoffs": []}, space)
 
 
@@ -38,8 +38,7 @@ def test_approve_sends_and_blocks_a_clash():
 
 def test_only_proposals_can_be_sent():
     box, _ = outbox()
-    space = Workspace(fixture_world())
-    question = build_result({"status": "question", "question": "Which week?"}, space)
+    question = question_result({"question": "Which week?"})
     for action in (box.approve, box.dry_run, box.reject):
         with pytest.raises(ValueError):
             action(question)

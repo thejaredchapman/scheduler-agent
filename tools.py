@@ -11,7 +11,6 @@ from datetime import date, datetime, time, timedelta
 from world import UTC, get_world, utc_text
 
 MAX_SLOTS = 10
-STATUSES = ("proposed", "question")
 RESULT_KEYS = ("status", "summary", "reasons", "tradeoffs", "question", "reason", "hold_id", "start_utc",
                "end_utc", "duration_minutes", "room", "attendees")
 
@@ -180,12 +179,6 @@ def validate_proposal(args, space):
     """Problems with a submitted proposal (empty list = valid). Code re-checks the slot itself."""
     if not isinstance(args, dict):
         return ["submit_proposal input must be an object"]
-    status = args.get("status")
-    if status not in STATUSES:
-        return ["status must be 'proposed' or 'question'"]
-    if status == "question":
-        q = args.get("question")
-        return [] if isinstance(q, str) and q.strip() else ["question must be non-empty text"]
     found = space.holds.get(args.get("hold_id")) if isinstance(args.get("hold_id"), str) else None
     if found is None or found["state"] != "held":
         return ["hold_id must be a hold placed in this run and still held"]
@@ -200,15 +193,21 @@ def validate_proposal(args, space):
     return errors
 
 
+def validate_question(args):
+    """Problems with a submitted question (empty list = valid)."""
+    if not isinstance(args, dict):
+        return ["ask_question input must be an object"]
+    q = args.get("question")
+    return [] if isinstance(q, str) and q.strip() else ["question must be non-empty text"]
+
+
 def _empty():
     return {key: None for key in RESULT_KEYS} | {"reasons": [], "tradeoffs": [], "attendees": []}
 
 
 def build_result(args, space):
-    """The result a person sees. For a proposal, every time and name comes from code."""
+    """The proposal a person sees. Every time and name comes from code, not from the model."""
     result = _empty()
-    if args["status"] == "question":
-        return result | {"status": "question", "question": args["question"].strip()}
     found = space.holds[args["hold_id"]]
     world = space.world
     room = world.rooms[found["room_id"]]
@@ -221,6 +220,11 @@ def build_result(args, space):
         "attendees": [{"id": p, "name": world.people[p]["name"], "time_zone": world.people[p]["time_zone"],
                        "local_start": _clock(world, p, found["start"]),
                        "local_end": _clock(world, p, found["end"], with_day=False)} for p in found["people"]]}
+
+
+def question_result(args):
+    """The result when the agent asks a question instead of proposing."""
+    return _empty() | {"status": "question", "question": args["question"].strip()}
 
 
 def unable_result(reason):
@@ -258,11 +262,18 @@ TOOL_SCHEMAS = [
     {"name": "release_hold", "description": "Remove one of your holds.",
      "input_schema": {"type": "object", "properties": {"hold_id": {"type": "string"}}, "required": ["hold_id"]}},
     {"name": "submit_proposal",
-     "description": "Finish exactly once. status proposed needs hold_id, summary, reasons and tradeoffs; "
-                    "status question needs question. You cannot send anything: a person approves.",
+     "description": "Finish with a proposal for a person to approve. You cannot send anything.",
      "input_schema": {"type": "object", "properties": {
-         "status": {"type": "string", "enum": list(STATUSES)}, "hold_id": {"type": "string"},
-         "summary": {"type": "string"}, "reasons": {"type": "array", "items": {"type": "string"}},
-         "tradeoffs": {"type": "array", "items": {"type": "string"}}, "question": {"type": "string"}},
-         "required": ["status"]}},
+         "hold_id": {"type": "string", "description": "A hold you placed and still hold."},
+         "summary": {"type": "string"},
+         "reasons": {"type": "array", "items": {"type": "string"}, "minItems": 1,
+                     "description": "At least one reason this slot is a good choice."},
+         "tradeoffs": {"type": "array", "items": {"type": "string"},
+                       "description": "Preferences not met; an empty list if none."}},
+         "required": ["hold_id", "summary", "reasons", "tradeoffs"]}},
+    {"name": "ask_question",
+     "description": "Finish by asking the person one short, specific question when the request is unclear "
+                    "or cannot be met. This releases your holds.",
+     "input_schema": {"type": "object", "properties": {"question": {"type": "string"}},
+                      "required": ["question"]}},
 ]

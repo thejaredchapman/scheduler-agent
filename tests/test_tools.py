@@ -2,8 +2,8 @@
 import pytest
 
 from tests.fixtures import fixture_world
-from tools import (TOOL_NAMES, TOOL_SCHEMAS, Workspace, build_result, run_tool, unable_result,
-                   validate_proposal)
+from tools import (TOOL_NAMES, TOOL_SCHEMAS, Workspace, build_result, question_result, run_tool,
+                   unable_result, validate_proposal, validate_question)
 
 
 def ws():
@@ -18,7 +18,7 @@ def hold(space, start="2026-10-26T15:00Z", people=("ana", "ben"), room="loft", m
 def test_tool_names_and_no_sending_tool():
     assert TOOL_NAMES == ("list_people", "list_rooms", "get_busy_times", "find_open_slots",
                           "place_hold", "release_hold")
-    assert [s["name"] for s in TOOL_SCHEMAS] == list(TOOL_NAMES) + ["submit_proposal"]
+    assert [s["name"] for s in TOOL_SCHEMAS] == list(TOOL_NAMES) + ["submit_proposal", "ask_question"]
     for word in ("send", "book", "approve", "outbox", "invite"):
         assert not any(word in name for name in TOOL_NAMES)
     source = open("tools.py").read()
@@ -93,7 +93,7 @@ def test_release_hold():
 
 
 def good(space, **changes):
-    args = {"status": "proposed", "hold_id": "hold-1", "summary": "Monday 11:00 New York time.",
+    args = {"hold_id": "hold-1", "summary": "Monday 11:00 New York time.",
             "reasons": ["Everyone is free."], "tradeoffs": []}
     args.update(changes)
     return args
@@ -121,15 +121,35 @@ def test_proposal_check_rules():
     assert validate_proposal(good(space, summary=" "), space) == ["summary must be non-empty text"]
     assert validate_proposal(good(space, reasons=[]), space) == ["reasons must be a non-empty list of text"]
     assert validate_proposal(good(space, tradeoffs="none"), space) == ["tradeoffs must be a list of text"]
-    assert validate_proposal({"status": "maybe"}, space) == ["status must be 'proposed' or 'question'"]
     assert validate_proposal("nope", space) == ["submit_proposal input must be an object"]
-    assert validate_proposal({"status": "question", "question": ""}, space) == ["question must be non-empty text"]
-    assert validate_proposal({"status": "question", "question": "Which week?"}, space) == []
+
+
+def test_a_proposal_missing_reasons_is_rejected():
+    space = ws()
+    hold(space)
+    args = good(space)
+    del args["reasons"]
+    assert validate_proposal(args, space) == ["reasons must be a non-empty list of text"]
+
+
+def test_submit_proposal_schema_requires_all_four_fields():
+    schemas = {s["name"]: s["input_schema"] for s in TOOL_SCHEMAS}
+    assert schemas["submit_proposal"]["required"] == ["hold_id", "summary", "reasons", "tradeoffs"]
+    assert schemas["submit_proposal"]["properties"]["reasons"]["minItems"] == 1
+    assert "status" not in schemas["submit_proposal"]["properties"]
+    assert schemas["ask_question"]["required"] == ["question"]
+
+
+def test_question_check_rules():
+    assert validate_question({"question": "Which week?"}) == []
+    assert validate_question({"question": "  "}) == ["question must be non-empty text"]
+    assert validate_question({}) == ["question must be non-empty text"]
+    assert validate_question("nope") == ["ask_question input must be an object"]
 
 
 def test_question_and_unable_results():
     space = ws()
-    q = build_result({"status": "question", "question": "Which week?"}, space)
+    q = question_result({"question": " Which week? "})
     assert q["status"] == "question" and q["question"] == "Which week?" and q["attendees"] == []
     u = unable_result("Ran out of steps (12) without a valid proposal")
     assert u["status"] == "unable" and u["reason"].startswith("Ran out of steps") and u["room"] is None
