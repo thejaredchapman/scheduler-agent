@@ -153,3 +153,34 @@ def test_crash_becomes_a_notice_and_headers_everywhere():
     assert "'unsafe-inline'" not in CSP
     for path in ("/docs", "/redoc", "/openapi.json"):
         assert c.get(path).status_code == 404
+
+
+def test_two_simultaneous_approves_book_only_once():
+    """A double-click: the second approve starts while the first is still inside the outbox."""
+    import threading
+    sessions = SessionStore(world=W)
+    c = app_client(sessions=sessions)
+    schedule(c)
+    session = next(iter(sessions._sessions.values()))
+    inside, release = threading.Event(), threading.Event()
+    real_approve = session.outbox.approve
+
+    def slow_approve(proposal):
+        inside.set()
+        release.wait(5)          # hold the first request here until the second has started
+        return real_approve(proposal)
+    session.outbox.approve = slow_approve
+
+    codes = []
+    def click():
+        codes.append(c.post("/approve", json={"proposal_id": "prop-1"}).status_code)
+    first = threading.Thread(target=click)
+    first.start()
+    assert inside.wait(5)
+    second = threading.Thread(target=click)
+    second.start()
+    second.join(0.3)             # the second must be waiting on the lock, not racing through
+    release.set()
+    first.join(5), second.join(5)
+    assert sorted(codes) == [200, 404]
+    assert len(c.get("/api/outbox").json()["sent"]) == 1

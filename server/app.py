@@ -190,8 +190,11 @@ def create_app(agent_runner=run_agent, limiter=None, budget=None, sessions=None,
                                             session)), sid)
         text = body.request + (f"\n\nClarification: {body.clarification}" if body.clarification else "")
 
+        with session.lock:
+            held = session.outbox.as_holds()  # a steady snapshot, not mid-approve
+
         def live_events():
-            for event in agent_runner(text, booked=session.outbox.as_holds()):
+            for event in agent_runner(text, booked=held):
                 if event.get("type") == "result":
                     # Settle: swap the estimate for the real usage (the difference may be negative).
                     usage = event.get("usage") or {}
@@ -202,15 +205,16 @@ def create_app(agent_runner=run_agent, limiter=None, budget=None, sessions=None,
     def act(request, proposal_id, action, consume):
         """Look up the proposal this server made for this visitor, run `action` on it, answer in JSON."""
         sid, session, _ = visitor(request)
-        proposal = session.proposals.get(proposal_id)
-        if proposal is None:
-            return _with_cookie(JSONResponse({"detail": "No such proposal"}, status_code=404), sid)
-        try:
-            outcome = action(session, proposal)
-        except ValueError as error:  # the outbox refused, e.g. the slot is no longer free
-            return _with_cookie(JSONResponse({"detail": str(error)}, status_code=409), sid)
-        if consume:
-            session.take(proposal_id)
+        with session.lock:  # one action at a time per visitor: no double-approve from a double-click
+            proposal = session.proposals.get(proposal_id)
+            if proposal is None:
+                return _with_cookie(JSONResponse({"detail": "No such proposal"}, status_code=404), sid)
+            try:
+                outcome = action(session, proposal)
+            except ValueError as error:  # the outbox refused, e.g. the slot is no longer free
+                return _with_cookie(JSONResponse({"detail": str(error)}, status_code=409), sid)
+            if consume:
+                session.take(proposal_id)
         return _with_cookie(JSONResponse(outcome), sid)
 
     def send_it(session, proposal):
@@ -239,11 +243,13 @@ def create_app(agent_runner=run_agent, limiter=None, budget=None, sessions=None,
     @app.post("/undo")
     def undo(body: UndoAction, request: Request):
         sid, session, _ = visitor(request)
-        try:
-            cancelled = session.outbox.undo(body.send_id)
-        except ValueError as error:
-            return _with_cookie(JSONResponse({"detail": str(error)}, status_code=409), sid)
-        return _with_cookie(JSONResponse({"cancelled": cancelled, "outbox": session.outbox.listing()}), sid)
+        with session.lock:
+            try:
+                cancelled = session.outbox.undo(body.send_id)
+            except ValueError as error:
+                return _with_cookie(JSONResponse({"detail": str(error)}, status_code=409), sid)
+            listing = session.outbox.listing()
+        return _with_cookie(JSONResponse({"cancelled": cancelled, "outbox": listing}), sid)
 
     @app.get("/api/world")
     def world_view(request: Request):

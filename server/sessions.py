@@ -18,18 +18,24 @@ class Session:
     def __init__(self, world, clock):
         self.outbox = Outbox(world, clock=clock)
         self.proposals = {}
+        # The server handles requests on several threads at once (a double-click, or two tabs
+        # sharing one cookie). Anything that checks-then-changes this visitor's outbox or
+        # proposals must hold this lock, so two requests cannot both pass the "is it free?" check.
+        self.lock = threading.RLock()  # re-entrant: take() locks again while act() already holds it
         self._numbers = itertools.count(1)
         self.last_seen = clock()
 
     def remember(self, result):
         """Keep a proposal the scheduler produced; return the id the browser may use."""
-        proposal_id = f"prop-{next(self._numbers)}"
-        self.proposals[proposal_id] = result
-        return proposal_id
+        with self.lock:
+            proposal_id = f"prop-{next(self._numbers)}"
+            self.proposals[proposal_id] = result
+            return proposal_id
 
     def take(self, proposal_id):
         """Hand back a proposal once (approve or reject uses it up). KeyError if unknown."""
-        return self.proposals.pop(proposal_id)
+        with self.lock:
+            return self.proposals.pop(proposal_id)
 
 
 class SessionStore:
