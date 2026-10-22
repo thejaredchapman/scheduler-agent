@@ -24,15 +24,22 @@ def main(argv=None, input_fn=input, outbox=None, runner=None):
     result = final["result"]
     if result["status"] != "proposed":
         return 0
-    choice = input_fn("\nType approve, reject or dry-run: ").strip().lower()
-    if choice == "approve":
-        sent = outbox.approve(result)
-        print(f"Sent {len(sent['invites'])} invites and booked {sent['room']['name']} ({sent['send_id']}).")
-    elif choice == "dry-run":
-        print("Would send:", json.dumps(outbox.dry_run(result), indent=2))
-    else:
-        outbox.reject(result)
-        print("Rejected. Nothing was sent.")
+    try:
+        choice = input_fn("\nType approve, reject or dry-run: ").strip().lower()
+    except EOFError:  # no answer (e.g. piped input ended): treat it as a rejection
+        choice = "reject"
+    try:
+        if choice == "approve":
+            sent = outbox.approve(result)
+            print(f"Sent {len(sent['invites'])} invites and booked {sent['room']['name']} ({sent['send_id']}).")
+        elif choice == "dry-run":
+            print("Would send:", json.dumps(outbox.dry_run(result), indent=2))
+        else:
+            outbox.reject(result)
+            print("Rejected. Nothing was sent.")
+    except ValueError as error:  # the outbox re-checks the proposal and refuses bad ones
+        print(f"Not sent: {error}")
+        return 1
     return 0
 
 

@@ -7,7 +7,6 @@ the web server use outbox.py; this file never touches it).
 
 run_agent() is a generator: it yields one event per step, then exactly one "result" event.
 """
-import argparse
 import json
 import os
 import re
@@ -74,10 +73,10 @@ def run_agent(request, client=None, model=DEFAULT_MODEL, max_turns=MAX_TURNS, cl
 def _run_events(request, client, model, max_turns, world):
     usage = {"input_tokens": 0, "output_tokens": 0}
     progress = {"turn": 0, "retries": 0}
-    space = Workspace(world)
     try:
+        space = Workspace(world)  # loads the demo data; a missing or corrupt file lands here
         client = client or anthropic.Anthropic()
-    except Exception as error:  # e.g. no API key configured
+    except Exception as error:  # e.g. no API key configured, or no data files
         yield _result_event(unable_result(f"Could not start the agent: {type(error).__name__}"), usage, 0, 0)
         return
     try:

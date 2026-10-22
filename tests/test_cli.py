@@ -28,3 +28,22 @@ def test_reject_and_dry_run_send_nothing(capsys):
         main(["x"], input_fn=lambda prompt, a=answer: a, outbox=box, runner=runner)
         assert box.sent == []
     assert "Would send" in capsys.readouterr().out
+
+
+def test_a_refused_approval_prints_the_reason_and_returns_1(capsys):
+    class RefusingOutbox(Outbox):
+        def approve(self, result):
+            raise ValueError("Room Loft is too small for 9 people. Nothing was sent.")
+
+    box = RefusingOutbox(fixture_world())
+    assert main(["x"], input_fn=lambda prompt: "approve", outbox=box, runner=runner) == 1
+    out = capsys.readouterr().out
+    assert "Not sent: Room Loft is too small" in out and box.sent == []
+
+
+def test_end_of_input_counts_as_reject(capsys):
+    def no_input(prompt):
+        raise EOFError
+    box = Outbox(fixture_world())
+    assert main(["x"], input_fn=no_input, outbox=box, runner=runner) == 0
+    assert box.sent == [] and "Rejected" in capsys.readouterr().out

@@ -83,6 +83,15 @@ def test_failures_end_as_unable():
     assert last(events)["result"]["reason"] == "Ran out of steps (3) without a valid proposal"
 
 
+def test_a_world_that_fails_to_load_still_ends_in_one_result(monkeypatch):
+    def missing_data(world=None):
+        raise FileNotFoundError("data/people.json")
+    monkeypatch.setattr(agent, "Workspace", missing_data)
+    events = list(run_agent("x", client=FakeClient([]), world=None))
+    assert len(events) == 1 and events[0]["type"] == "result"
+    assert last(events)["result"]["reason"] == "Could not start the agent: FileNotFoundError"
+
+
 def test_start_failure_and_internal_error(monkeypatch):
     def no_client():
         raise RuntimeError("no key")
