@@ -55,6 +55,11 @@ class World:
         """This owner's busy blocks that overlap [start, end), earliest first."""
         return sorted((s, e) for s, e in self.busy.get(owner_id, []) if overlaps(s, e, start, end))
 
+    def week_blocks(self, start, end):
+        """Every person's and room's busy blocks that overlap [start, end), for the calendar grid."""
+        found = {owner: self.busy_blocks(owner, start, end) for owner in self.busy}
+        return {owner: blocks for owner, blocks in found.items() if blocks}
+
     def is_free(self, owner_id, start, end, holds=()):
         """True when no busy block and no hold for this owner overlaps the range."""
         if any(overlaps(s, e, start, end) for s, e in self.busy.get(owner_id, [])):

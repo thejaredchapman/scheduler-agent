@@ -12,6 +12,7 @@ checked against the world again here, and every name shown is taken from the wor
 """
 import copy
 import itertools
+import math
 import time
 from datetime import datetime
 
@@ -97,9 +98,16 @@ class Outbox:
     def active(self):
         return [s for s in self.sent if not s["cancelled"]]
 
-    def _as_holds(self):
+    def as_holds(self):
         return [{"owners": {i["person_id"] for i in s["invites"]} | {s["room"]["id"]},
                  "start": parse_utc(s["start_utc"]), "end": parse_utc(s["end_utc"])} for s in self.active()]
+
+    def listing(self):
+        """Active sends for the outbox panel, with the seconds left to undo each one."""
+        now = self.clock()
+        return [copy.deepcopy({**{k: v for k, v in s.items() if k not in ("sent_at", "cancelled")},
+                               "undo_seconds_left": max(0, math.ceil(UNDO_SECONDS - (now - s["sent_at"])))})
+                for s in self.active()]
 
     def dry_run(self, result):
         checked = self._checked(result)
@@ -109,7 +117,7 @@ class Outbox:
     def _not_free(self, checked):
         """The first person or room that is no longer free for this slot (None if all are free)."""
         for owner in checked["ids"] + [checked["room_id"]]:
-            if not self.world.is_free(owner, checked["start"], checked["end"], self._as_holds()):
+            if not self.world.is_free(owner, checked["start"], checked["end"], self.as_holds()):
                 return owner
         return None
 

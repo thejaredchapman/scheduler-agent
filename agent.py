@@ -81,20 +81,21 @@ def _result_event(result, usage, turns, retries):
     return {"type": "result", "result": result, "usage": dict(usage), "turns": turns, "proposal_retries": retries}
 
 
-def run_agent(request, client=None, model=DEFAULT_MODEL, max_turns=MAX_TURNS, clock=time.monotonic, world=None):
+def run_agent(request, client=None, model=DEFAULT_MODEL, max_turns=MAX_TURNS, clock=time.monotonic, world=None,
+              booked=()):
     """Run the loop and yield events. The last event is always the one "result" event."""
     started = clock()
-    for event in _run_events(request, client, model, max_turns, world):
+    for event in _run_events(request, client, model, max_turns, world, booked):
         if event["type"] == "result":
             event["elapsed_seconds"] = round(clock() - started, 2)
         yield event
 
 
-def _run_events(request, client, model, max_turns, world):
+def _run_events(request, client, model, max_turns, world, booked=()):
     usage = {"input_tokens": 0, "output_tokens": 0}
     progress = {"turn": 0, "retries": 0}
     try:
-        space = Workspace(world)  # loads the demo data; a missing or corrupt file lands here
+        space = Workspace(world, booked)  # loads the demo data; a missing or corrupt file lands here
         client = client or anthropic.Anthropic()
     except Exception as error:  # e.g. no API key configured, or no data files
         yield _result_event(unable_result(f"Could not start the agent: {type(error).__name__}"), usage, 0, 0)

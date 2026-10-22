@@ -59,7 +59,7 @@ def test_retry_can_succeed():
 def capture_workspaces(monkeypatch):
     """Record the Workspace each run creates, so tests can look at its holds afterwards."""
     made, real = [], agent.Workspace
-    monkeypatch.setattr(agent, "Workspace", lambda world=None: made.append(real(world)) or made[-1])
+    monkeypatch.setattr(agent, "Workspace", lambda world=None, booked=(): made.append(real(world, booked)) or made[-1])
     return made
 
 
@@ -124,7 +124,7 @@ def test_failures_end_as_unable():
 
 
 def test_a_world_that_fails_to_load_still_ends_in_one_result(monkeypatch):
-    def missing_data(world=None):
+    def missing_data(world=None, booked=()):
         raise FileNotFoundError("data/people.json")
     monkeypatch.setattr(agent, "Workspace", missing_data)
     events = list(run_agent("x", client=FakeClient([]), world=None))

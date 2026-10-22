@@ -19,13 +19,18 @@ RESULT_KEYS = ("status", "summary", "reasons", "tradeoffs", "question", "reason"
 class Workspace:
     """One run's holds. Holds block later searches in the same run until released."""
 
-    def __init__(self, world=None):
+    def __init__(self, world=None, booked=()):
         self.world = world or get_world()
         self.holds = {}
+        self.booked = list(booked)  # meetings the person already approved; a run never releases them
         self._numbers = itertools.count(1)
 
     def active_holds(self):
         return [h for h in self.holds.values() if h["state"] == "held"]
+
+    def blocking(self):
+        """Everything that makes a time busy: pencilled-in holds from this run plus approved meetings."""
+        return self.active_holds() + self.booked
 
     def release_all(self):
         for h in self.holds.values():
@@ -99,7 +104,7 @@ def find_open_slots(space, args):
     _dates(args)
     slots = space.world.open_slots(people, _duration(args["duration_minutes"]), args["start_date"],
                                    args["end_date"], args.get("earliest_local"), args.get("latest_local"),
-                                   args.get("room_needs"), space.active_holds(), MAX_SLOTS)
+                                   args.get("room_needs"), space.blocking(), MAX_SLOTS)
     return {"slots": [{"start_utc": utc_text(s["start"]), "room_id": s["room"]["id"] if s["room"] else None,
                        "local": {p: _clock(space.world, p, s["start"]) for p in people}} for s in slots]}
 
@@ -107,7 +112,7 @@ def find_open_slots(space, args):
 def _check_slot(space, start, end, people, room, ignore=None):
     """Problems with booking this slot (empty list = fine). `ignore` skips one hold (its own)."""
     world = space.world
-    others = [h for h in space.active_holds() if h is not ignore]
+    others = [h for h in space.blocking() if h is not ignore]
     problems = []
     if room["capacity"] < len(people):
         problems.append(f"room {room['id']} is too small for {len(people)} people")
