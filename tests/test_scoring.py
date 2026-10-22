@@ -119,3 +119,27 @@ def test_run_case_records_a_crashed_run_as_unable():
         assert r["status"] == "unable" and r["correct"] is False and r["bad_proposal"] is False
         assert r["problems"] == [f"run crashed: {'ValueError' if runner is boom else 'RuntimeError'}"]
         assert r["run"] == 2 and r["id"] == "x"
+
+
+def test_results_report_matches_its_rows():
+    import json
+    from pathlib import Path
+    root = Path(__file__).resolve().parent.parent
+    data = json.loads((root / "eval" / "results.json").read_text())
+    rows = data["rows"]
+    assert len(rows) == 48 and data["workers"] == 1
+    report = (root / "eval" / "results.md").read_text()
+    assert f"- Success: **{sum(r['correct'] for r in rows) / len(rows):.0%}**" in report
+    assert all(r["unknown_tools"] == 0 for r in rows)
+    leaks = ["/Users/", "Traceback", "sk-" + "ant"]
+    assert not any(leak in report or leak in json.dumps(data) for leak in leaks)
+
+
+def test_first_run_is_kept_on_record():
+    import json
+    from pathlib import Path
+    root = Path(__file__).resolve().parent.parent
+    first = json.loads((root / "eval" / "results-first-run.json").read_text())
+    assert len(first["rows"]) == 48
+    report = (root / "eval" / "results-first-run.md").read_text()
+    assert "- Success: **79%**" in report

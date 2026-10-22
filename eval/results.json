@@ -1,0 +1,4815 @@
+{
+  "summary": {
+    "total": 48,
+    "accuracy": 0.9791666666666666,
+    "by_group": {
+      "straightforward": {
+        "total": 12,
+        "correct": 12,
+        "accuracy": 1.0
+      },
+      "time_zones": {
+        "total": 12,
+        "correct": 11,
+        "accuracy": 0.9166666666666666
+      },
+      "tight": {
+        "total": 12,
+        "correct": 12,
+        "accuracy": 1.0
+      },
+      "impossible_or_ambiguous": {
+        "total": 12,
+        "correct": 12,
+        "accuracy": 1.0
+      }
+    },
+    "bad_proposals": 0,
+    "bad_proposal_rate": 0.0,
+    "question_when_needed": 1.0,
+    "unable": 1,
+    "retried": 2,
+    "unknown_tools": 0
+  },
+  "timing": {
+    "median_seconds": 6.5,
+    "slowest_seconds": 13.6,
+    "mean_calls": 3.8
+  },
+  "workers": 1,
+  "rows": [
+    {
+      "id": "straightforward-morning-sync",
+      "group": "straightforward",
+      "run": 1,
+      "expected_status": "proposed",
+      "status": "proposed",
+      "correct": true,
+      "bad_proposal": false,
+      "problems": [],
+      "result": {
+        "status": "proposed",
+        "summary": "Pencilled a 45-minute meeting for Priya, Tom and Mei on Monday 26 Oct 2026 at 10:30\u201311:15 New York time, in the Den room (seats 4, screen and whiteboard).",
+        "reasons": [
+          "All three are free at this time, within the requested morning window.",
+          "Monday is the earliest day next week, and the Den fits the three attendees with a screen and whiteboard."
+        ],
+        "tradeoffs": [],
+        "question": null,
+        "reason": null,
+        "hold_id": "hold-1",
+        "start_utc": "2026-10-26T14:30Z",
+        "end_utc": "2026-10-26T15:15Z",
+        "duration_minutes": 45,
+        "room": {
+          "id": "r-den",
+          "name": "Den"
+        },
+        "attendees": [
+          {
+            "id": "p-priya",
+            "name": "Priya Raman",
+            "time_zone": "America/New_York",
+            "local_start": "Mon 26 Oct 10:30",
+            "local_end": "11:15"
+          },
+          {
+            "id": "p-tom",
+            "name": "Tom Becker",
+            "time_zone": "America/New_York",
+            "local_start": "Mon 26 Oct 10:30",
+            "local_end": "11:15"
+          },
+          {
+            "id": "p-mei",
+            "name": "Mei Lin",
+            "time_zone": "America/New_York",
+            "local_start": "Mon 26 Oct 10:30",
+            "local_end": "11:15"
+          }
+        ]
+      },
+      "tool_calls": [
+        {
+          "name": "list_people",
+          "input": {}
+        },
+        {
+          "name": "list_rooms",
+          "input": {}
+        },
+        {
+          "name": "find_open_slots",
+          "input": {
+            "people": [
+              "p-priya",
+              "p-tom",
+              "p-mei"
+            ],
+            "duration_minutes": 45,
+            "start_date": "2026-10-26",
+            "end_date": "2026-10-30",
+            "earliest_local": "09:00",
+            "latest_local": "12:00",
+            "room_needs": {
+              "min_capacity": 4
+            }
+          }
+        },
+        {
+          "name": "place_hold",
+          "input": {
+            "start_utc": "2026-10-26T14:30Z",
+            "duration_minutes": 45,
+            "people": [
+              "p-priya",
+              "p-tom",
+              "p-mei"
+            ],
+            "room_id": "r-den"
+          }
+        },
+        {
+          "name": "submit_proposal",
+          "input": {
+            "hold_id": "hold-1",
+            "summary": "Pencilled a 45-minute meeting for Priya, Tom and Mei on Monday 26 Oct 2026 at 10:30\u201311:15 New York time, in the Den room (seats 4, screen and whiteboard).",
+            "reasons": [
+              "All three are free at this time, within the requested morning window.",
+              "Monday is the earliest day next week, and the Den fits the three attendees with a screen and whiteboard."
+            ],
+            "tradeoffs": []
+          }
+        }
+      ],
+      "unknown_tools": 0,
+      "tokens": 15257,
+      "seconds": 6.27,
+      "calls": 4,
+      "retries": 0
+    },
+    {
+      "id": "straightforward-morning-sync",
+      "group": "straightforward",
+      "run": 2,
+      "expected_status": "proposed",
+      "status": "proposed",
+      "correct": true,
+      "bad_proposal": false,
+      "problems": [],
+      "result": {
+        "status": "proposed",
+        "summary": "Pencilled in a 45-minute meeting for Priya Raman, Tom Becker and Mei Lin on Monday 26 Oct 2026 at 10:30\u201311:15 New York time, in the Den room (4 capacity, screen and whiteboard).",
+        "reasons": [
+          "It is the earliest morning slot next week when all three are free (New York time).",
+          "Den fits three people and has a screen and whiteboard.",
+          "Monday keeps the rest of the week open."
+        ],
+        "tradeoffs": [],
+        "question": null,
+        "reason": null,
+        "hold_id": "hold-1",
+        "start_utc": "2026-10-26T14:30Z",
+        "end_utc": "2026-10-26T15:15Z",
+        "duration_minutes": 45,
+        "room": {
+          "id": "r-den",
+          "name": "Den"
+        },
+        "attendees": [
+          {
+            "id": "p-priya",
+            "name": "Priya Raman",
+            "time_zone": "America/New_York",
+            "local_start": "Mon 26 Oct 10:30",
+            "local_end": "11:15"
+          },
+          {
+            "id": "p-tom",
+            "name": "Tom Becker",
+            "time_zone": "America/New_York",
+            "local_start": "Mon 26 Oct 10:30",
+            "local_end": "11:15"
+          },
+          {
+            "id": "p-mei",
+            "name": "Mei Lin",
+            "time_zone": "America/New_York",
+            "local_start": "Mon 26 Oct 10:30",
+            "local_end": "11:15"
+          }
+        ]
+      },
+      "tool_calls": [
+        {
+          "name": "list_people",
+          "input": {}
+        },
+        {
+          "name": "list_rooms",
+          "input": {}
+        },
+        {
+          "name": "find_open_slots",
+          "input": {
+            "people": [
+              "p-priya",
+              "p-tom",
+              "p-mei"
+            ],
+            "duration_minutes": 45,
+            "start_date": "2026-10-26",
+            "end_date": "2026-10-30",
+            "earliest_local": "09:00",
+            "latest_local": "12:00",
+            "room_needs": {
+              "min_capacity": 4
+            }
+          }
+        },
+        {
+          "name": "place_hold",
+          "input": {
+            "start_utc": "2026-10-26T14:30Z",
+            "duration_minutes": 45,
+            "people": [
+              "p-priya",
+              "p-tom",
+              "p-mei"
+            ],
+            "room_id": "r-den"
+          }
+        },
+        {
+          "name": "submit_proposal",
+          "input": {
+            "hold_id": "hold-1",
+            "summary": "Pencilled in a 45-minute meeting for Priya Raman, Tom Becker and Mei Lin on Monday 26 Oct 2026 at 10:30\u201311:15 New York time, in the Den room (4 capacity, screen and whiteboard).",
+            "reasons": [
+              "It is the earliest morning slot next week when all three are free (New York time).",
+              "Den fits three people and has a screen and whiteboard.",
+              "Monday keeps the rest of the week open."
+            ],
+            "tradeoffs": []
+          }
+        }
+      ],
+      "unknown_tools": 0,
+      "tokens": 15258,
+      "seconds": 6.69,
+      "calls": 4,
+      "retries": 0
+    },
+    {
+      "id": "straightforward-morning-sync",
+      "group": "straightforward",
+      "run": 3,
+      "expected_status": "proposed",
+      "status": "proposed",
+      "correct": true,
+      "bad_proposal": false,
+      "problems": [],
+      "result": {
+        "status": "proposed",
+        "summary": "Monday 26 Oct 2026, 10:30\u201311:15 New York time, in the Den (4 people, screen and whiteboard) for Priya, Tom and Mei. The slot is pencilled in and has not been sent.",
+        "reasons": [
+          "It is the earliest morning slot next week when Priya, Tom and Mei are all free.",
+          "The Den seats 4, which fits the three attendees, and has a screen and whiteboard.",
+          "The meeting falls within the morning window, New York time."
+        ],
+        "tradeoffs": [],
+        "question": null,
+        "reason": null,
+        "hold_id": "hold-1",
+        "start_utc": "2026-10-26T14:30Z",
+        "end_utc": "2026-10-26T15:15Z",
+        "duration_minutes": 45,
+        "room": {
+          "id": "r-den",
+          "name": "Den"
+        },
+        "attendees": [
+          {
+            "id": "p-priya",
+            "name": "Priya Raman",
+            "time_zone": "America/New_York",
+            "local_start": "Mon 26 Oct 10:30",
+            "local_end": "11:15"
+          },
+          {
+            "id": "p-tom",
+            "name": "Tom Becker",
+            "time_zone": "America/New_York",
+            "local_start": "Mon 26 Oct 10:30",
+            "local_end": "11:15"
+          },
+          {
+            "id": "p-mei",
+            "name": "Mei Lin",
+            "time_zone": "America/New_York",
+            "local_start": "Mon 26 Oct 10:30",
+            "local_end": "11:15"
+          }
+        ]
+      },
+      "tool_calls": [
+        {
+          "name": "list_people",
+          "input": {}
+        },
+        {
+          "name": "list_rooms",
+          "input": {}
+        },
+        {
+          "name": "find_open_slots",
+          "input": {
+            "people": [
+              "p-priya",
+              "p-tom",
+              "p-mei"
+            ],
+            "duration_minutes": 45,
+            "start_date": "2026-10-26",
+            "end_date": "2026-10-30",
+            "earliest_local": "09:00",
+            "latest_local": "12:00",
+            "room_needs": {
+              "min_capacity": 3
+            }
+          }
+        },
+        {
+          "name": "place_hold",
+          "input": {
+            "start_utc": "2026-10-26T14:30Z",
+            "duration_minutes": 45,
+            "people": [
+              "p-priya",
+              "p-tom",
+              "p-mei"
+            ],
+            "room_id": "r-den"
+          }
+        },
+        {
+          "name": "submit_proposal",
+          "input": {
+            "hold_id": "hold-1",
+            "summary": "Monday 26 Oct 2026, 10:30\u201311:15 New York time, in the Den (4 people, screen and whiteboard) for Priya, Tom and Mei. The slot is pencilled in and has not been sent.",
+            "reasons": [
+              "It is the earliest morning slot next week when Priya, Tom and Mei are all free.",
+              "The Den seats 4, which fits the three attendees, and has a screen and whiteboard.",
+              "The meeting falls within the morning window, New York time."
+            ],
+            "tradeoffs": []
+          }
+        }
+      ],
+      "unknown_tools": 0,
+      "tokens": 15478,
+      "seconds": 7.38,
+      "calls": 4,
+      "retries": 0
+    },
+    {
+      "id": "straightforward-denver-pair",
+      "group": "straightforward",
+      "run": 1,
+      "expected_status": "proposed",
+      "status": "proposed",
+      "correct": true,
+      "bad_proposal": false,
+      "problems": [],
+      "result": {
+        "status": "proposed",
+        "summary": "Pencilled a 30-minute meeting for Carlos Mendez and Dana Whitfield on Tuesday 27 October 2026 at 13:00 Mountain Time (19:00 UTC), in the Nook room (capacity 2, screen).",
+        "reasons": [
+          "Both Carlos and Dana are free at this time on Tuesday 27 October, within their working hours.",
+          "The Nook room fits two people and has a screen, so it meets the small-room requirement.",
+          "The slot is in the early afternoon, clear of the midday lunch hour."
+        ],
+        "tradeoffs": [
+          "Only Tuesday was booked; Wednesday 28 was not held since a Tuesday slot was found. Dana is not available on Fridays, but that does not affect this slot."
+        ],
+        "question": null,
+        "reason": null,
+        "hold_id": "hold-1",
+        "start_utc": "2026-10-27T19:00Z",
+        "end_utc": "2026-10-27T19:30Z",
+        "duration_minutes": 30,
+        "room": {
+          "id": "r-nook",
+          "name": "Nook"
+        },
+        "attendees": [
+          {
+            "id": "p-carlos",
+            "name": "Carlos Mendez",
+            "time_zone": "America/Denver",
+            "local_start": "Tue 27 Oct 13:00",
+            "local_end": "13:30"
+          },
+          {
+            "id": "p-dana",
+            "name": "Dana Whitfield",
+            "time_zone": "America/Denver",
+            "local_start": "Tue 27 Oct 13:00",
+            "local_end": "13:30"
+          }
+        ]
+      },
+      "tool_calls": [
+        {
+          "name": "list_people",
+          "input": {}
+        },
+        {
+          "name": "list_rooms",
+          "input": {}
+        },
+        {
+          "name": "find_open_slots",
+          "input": {
+            "people": [
+              "p-carlos",
+              "p-dana"
+            ],
+            "duration_minutes": 30,
+            "start_date": "2026-10-27",
+            "end_date": "2026-10-28",
+            "room_needs": {
+              "min_capacity": 2
+            }
+          }
+        },
+        {
+          "name": "place_hold",
+          "input": {
+            "start_utc": "2026-10-27T19:00Z",
+            "duration_minutes": 30,
+            "people": [
+              "p-carlos",
+              "p-dana"
+            ],
+            "room_id": "r-nook"
+          }
+        },
+        {
+          "name": "submit_proposal",
+          "input": {
+            "hold_id": "hold-1",
+            "summary": "Pencilled a 30-minute meeting for Carlos Mendez and Dana Whitfield on Tuesday 27 October 2026 at 13:00 Mountain Time (19:00 UTC), in the Nook room (capacity 2, screen).",
+            "reasons": [
+              "Both Carlos and Dana are free at this time on Tuesday 27 October, within their working hours.",
+              "The Nook room fits two people and has a screen, so it meets the small-room requirement.",
+              "The slot is in the early afternoon, clear of the midday lunch hour."
+            ],
+            "tradeoffs": [
+              "Only Tuesday was booked; Wednesday 28 was not held since a Tuesday slot was found. Dana is not available on Fridays, but that does not affect this slot."
+            ]
+          }
+        }
+      ],
+      "unknown_tools": 0,
+      "tokens": 15287,
+      "seconds": 6.17,
+      "calls": 4,
+      "retries": 0
+    },
+    {
+      "id": "straightforward-denver-pair",
+      "group": "straightforward",
+      "run": 2,
+      "expected_status": "proposed",
+      "status": "proposed",
+      "correct": true,
+      "bad_proposal": false,
+      "problems": [],
+      "result": {
+        "status": "proposed",
+        "summary": "Pencilled in a 30-minute meeting for Carlos Mendez and Dana Whitfield on Tuesday 27 October at 12:30 local time (Denver), which is 18:30 UTC, in the Nook room (New York office, seats 2, screen). Carlos and Dana are both free then. Nothing has been sent to them.",
+        "reasons": [
+          "Both Carlos and Dana are free at this time, with no conflicts.",
+          "The Nook seats 2 and has a screen, so it fits a two-person meeting.",
+          "Tuesday 27 October is one of the two days requested."
+        ],
+        "tradeoffs": [
+          "The slot is at 12:30 local time, which is midday. No time of day was requested, so I took the earliest open slot. Other Tuesday slots run from 12:45 to 14:45 Denver time if that suits better."
+        ],
+        "question": null,
+        "reason": null,
+        "hold_id": "hold-1",
+        "start_utc": "2026-10-27T18:30Z",
+        "end_utc": "2026-10-27T19:00Z",
+        "duration_minutes": 30,
+        "room": {
+          "id": "r-nook",
+          "name": "Nook"
+        },
+        "attendees": [
+          {
+            "id": "p-carlos",
+            "name": "Carlos Mendez",
+            "time_zone": "America/Denver",
+            "local_start": "Tue 27 Oct 12:30",
+            "local_end": "13:00"
+          },
+          {
+            "id": "p-dana",
+            "name": "Dana Whitfield",
+            "time_zone": "America/Denver",
+            "local_start": "Tue 27 Oct 12:30",
+            "local_end": "13:00"
+          }
+        ]
+      },
+      "tool_calls": [
+        {
+          "name": "list_people",
+          "input": {}
+        },
+        {
+          "name": "list_rooms",
+          "input": {}
+        },
+        {
+          "name": "find_open_slots",
+          "input": {
+            "people": [
+              "p-carlos",
+              "p-dana"
+            ],
+            "duration_minutes": 30,
+            "start_date": "2026-10-27",
+            "end_date": "2026-10-28",
+            "room_needs": {
+              "min_capacity": 2
+            }
+          }
+        },
+        {
+          "name": "place_hold",
+          "input": {
+            "start_utc": "2026-10-27T18:30Z",
+            "duration_minutes": 30,
+            "people": [
+              "p-carlos",
+              "p-dana"
+            ],
+            "room_id": "r-nook"
+          }
+        },
+        {
+          "name": "submit_proposal",
+          "input": {
+            "hold_id": "hold-1",
+            "summary": "Pencilled in a 30-minute meeting for Carlos Mendez and Dana Whitfield on Tuesday 27 October at 12:30 local time (Denver), which is 18:30 UTC, in the Nook room (New York office, seats 2, screen). Carlos and Dana are both free then. Nothing has been sent to them.",
+            "reasons": [
+              "Both Carlos and Dana are free at this time, with no conflicts.",
+              "The Nook seats 2 and has a screen, so it fits a two-person meeting.",
+              "Tuesday 27 October is one of the two days requested."
+            ],
+            "tradeoffs": [
+              "The slot is at 12:30 local time, which is midday. No time of day was requested, so I took the earliest open slot. Other Tuesday slots run from 12:45 to 14:45 Denver time if that suits better."
+            ]
+          }
+        }
+      ],
+      "unknown_tools": 0,
+      "tokens": 15012,
+      "seconds": 5.79,
+      "calls": 4,
+      "retries": 0
+    },
+    {
+      "id": "straightforward-denver-pair",
+      "group": "straightforward",
+      "run": 3,
+      "expected_status": "proposed",
+      "status": "proposed",
+      "correct": true,
+      "bad_proposal": false,
+      "problems": [],
+      "result": {
+        "status": "proposed",
+        "summary": "Pencilled a 30-minute meeting for Carlos Mendez and Dana Whitfield on Tuesday 27 October at 12:30 Mountain time (18:30 UTC), in the Nook room (New York office, seats 2, screen). Both are free at that time. Nothing has been sent; the invite is yours to approve.",
+        "reasons": [
+          "Both Carlos and Dana are free and within working hours at this time.",
+          "The Nook fits two people and has a screen, so it meets the small-room request.",
+          "Tuesday 27 is one of the two requested days, and this is the earliest open slot that day."
+        ],
+        "tradeoffs": [
+          "Carlos and Dana are in Denver, so 12:30 local is a midday slot in New York terms of 14:30 for the Nook's location; if they would prefer a different time, other Tuesday and Wednesday slots are available."
+        ],
+        "question": null,
+        "reason": null,
+        "hold_id": "hold-1",
+        "start_utc": "2026-10-27T18:30Z",
+        "end_utc": "2026-10-27T19:00Z",
+        "duration_minutes": 30,
+        "room": {
+          "id": "r-nook",
+          "name": "Nook"
+        },
+        "attendees": [
+          {
+            "id": "p-carlos",
+            "name": "Carlos Mendez",
+            "time_zone": "America/Denver",
+            "local_start": "Tue 27 Oct 12:30",
+            "local_end": "13:00"
+          },
+          {
+            "id": "p-dana",
+            "name": "Dana Whitfield",
+            "time_zone": "America/Denver",
+            "local_start": "Tue 27 Oct 12:30",
+            "local_end": "13:00"
+          }
+        ]
+      },
+      "tool_calls": [
+        {
+          "name": "list_people",
+          "input": {}
+        },
+        {
+          "name": "list_rooms",
+          "input": {}
+        },
+        {
+          "name": "find_open_slots",
+          "input": {
+            "people": [
+              "p-carlos",
+              "p-dana"
+            ],
+            "duration_minutes": 30,
+            "start_date": "2026-10-27",
+            "end_date": "2026-10-28",
+            "room_needs": {
+              "min_capacity": 2
+            }
+          }
+        },
+        {
+          "name": "place_hold",
+          "input": {
+            "start_utc": "2026-10-27T18:30Z",
+            "duration_minutes": 30,
+            "people": [
+              "p-carlos",
+              "p-dana"
+            ],
+            "room_id": "r-nook"
+          }
+        },
+        {
+          "name": "submit_proposal",
+          "input": {
+            "hold_id": "hold-1",
+            "summary": "Pencilled a 30-minute meeting for Carlos Mendez and Dana Whitfield on Tuesday 27 October at 12:30 Mountain time (18:30 UTC), in the Nook room (New York office, seats 2, screen). Both are free at that time. Nothing has been sent; the invite is yours to approve.",
+            "reasons": [
+              "Both Carlos and Dana are free and within working hours at this time.",
+              "The Nook fits two people and has a screen, so it meets the small-room request.",
+              "Tuesday 27 is one of the two requested days, and this is the earliest open slot that day."
+            ],
+            "tradeoffs": [
+              "Carlos and Dana are in Denver, so 12:30 local is a midday slot in New York terms of 14:30 for the Nook's location; if they would prefer a different time, other Tuesday and Wednesday slots are available."
+            ]
+          }
+        }
+      ],
+      "unknown_tools": 0,
+      "tokens": 15013,
+      "seconds": 5.72,
+      "calls": 4,
+      "retries": 0
+    },
+    {
+      "id": "straightforward-whiteboard",
+      "group": "straightforward",
+      "run": 1,
+      "expected_status": "proposed",
+      "status": "proposed",
+      "correct": true,
+      "bad_proposal": false,
+      "problems": [],
+      "result": {
+        "status": "proposed",
+        "summary": "One-hour design workshop for Priya Raman, Tom Becker and Mei Lin on Monday 26 Oct 2026 at 10:30 New York time (14:30 UTC), in the Den room (whiteboard, screen, capacity 4). The hold is placed but no invite has been sent.",
+        "reasons": [
+          "All three attendees are free at this time, and it is the earliest slot next week.",
+          "The Den has a whiteboard, as requested, and fits three people.",
+          "It is a morning slot in New York, within everyone's working hours."
+        ],
+        "tradeoffs": [],
+        "question": null,
+        "reason": null,
+        "hold_id": "hold-1",
+        "start_utc": "2026-10-26T14:30Z",
+        "end_utc": "2026-10-26T15:30Z",
+        "duration_minutes": 60,
+        "room": {
+          "id": "r-den",
+          "name": "Den"
+        },
+        "attendees": [
+          {
+            "id": "p-priya",
+            "name": "Priya Raman",
+            "time_zone": "America/New_York",
+            "local_start": "Mon 26 Oct 10:30",
+            "local_end": "11:30"
+          },
+          {
+            "id": "p-tom",
+            "name": "Tom Becker",
+            "time_zone": "America/New_York",
+            "local_start": "Mon 26 Oct 10:30",
+            "local_end": "11:30"
+          },
+          {
+            "id": "p-mei",
+            "name": "Mei Lin",
+            "time_zone": "America/New_York",
+            "local_start": "Mon 26 Oct 10:30",
+            "local_end": "11:30"
+          }
+        ]
+      },
+      "tool_calls": [
+        {
+          "name": "list_people",
+          "input": {}
+        },
+        {
+          "name": "list_rooms",
+          "input": {}
+        },
+        {
+          "name": "find_open_slots",
+          "input": {
+            "people": [
+              "p-priya",
+              "p-tom",
+              "p-mei"
+            ],
+            "duration_minutes": 60,
+            "start_date": "2026-10-26",
+            "end_date": "2026-10-30",
+            "room_needs": {
+              "equipment": [
+                "whiteboard"
+              ]
+            }
+          }
+        },
+        {
+          "name": "place_hold",
+          "input": {
+            "start_utc": "2026-10-26T14:30Z",
+            "duration_minutes": 60,
+            "people": [
+              "p-priya",
+              "p-tom",
+              "p-mei"
+            ],
+            "room_id": "r-den"
+          }
+        },
+        {
+          "name": "submit_proposal",
+          "input": {
+            "hold_id": "hold-1",
+            "summary": "One-hour design workshop for Priya Raman, Tom Becker and Mei Lin on Monday 26 Oct 2026 at 10:30 New York time (14:30 UTC), in the Den room (whiteboard, screen, capacity 4). The hold is placed but no invite has been sent.",
+            "reasons": [
+              "All three attendees are free at this time, and it is the earliest slot next week.",
+              "The Den has a whiteboard, as requested, and fits three people.",
+              "It is a morning slot in New York, within everyone's working hours."
+            ],
+            "tradeoffs": []
+          }
+        }
+      ],
+      "unknown_tools": 0,
+      "tokens": 14490,
+      "seconds": 5.81,
+      "calls": 4,
+      "retries": 0
+    },
+    {
+      "id": "straightforward-whiteboard",
+      "group": "straightforward",
+      "run": 2,
+      "expected_status": "proposed",
+      "status": "proposed",
+      "correct": true,
+      "bad_proposal": false,
+      "problems": [],
+      "result": {
+        "status": "proposed",
+        "summary": "Design workshop, Monday 26 Oct 2026 10:30\u201311:30 New York time (14:30\u201315:30 UTC), in the Den room (seats 4, has a whiteboard). Priya Raman, Tom Becker and Mei Lin are all free at this time. The hold is pencilled in and not yet sent.",
+        "reasons": [
+          "All three attendees are free at this time and share the New York time zone.",
+          "The Den room has a whiteboard and seats 4, which fits three people.",
+          "Monday morning gives the workshop a full week of lead time."
+        ],
+        "tradeoffs": [],
+        "question": null,
+        "reason": null,
+        "hold_id": "hold-1",
+        "start_utc": "2026-10-26T14:30Z",
+        "end_utc": "2026-10-26T15:30Z",
+        "duration_minutes": 60,
+        "room": {
+          "id": "r-den",
+          "name": "Den"
+        },
+        "attendees": [
+          {
+            "id": "p-priya",
+            "name": "Priya Raman",
+            "time_zone": "America/New_York",
+            "local_start": "Mon 26 Oct 10:30",
+            "local_end": "11:30"
+          },
+          {
+            "id": "p-tom",
+            "name": "Tom Becker",
+            "time_zone": "America/New_York",
+            "local_start": "Mon 26 Oct 10:30",
+            "local_end": "11:30"
+          },
+          {
+            "id": "p-mei",
+            "name": "Mei Lin",
+            "time_zone": "America/New_York",
+            "local_start": "Mon 26 Oct 10:30",
+            "local_end": "11:30"
+          }
+        ]
+      },
+      "tool_calls": [
+        {
+          "name": "list_people",
+          "input": {}
+        },
+        {
+          "name": "list_rooms",
+          "input": {}
+        },
+        {
+          "name": "find_open_slots",
+          "input": {
+            "people": [
+              "p-priya",
+              "p-tom",
+              "p-mei"
+            ],
+            "duration_minutes": 60,
+            "start_date": "2026-10-26",
+            "end_date": "2026-10-30",
+            "room_needs": {
+              "equipment": [
+                "whiteboard"
+              ]
+            }
+          }
+        },
+        {
+          "name": "place_hold",
+          "input": {
+            "start_utc": "2026-10-26T14:30Z",
+            "duration_minutes": 60,
+            "people": [
+              "p-priya",
+              "p-tom",
+              "p-mei"
+            ],
+            "room_id": "r-den"
+          }
+        },
+        {
+          "name": "submit_proposal",
+          "input": {
+            "hold_id": "hold-1",
+            "summary": "Design workshop, Monday 26 Oct 2026 10:30\u201311:30 New York time (14:30\u201315:30 UTC), in the Den room (seats 4, has a whiteboard). Priya Raman, Tom Becker and Mei Lin are all free at this time. The hold is pencilled in and not yet sent.",
+            "reasons": [
+              "All three attendees are free at this time and share the New York time zone.",
+              "The Den room has a whiteboard and seats 4, which fits three people.",
+              "Monday morning gives the workshop a full week of lead time."
+            ],
+            "tradeoffs": []
+          }
+        }
+      ],
+      "unknown_tools": 0,
+      "tokens": 14523,
+      "seconds": 9.75,
+      "calls": 4,
+      "retries": 0
+    },
+    {
+      "id": "straightforward-whiteboard",
+      "group": "straightforward",
+      "run": 3,
+      "expected_status": "proposed",
+      "status": "proposed",
+      "correct": true,
+      "bad_proposal": false,
+      "problems": [],
+      "result": {
+        "status": "proposed",
+        "summary": "One-hour design workshop for Priya Raman, Tom Becker and Mei Lin on Monday 26 Oct 2026, 10:30-11:30 New York time (14:30-15:30 UTC), in the Den room (whiteboard and screen, fits 4). The hold is placed and not yet sent.",
+        "reasons": [
+          "All three are free at this time, and it is in their working hours (all are in New York).",
+          "The Den has a whiteboard, as requested, and its capacity of 4 fits the three attendees.",
+          "Monday morning is early in the week, so the workshop gets a full working day ahead of it."
+        ],
+        "tradeoffs": [],
+        "question": null,
+        "reason": null,
+        "hold_id": "hold-1",
+        "start_utc": "2026-10-26T14:30Z",
+        "end_utc": "2026-10-26T15:30Z",
+        "duration_minutes": 60,
+        "room": {
+          "id": "r-den",
+          "name": "Den"
+        },
+        "attendees": [
+          {
+            "id": "p-priya",
+            "name": "Priya Raman",
+            "time_zone": "America/New_York",
+            "local_start": "Mon 26 Oct 10:30",
+            "local_end": "11:30"
+          },
+          {
+            "id": "p-tom",
+            "name": "Tom Becker",
+            "time_zone": "America/New_York",
+            "local_start": "Mon 26 Oct 10:30",
+            "local_end": "11:30"
+          },
+          {
+            "id": "p-mei",
+            "name": "Mei Lin",
+            "time_zone": "America/New_York",
+            "local_start": "Mon 26 Oct 10:30",
+            "local_end": "11:30"
+          }
+        ]
+      },
+      "tool_calls": [
+        {
+          "name": "list_people",
+          "input": {}
+        },
+        {
+          "name": "list_rooms",
+          "input": {}
+        },
+        {
+          "name": "find_open_slots",
+          "input": {
+            "people": [
+              "p-priya",
+              "p-tom",
+              "p-mei"
+            ],
+            "duration_minutes": 60,
+            "start_date": "2026-10-26",
+            "end_date": "2026-10-30",
+            "room_needs": {
+              "equipment": [
+                "whiteboard"
+              ]
+            }
+          }
+        },
+        {
+          "name": "place_hold",
+          "input": {
+            "start_utc": "2026-10-26T14:30Z",
+            "duration_minutes": 60,
+            "people": [
+              "p-priya",
+              "p-tom",
+              "p-mei"
+            ],
+            "room_id": "r-den"
+          }
+        },
+        {
+          "name": "submit_proposal",
+          "input": {
+            "hold_id": "hold-1",
+            "summary": "One-hour design workshop for Priya Raman, Tom Becker and Mei Lin on Monday 26 Oct 2026, 10:30-11:30 New York time (14:30-15:30 UTC), in the Den room (whiteboard and screen, fits 4). The hold is placed and not yet sent.",
+            "reasons": [
+              "All three are free at this time, and it is in their working hours (all are in New York).",
+              "The Den has a whiteboard, as requested, and its capacity of 4 fits the three attendees.",
+              "Monday morning is early in the week, so the workshop gets a full working day ahead of it."
+            ],
+            "tradeoffs": []
+          }
+        }
+      ],
+      "unknown_tools": 0,
+      "tokens": 14483,
+      "seconds": 5.36,
+      "calls": 4,
+      "retries": 0
+    },
+    {
+      "id": "straightforward-big-room",
+      "group": "straightforward",
+      "run": 1,
+      "expected_status": "proposed",
+      "status": "proposed",
+      "correct": true,
+      "bad_proposal": false,
+      "problems": [],
+      "result": {
+        "status": "proposed",
+        "summary": "Pencilled in a one-hour meeting on Tuesday 27 October 2026 at 13:00 New York time (17:00 UTC) in Hall, the room with the largest capacity (14), with screen, video and whiteboard. Tom and Mei are in New York and Carlos is in Denver, where it will be 11:00.",
+        "reasons": [
+          "Hall seats 14, which covers the expected group of ten.",
+          "All three attendees are within working hours at this time (13:00 New York, 11:00 Denver).",
+          "Midday slot avoids early-morning and late-afternoon edges for everyone.",
+          "Hall has video, so any remote attendees among the ten can join."
+        ],
+        "tradeoffs": [
+          "Only Tom, Mei and Carlos were named, so the other attendees are not checked for availability. The request does not give their names.",
+          "Other options include Monday 26 Oct at 15:45 NY, Wednesday 28 Oct at 11:00 NY, and Friday 30 Oct at 15:15 NY."
+        ],
+        "question": null,
+        "reason": null,
+        "hold_id": "hold-1",
+        "start_utc": "2026-10-27T17:00Z",
+        "end_utc": "2026-10-27T18:00Z",
+        "duration_minutes": 60,
+        "room": {
+          "id": "r-hall",
+          "name": "Hall"
+        },
+        "attendees": [
+          {
+            "id": "p-tom",
+            "name": "Tom Becker",
+            "time_zone": "America/New_York",
+            "local_start": "Tue 27 Oct 13:00",
+            "local_end": "14:00"
+          },
+          {
+            "id": "p-mei",
+            "name": "Mei Lin",
+            "time_zone": "America/New_York",
+            "local_start": "Tue 27 Oct 13:00",
+            "local_end": "14:00"
+          },
+          {
+            "id": "p-carlos",
+            "name": "Carlos Mendez",
+            "time_zone": "America/Denver",
+            "local_start": "Tue 27 Oct 11:00",
+            "local_end": "12:00"
+          }
+        ]
+      },
+      "tool_calls": [
+        {
+          "name": "list_people",
+          "input": {}
+        },
+        {
+          "name": "list_rooms",
+          "input": {}
+        },
+        {
+          "name": "find_open_slots",
+          "input": {
+            "people": [
+              "p-tom",
+              "p-mei",
+              "p-carlos"
+            ],
+            "duration_minutes": 60,
+            "start_date": "2026-10-26",
+            "end_date": "2026-10-30",
+            "room_needs": {
+              "min_capacity": 10
+            }
+          }
+        },
+        {
+          "name": "place_hold",
+          "input": {
+            "start_utc": "2026-10-27T17:00Z",
+            "duration_minutes": 60,
+            "people": [
+              "p-tom",
+              "p-mei",
+              "p-carlos"
+            ],
+            "room_id": "r-hall"
+          }
+        },
+        {
+          "name": "submit_proposal",
+          "input": {
+            "hold_id": "hold-1",
+            "summary": "Pencilled in a one-hour meeting on Tuesday 27 October 2026 at 13:00 New York time (17:00 UTC) in Hall, the room with the largest capacity (14), with screen, video and whiteboard. Tom and Mei are in New York and Carlos is in Denver, where it will be 11:00.",
+            "reasons": [
+              "Hall seats 14, which covers the expected group of ten.",
+              "All three attendees are within working hours at this time (13:00 New York, 11:00 Denver).",
+              "Midday slot avoids early-morning and late-afternoon edges for everyone.",
+              "Hall has video, so any remote attendees among the ten can join."
+            ],
+            "tradeoffs": [
+              "Only Tom, Mei and Carlos were named, so the other attendees are not checked for availability. The request does not give their names.",
+              "Other options include Monday 26 Oct at 15:45 NY, Wednesday 28 Oct at 11:00 NY, and Friday 30 Oct at 15:15 NY."
+            ]
+          }
+        }
+      ],
+      "unknown_tools": 0,
+      "tokens": 15423,
+      "seconds": 13.1,
+      "calls": 4,
+      "retries": 0
+    },
+    {
+      "id": "straightforward-big-room",
+      "group": "straightforward",
+      "run": 2,
+      "expected_status": "proposed",
+      "status": "proposed",
+      "correct": true,
+      "bad_proposal": false,
+      "problems": [],
+      "result": {
+        "status": "proposed",
+        "summary": "Pencilled a one-hour meeting for Tom Becker, Mei Lin and Carlos Mendez in the Hall (capacity 14, screen, video, whiteboard) on Monday 26 Oct 2026 at 15:45 New York time (19:45 UTC; 13:45 for Carlos in Denver). Nothing has been sent; the hold is for your approval.",
+        "reasons": [
+          "All three attendees are free for the full hour at this time.",
+          "Hall is the only room that fits ten people, and it has video for anyone joining remotely and a whiteboard.",
+          "Monday is the earliest slot available next week."
+        ],
+        "tradeoffs": [
+          "The request names only three attendees; the other seven people are not on the calendar check, so their availability is unconfirmed.",
+          "Carlos's start is 13:45 local time in Denver, which is early afternoon for him but within his working hours."
+        ],
+        "question": null,
+        "reason": null,
+        "hold_id": "hold-1",
+        "start_utc": "2026-10-26T19:45Z",
+        "end_utc": "2026-10-26T20:45Z",
+        "duration_minutes": 60,
+        "room": {
+          "id": "r-hall",
+          "name": "Hall"
+        },
+        "attendees": [
+          {
+            "id": "p-tom",
+            "name": "Tom Becker",
+            "time_zone": "America/New_York",
+            "local_start": "Mon 26 Oct 15:45",
+            "local_end": "16:45"
+          },
+          {
+            "id": "p-mei",
+            "name": "Mei Lin",
+            "time_zone": "America/New_York",
+            "local_start": "Mon 26 Oct 15:45",
+            "local_end": "16:45"
+          },
+          {
+            "id": "p-carlos",
+            "name": "Carlos Mendez",
+            "time_zone": "America/Denver",
+            "local_start": "Mon 26 Oct 13:45",
+            "local_end": "14:45"
+          }
+        ]
+      },
+      "tool_calls": [
+        {
+          "name": "list_people",
+          "input": {}
+        },
+        {
+          "name": "list_rooms",
+          "input": {}
+        },
+        {
+          "name": "find_open_slots",
+          "input": {
+            "people": [
+              "p-tom",
+              "p-mei",
+              "p-carlos"
+            ],
+            "duration_minutes": 60,
+            "start_date": "2026-10-26",
+            "end_date": "2026-10-30",
+            "room_needs": {
+              "min_capacity": 10
+            }
+          }
+        },
+        {
+          "name": "place_hold",
+          "input": {
+            "start_utc": "2026-10-26T19:45Z",
+            "duration_minutes": 60,
+            "people": [
+              "p-tom",
+              "p-mei",
+              "p-carlos"
+            ],
+            "room_id": "r-hall"
+          }
+        },
+        {
+          "name": "submit_proposal",
+          "input": {
+            "hold_id": "hold-1",
+            "summary": "Pencilled a one-hour meeting for Tom Becker, Mei Lin and Carlos Mendez in the Hall (capacity 14, screen, video, whiteboard) on Monday 26 Oct 2026 at 15:45 New York time (19:45 UTC; 13:45 for Carlos in Denver). Nothing has been sent; the hold is for your approval.",
+            "reasons": [
+              "All three attendees are free for the full hour at this time.",
+              "Hall is the only room that fits ten people, and it has video for anyone joining remotely and a whiteboard.",
+              "Monday is the earliest slot available next week."
+            ],
+            "tradeoffs": [
+              "The request names only three attendees; the other seven people are not on the calendar check, so their availability is unconfirmed.",
+              "Carlos's start is 13:45 local time in Denver, which is early afternoon for him but within his working hours."
+            ]
+          }
+        }
+      ],
+      "unknown_tools": 0,
+      "tokens": 15442,
+      "seconds": 6.73,
+      "calls": 4,
+      "retries": 0
+    },
+    {
+      "id": "straightforward-big-room",
+      "group": "straightforward",
+      "run": 3,
+      "expected_status": "proposed",
+      "status": "proposed",
+      "correct": true,
+      "bad_proposal": false,
+      "problems": [],
+      "result": {
+        "status": "proposed",
+        "summary": "Pencilled a one-hour meeting with Tom Becker, Mei Lin and Carlos Mendez in the Hall (14 capacity, screen, video, whiteboard) on Monday 26 Oct 2026 at 15:45 New York time (19:45 UTC). Carlos's local time is 13:45 in Denver. Nothing has been sent; the hold is for your approval.",
+        "reasons": [
+          "All three attendees are free at this time, and no conflicts were found.",
+          "Hall seats 14, so it covers the expected group of ten, and it has video for remote joiners.",
+          "It is the earliest available slot next week."
+        ],
+        "tradeoffs": [
+          "No time preference was given, so I chose the earliest slot. Tuesday 27 Oct at 13:00 ET and Wednesday 28 Oct at 11:00 ET are also open if you prefer a different day.",
+          "Carlos's start time is 13:45 in his local time, which is within his working hours."
+        ],
+        "question": null,
+        "reason": null,
+        "hold_id": "hold-1",
+        "start_utc": "2026-10-26T19:45Z",
+        "end_utc": "2026-10-26T20:45Z",
+        "duration_minutes": 60,
+        "room": {
+          "id": "r-hall",
+          "name": "Hall"
+        },
+        "attendees": [
+          {
+            "id": "p-tom",
+            "name": "Tom Becker",
+            "time_zone": "America/New_York",
+            "local_start": "Mon 26 Oct 15:45",
+            "local_end": "16:45"
+          },
+          {
+            "id": "p-mei",
+            "name": "Mei Lin",
+            "time_zone": "America/New_York",
+            "local_start": "Mon 26 Oct 15:45",
+            "local_end": "16:45"
+          },
+          {
+            "id": "p-carlos",
+            "name": "Carlos Mendez",
+            "time_zone": "America/Denver",
+            "local_start": "Mon 26 Oct 13:45",
+            "local_end": "14:45"
+          }
+        ]
+      },
+      "tool_calls": [
+        {
+          "name": "list_people",
+          "input": {}
+        },
+        {
+          "name": "list_rooms",
+          "input": {}
+        },
+        {
+          "name": "find_open_slots",
+          "input": {
+            "people": [
+              "p-tom",
+              "p-mei",
+              "p-carlos"
+            ],
+            "duration_minutes": 60,
+            "start_date": "2026-10-26",
+            "end_date": "2026-10-30",
+            "room_needs": {
+              "min_capacity": 10
+            }
+          }
+        },
+        {
+          "name": "place_hold",
+          "input": {
+            "start_utc": "2026-10-26T19:45Z",
+            "duration_minutes": 60,
+            "people": [
+              "p-tom",
+              "p-mei",
+              "p-carlos"
+            ],
+            "room_id": "r-hall"
+          }
+        },
+        {
+          "name": "submit_proposal",
+          "input": {
+            "hold_id": "hold-1",
+            "summary": "Pencilled a one-hour meeting with Tom Becker, Mei Lin and Carlos Mendez in the Hall (14 capacity, screen, video, whiteboard) on Monday 26 Oct 2026 at 15:45 New York time (19:45 UTC). Carlos's local time is 13:45 in Denver. Nothing has been sent; the hold is for your approval.",
+            "reasons": [
+              "All three attendees are free at this time, and no conflicts were found.",
+              "Hall seats 14, so it covers the expected group of ten, and it has video for remote joiners.",
+              "It is the earliest available slot next week."
+            ],
+            "tradeoffs": [
+              "No time preference was given, so I chose the earliest slot. Tuesday 27 Oct at 13:00 ET and Wednesday 28 Oct at 11:00 ET are also open if you prefer a different day.",
+              "Carlos's start time is 13:45 in his local time, which is within his working hours."
+            ]
+          }
+        }
+      ],
+      "unknown_tools": 0,
+      "tokens": 15588,
+      "seconds": 7.36,
+      "calls": 4,
+      "retries": 0
+    },
+    {
+      "id": "time-zones-london-new-york",
+      "group": "time_zones",
+      "run": 1,
+      "expected_status": "proposed",
+      "status": "proposed",
+      "correct": true,
+      "bad_proposal": false,
+      "problems": [],
+      "result": {
+        "status": "proposed",
+        "summary": "Pencilled a 30-minute meeting for Oliver Grant (London), Priya Raman and Tom Becker (New York) on Monday 26 Oct 2026 at 13:00 UTC. That is 13:00 for Oliver, 09:00 for Priya and Tom. Room: Hall (14 capacity, screen, video, whiteboard). Nothing has been sent yet.",
+        "reasons": [
+          "It is the earliest common slot next week, and it falls inside Oliver's part-time hours (09:00-14:00 London).",
+          "All three attendees are free for the full 30 minutes.",
+          "Hall has video, so it works if anyone needs to join remotely."
+        ],
+        "tradeoffs": [
+          "Hall is larger than needed for three people. Den (4 capacity, screen and whiteboard) would also suit, but the availability search only returned Hall for this slot.",
+          "The slot is at 09:00 for Priya and Tom, first thing in their day."
+        ],
+        "question": null,
+        "reason": null,
+        "hold_id": "hold-1",
+        "start_utc": "2026-10-26T13:00Z",
+        "end_utc": "2026-10-26T13:30Z",
+        "duration_minutes": 30,
+        "room": {
+          "id": "r-hall",
+          "name": "Hall"
+        },
+        "attendees": [
+          {
+            "id": "p-oliver",
+            "name": "Oliver Grant",
+            "time_zone": "Europe/London",
+            "local_start": "Mon 26 Oct 13:00",
+            "local_end": "13:30"
+          },
+          {
+            "id": "p-priya",
+            "name": "Priya Raman",
+            "time_zone": "America/New_York",
+            "local_start": "Mon 26 Oct 09:00",
+            "local_end": "09:30"
+          },
+          {
+            "id": "p-tom",
+            "name": "Tom Becker",
+            "time_zone": "America/New_York",
+            "local_start": "Mon 26 Oct 09:00",
+            "local_end": "09:30"
+          }
+        ]
+      },
+      "tool_calls": [
+        {
+          "name": "list_people",
+          "input": {}
+        },
+        {
+          "name": "list_rooms",
+          "input": {}
+        },
+        {
+          "name": "find_open_slots",
+          "input": {
+            "people": [
+              "p-oliver",
+              "p-priya",
+              "p-tom"
+            ],
+            "duration_minutes": 30,
+            "start_date": "2026-10-26",
+            "end_date": "2026-10-30",
+            "room_needs": {
+              "min_capacity": 3
+            }
+          }
+        },
+        {
+          "name": "place_hold",
+          "input": {
+            "start_utc": "2026-10-26T13:00Z",
+            "duration_minutes": 30,
+            "people": [
+              "p-oliver",
+              "p-priya",
+              "p-tom"
+            ],
+            "room_id": "r-hall"
+          }
+        },
+        {
+          "name": "submit_proposal",
+          "input": {
+            "hold_id": "hold-1",
+            "summary": "Pencilled a 30-minute meeting for Oliver Grant (London), Priya Raman and Tom Becker (New York) on Monday 26 Oct 2026 at 13:00 UTC. That is 13:00 for Oliver, 09:00 for Priya and Tom. Room: Hall (14 capacity, screen, video, whiteboard). Nothing has been sent yet.</summary>\n<parameter name=\"reasons\">[\"It is the earliest common slot next week, and it falls inside Oliver's part-time hours (09:00-14:00 London).\", \"All three attendees are free for the full 30 minutes.\", \"Hall has video, so it works if anyone needs to join remotely.\"]",
+            "tradeoffs": [
+              "Hall is larger than needed for three people. Den (4 capacity, screen and whiteboard) would also suit, but the availability search only returned Hall for this slot.",
+              "The slot is at 09:00 for Priya and Tom, first thing in their day."
+            ]
+          }
+        },
+        {
+          "name": "submit_proposal",
+          "input": {
+            "hold_id": "hold-1",
+            "summary": "Pencilled a 30-minute meeting for Oliver Grant (London), Priya Raman and Tom Becker (New York) on Monday 26 Oct 2026 at 13:00 UTC. That is 13:00 for Oliver, 09:00 for Priya and Tom. Room: Hall (14 capacity, screen, video, whiteboard). Nothing has been sent yet.",
+            "reasons": [
+              "It is the earliest common slot next week, and it falls inside Oliver's part-time hours (09:00-14:00 London).",
+              "All three attendees are free for the full 30 minutes.",
+              "Hall has video, so it works if anyone needs to join remotely."
+            ],
+            "tradeoffs": [
+              "Hall is larger than needed for three people. Den (4 capacity, screen and whiteboard) would also suit, but the availability search only returned Hall for this slot.",
+              "The slot is at 09:00 for Priya and Tom, first thing in their day."
+            ]
+          }
+        }
+      ],
+      "unknown_tools": 0,
+      "tokens": 20036,
+      "seconds": 9.18,
+      "calls": 5,
+      "retries": 1
+    },
+    {
+      "id": "time-zones-london-new-york",
+      "group": "time_zones",
+      "run": 2,
+      "expected_status": "proposed",
+      "status": "proposed",
+      "correct": true,
+      "bad_proposal": false,
+      "problems": [],
+      "result": {
+        "status": "proposed",
+        "summary": "Pencilled a 30-minute meeting for Oliver Grant (London), Priya Raman and Tom Becker (New York) on Monday 26 Oct 2026 at 13:00 UTC: 13:00 for Oliver, 09:00 for Priya and Tom. Booked in the Hall room (14 capacity, screen, video, whiteboard).",
+        "reasons": [
+          "It is the earliest common slot next week when all three are within working hours.",
+          "Oliver's 13:00 start falls inside his shortened 09:00-14:00 London day.",
+          "Hall is free and has video, so it works if anyone joins remotely."
+        ],
+        "tradeoffs": [
+          "Hall is larger than needed for three people. Den (4 capacity) was busy at that time.",
+          "The slot is at the end of Oliver's working day (13:00-13:30 of his 09:00-14:00 hours)."
+        ],
+        "question": null,
+        "reason": null,
+        "hold_id": "hold-1",
+        "start_utc": "2026-10-26T13:00Z",
+        "end_utc": "2026-10-26T13:30Z",
+        "duration_minutes": 30,
+        "room": {
+          "id": "r-hall",
+          "name": "Hall"
+        },
+        "attendees": [
+          {
+            "id": "p-oliver",
+            "name": "Oliver Grant",
+            "time_zone": "Europe/London",
+            "local_start": "Mon 26 Oct 13:00",
+            "local_end": "13:30"
+          },
+          {
+            "id": "p-priya",
+            "name": "Priya Raman",
+            "time_zone": "America/New_York",
+            "local_start": "Mon 26 Oct 09:00",
+            "local_end": "09:30"
+          },
+          {
+            "id": "p-tom",
+            "name": "Tom Becker",
+            "time_zone": "America/New_York",
+            "local_start": "Mon 26 Oct 09:00",
+            "local_end": "09:30"
+          }
+        ]
+      },
+      "tool_calls": [
+        {
+          "name": "list_people",
+          "input": {}
+        },
+        {
+          "name": "list_rooms",
+          "input": {}
+        },
+        {
+          "name": "find_open_slots",
+          "input": {
+            "people": [
+              "p-oliver",
+              "p-priya",
+              "p-tom"
+            ],
+            "duration_minutes": 30,
+            "start_date": "2026-10-26",
+            "end_date": "2026-10-30",
+            "room_needs": {
+              "min_capacity": 3
+            }
+          }
+        },
+        {
+          "name": "place_hold",
+          "input": {
+            "start_utc": "2026-10-26T13:00Z",
+            "duration_minutes": 30,
+            "people": [
+              "p-oliver",
+              "p-priya",
+              "p-tom"
+            ],
+            "room_id": "r-den"
+          }
+        },
+        {
+          "name": "place_hold",
+          "input": {
+            "start_utc": "2026-10-26T13:00Z",
+            "duration_minutes": 30,
+            "people": [
+              "p-oliver",
+              "p-priya",
+              "p-tom"
+            ],
+            "room_id": "r-hall"
+          }
+        },
+        {
+          "name": "submit_proposal",
+          "input": {
+            "hold_id": "hold-1",
+            "summary": "Pencilled a 30-minute meeting for Oliver Grant (London), Priya Raman and Tom Becker (New York) on Monday 26 Oct 2026 at 13:00 UTC: 13:00 for Oliver, 09:00 for Priya and Tom. Booked in the Hall room (14 capacity, screen, video, whiteboard).",
+            "reasons": [
+              "It is the earliest common slot next week when all three are within working hours.",
+              "Oliver's 13:00 start falls inside his shortened 09:00-14:00 London day.",
+              "Hall is free and has video, so it works if anyone joins remotely."
+            ],
+            "tradeoffs": [
+              "Hall is larger than needed for three people. Den (4 capacity) was busy at that time.",
+              "The slot is at the end of Oliver's working day (13:00-13:30 of his 09:00-14:00 hours)."
+            ]
+          }
+        }
+      ],
+      "unknown_tools": 0,
+      "tokens": 19698,
+      "seconds": 7.46,
+      "calls": 5,
+      "retries": 0
+    },
+    {
+      "id": "time-zones-london-new-york",
+      "group": "time_zones",
+      "run": 3,
+      "expected_status": "proposed",
+      "status": "proposed",
+      "correct": true,
+      "bad_proposal": false,
+      "problems": [],
+      "result": {
+        "status": "proposed",
+        "summary": "Monday 26 Oct 2026, 13:00\u201313:30 UTC: 13:00 for Oliver in London (GMT), 09:00 for Priya and Tom in New York. Room: Hall (14 capacity, screen, video, whiteboard). Hold placed, not sent.",
+        "reasons": [
+          "It is the earliest common slot next week, and all three are within working hours.",
+          "It falls inside Oliver's shortened 09:00\u201314:00 London day, ending at 13:30.",
+          "Hall has video, so it works if anyone needs to join remotely."
+        ],
+        "tradeoffs": [
+          "Hall seats 14, far more than three people. Den (4 seats, screen and whiteboard) would also have worked, but Den is not offered for Monday's slot in the search results."
+        ],
+        "question": null,
+        "reason": null,
+        "hold_id": "hold-1",
+        "start_utc": "2026-10-26T13:00Z",
+        "end_utc": "2026-10-26T13:30Z",
+        "duration_minutes": 30,
+        "room": {
+          "id": "r-hall",
+          "name": "Hall"
+        },
+        "attendees": [
+          {
+            "id": "p-oliver",
+            "name": "Oliver Grant",
+            "time_zone": "Europe/London",
+            "local_start": "Mon 26 Oct 13:00",
+            "local_end": "13:30"
+          },
+          {
+            "id": "p-priya",
+            "name": "Priya Raman",
+            "time_zone": "America/New_York",
+            "local_start": "Mon 26 Oct 09:00",
+            "local_end": "09:30"
+          },
+          {
+            "id": "p-tom",
+            "name": "Tom Becker",
+            "time_zone": "America/New_York",
+            "local_start": "Mon 26 Oct 09:00",
+            "local_end": "09:30"
+          }
+        ]
+      },
+      "tool_calls": [
+        {
+          "name": "list_people",
+          "input": {}
+        },
+        {
+          "name": "list_rooms",
+          "input": {}
+        },
+        {
+          "name": "find_open_slots",
+          "input": {
+            "people": [
+              "p-oliver",
+              "p-priya",
+              "p-tom"
+            ],
+            "duration_minutes": 30,
+            "start_date": "2026-10-26",
+            "end_date": "2026-10-30",
+            "room_needs": {
+              "min_capacity": 3
+            }
+          }
+        },
+        {
+          "name": "place_hold",
+          "input": {
+            "start_utc": "2026-10-26T13:00Z",
+            "duration_minutes": 30,
+            "people": [
+              "p-oliver",
+              "p-priya",
+              "p-tom"
+            ],
+            "room_id": "r-hall"
+          }
+        },
+        {
+          "name": "submit_proposal",
+          "input": {
+            "hold_id": "hold-1",
+            "summary": "Monday 26 Oct 2026, 13:00\u201313:30 UTC: 13:00 for Oliver in London (GMT), 09:00 for Priya and Tom in New York. Room: Hall (14 capacity, screen, video, whiteboard). Hold placed, not sent.",
+            "reasons": [
+              "It is the earliest common slot next week, and all three are within working hours.",
+              "It falls inside Oliver's shortened 09:00\u201314:00 London day, ending at 13:30.",
+              "Hall has video, so it works if anyone needs to join remotely."
+            ],
+            "tradeoffs": [
+              "Hall seats 14, far more than three people. Den (4 seats, screen and whiteboard) would also have worked, but Den is not offered for Monday's slot in the search results."
+            ]
+          }
+        }
+      ],
+      "unknown_tools": 0,
+      "tokens": 14844,
+      "seconds": 6.53,
+      "calls": 4,
+      "retries": 0
+    },
+    {
+      "id": "time-zones-singapore-london",
+      "group": "time_zones",
+      "run": 1,
+      "expected_status": "proposed",
+      "status": "proposed",
+      "correct": true,
+      "bad_proposal": false,
+      "problems": [],
+      "result": {
+        "status": "proposed",
+        "summary": "Pencilled a 30-minute meeting for Hana Sato (Singapore) and Fiona Clarke (London) on Monday 26 Oct 2026 at 09:00 UTC, in the Nook room (2-person capacity, screen). Local times: Hana 17:00 (Mon), Fiona 09:00 (Mon).",
+        "reasons": [
+          "It is the earliest common slot next week when both are within working hours.",
+          "The Nook room fits two people and has a screen; both attendees are free for the full 30 minutes.",
+          "Fiona gets it at the start of her day and Hana at the end of hers."
+        ],
+        "tradeoffs": [
+          "Hana's slot is at the end of her working day (17:00 local) and Fiona's is at 09:00, so the timing is not comfortable for either. Other offered slots (Wed 28 Oct and Thu 29 Oct at the same UTC time, or Mon 26 Oct at 09:15 or 09:30 UTC) have the same constraint."
+        ],
+        "question": null,
+        "reason": null,
+        "hold_id": "hold-1",
+        "start_utc": "2026-10-26T09:00Z",
+        "end_utc": "2026-10-26T09:30Z",
+        "duration_minutes": 30,
+        "room": {
+          "id": "r-nook",
+          "name": "Nook"
+        },
+        "attendees": [
+          {
+            "id": "p-hana",
+            "name": "Hana Sato",
+            "time_zone": "Asia/Singapore",
+            "local_start": "Mon 26 Oct 17:00",
+            "local_end": "17:30"
+          },
+          {
+            "id": "p-fiona",
+            "name": "Fiona Clarke",
+            "time_zone": "Europe/London",
+            "local_start": "Mon 26 Oct 09:00",
+            "local_end": "09:30"
+          }
+        ]
+      },
+      "tool_calls": [
+        {
+          "name": "list_people",
+          "input": {}
+        },
+        {
+          "name": "list_rooms",
+          "input": {}
+        },
+        {
+          "name": "find_open_slots",
+          "input": {
+            "people": [
+              "p-hana",
+              "p-fiona"
+            ],
+            "duration_minutes": 30,
+            "start_date": "2026-10-26",
+            "end_date": "2026-10-30",
+            "room_needs": {
+              "min_capacity": 2
+            }
+          }
+        },
+        {
+          "name": "place_hold",
+          "input": {
+            "start_utc": "2026-10-26T09:00Z",
+            "duration_minutes": 30,
+            "people": [
+              "p-hana",
+              "p-fiona"
+            ],
+            "room_id": "r-nook"
+          }
+        },
+        {
+          "name": "submit_proposal",
+          "input": {
+            "hold_id": "hold-1",
+            "summary": "Pencilled a 30-minute meeting for Hana Sato (Singapore) and Fiona Clarke (London) on Monday 26 Oct 2026 at 09:00 UTC, in the Nook room (2-person capacity, screen). Local times: Hana 17:00 (Mon), Fiona 09:00 (Mon).",
+            "reasons": [
+              "It is the earliest common slot next week when both are within working hours.",
+              "The Nook room fits two people and has a screen; both attendees are free for the full 30 minutes.",
+              "Fiona gets it at the start of her day and Hana at the end of hers."
+            ],
+            "tradeoffs": [
+              "Hana's slot is at the end of her working day (17:00 local) and Fiona's is at 09:00, so the timing is not comfortable for either. Other offered slots (Wed 28 Oct and Thu 29 Oct at the same UTC time, or Mon 26 Oct at 09:15 or 09:30 UTC) have the same constraint."
+            ]
+          }
+        }
+      ],
+      "unknown_tools": 0,
+      "tokens": 15044,
+      "seconds": 6.92,
+      "calls": 4,
+      "retries": 0
+    },
+    {
+      "id": "time-zones-singapore-london",
+      "group": "time_zones",
+      "run": 2,
+      "expected_status": "proposed",
+      "status": "proposed",
+      "correct": true,
+      "bad_proposal": false,
+      "problems": [],
+      "result": {
+        "status": "proposed",
+        "summary": "30-minute meeting between Hana Sato (Singapore) and Fiona Clarke (London) on Monday 26 Oct 2026 at 09:00 UTC, which is 17:00 in Singapore and 09:00 in London. Pencilled in the Nook room (capacity 2, screen).",
+        "reasons": [
+          "First available slot next week: the earliest time both are within working hours and free.",
+          "Nook fits two people and has a screen.",
+          "Fiona's 09:00 start is the beginning of her working day."
+        ],
+        "tradeoffs": [
+          "The slot is at the end of Hana's working day (17:00 Singapore time), which is the only time the two of them overlap during working hours.",
+          "The room is in the New York office, so Hana and Fiona would need to join by video."
+        ],
+        "question": null,
+        "reason": null,
+        "hold_id": "hold-1",
+        "start_utc": "2026-10-26T09:00Z",
+        "end_utc": "2026-10-26T09:30Z",
+        "duration_minutes": 30,
+        "room": {
+          "id": "r-nook",
+          "name": "Nook"
+        },
+        "attendees": [
+          {
+            "id": "p-hana",
+            "name": "Hana Sato",
+            "time_zone": "Asia/Singapore",
+            "local_start": "Mon 26 Oct 17:00",
+            "local_end": "17:30"
+          },
+          {
+            "id": "p-fiona",
+            "name": "Fiona Clarke",
+            "time_zone": "Europe/London",
+            "local_start": "Mon 26 Oct 09:00",
+            "local_end": "09:30"
+          }
+        ]
+      },
+      "tool_calls": [
+        {
+          "name": "list_people",
+          "input": {}
+        },
+        {
+          "name": "list_rooms",
+          "input": {}
+        },
+        {
+          "name": "find_open_slots",
+          "input": {
+            "people": [
+              "p-hana",
+              "p-fiona"
+            ],
+            "duration_minutes": 30,
+            "start_date": "2026-10-26",
+            "end_date": "2026-10-30",
+            "room_needs": {
+              "min_capacity": 2
+            }
+          }
+        },
+        {
+          "name": "place_hold",
+          "input": {
+            "start_utc": "2026-10-26T09:00Z",
+            "duration_minutes": 30,
+            "people": [
+              "p-hana",
+              "p-fiona"
+            ],
+            "room_id": "r-nook"
+          }
+        },
+        {
+          "name": "submit_proposal",
+          "input": {
+            "hold_id": "hold-1",
+            "summary": "30-minute meeting between Hana Sato (Singapore) and Fiona Clarke (London) on Monday 26 Oct 2026 at 09:00 UTC, which is 17:00 in Singapore and 09:00 in London. Pencilled in the Nook room (capacity 2, screen).",
+            "reasons": [
+              "First available slot next week: the earliest time both are within working hours and free.",
+              "Nook fits two people and has a screen.",
+              "Fiona's 09:00 start is the beginning of her working day."
+            ],
+            "tradeoffs": [
+              "The slot is at the end of Hana's working day (17:00 Singapore time), which is the only time the two of them overlap during working hours.",
+              "The room is in the New York office, so Hana and Fiona would need to join by video."
+            ]
+          }
+        }
+      ],
+      "unknown_tools": 0,
+      "tokens": 15757,
+      "seconds": 7.83,
+      "calls": 4,
+      "retries": 0
+    },
+    {
+      "id": "time-zones-singapore-london",
+      "group": "time_zones",
+      "run": 3,
+      "expected_status": "proposed",
+      "status": "proposed",
+      "correct": true,
+      "bad_proposal": false,
+      "problems": [],
+      "result": {
+        "status": "proposed",
+        "summary": "30-minute meeting between Hana Sato (Singapore) and Fiona Clarke (London) on Monday 26 October 2026 at 09:00 UTC, in the Nook room (New York office). Hana's local time is 17:00 and Fiona's is 09:00. The hold is pencilled in and has not been sent.",
+        "reasons": [
+          "It is the earliest available slot next week when both are within working hours.",
+          "Fiona starts her day at 09:00 and Hana is still at work at 17:00, both within their hours.",
+          "The Nook room (capacity 2, screen) fits a two-person meeting."
+        ],
+        "tradeoffs": [
+          "Hana's slot is at the end of her working day (17:00 Singapore time).",
+          "Both attendees are remote, so the Nook room in New York is only a formal booking; they will need to join by video."
+        ],
+        "question": null,
+        "reason": null,
+        "hold_id": "hold-1",
+        "start_utc": "2026-10-26T09:00Z",
+        "end_utc": "2026-10-26T09:30Z",
+        "duration_minutes": 30,
+        "room": {
+          "id": "r-nook",
+          "name": "Nook"
+        },
+        "attendees": [
+          {
+            "id": "p-hana",
+            "name": "Hana Sato",
+            "time_zone": "Asia/Singapore",
+            "local_start": "Mon 26 Oct 17:00",
+            "local_end": "17:30"
+          },
+          {
+            "id": "p-fiona",
+            "name": "Fiona Clarke",
+            "time_zone": "Europe/London",
+            "local_start": "Mon 26 Oct 09:00",
+            "local_end": "09:30"
+          }
+        ]
+      },
+      "tool_calls": [
+        {
+          "name": "list_people",
+          "input": {}
+        },
+        {
+          "name": "list_rooms",
+          "input": {}
+        },
+        {
+          "name": "find_open_slots",
+          "input": {
+            "people": [
+              "p-hana",
+              "p-fiona"
+            ],
+            "duration_minutes": 30,
+            "start_date": "2026-10-26",
+            "end_date": "2026-10-30",
+            "room_needs": {
+              "min_capacity": 2
+            }
+          }
+        },
+        {
+          "name": "place_hold",
+          "input": {
+            "start_utc": "2026-10-26T09:00Z",
+            "duration_minutes": 30,
+            "people": [
+              "p-hana",
+              "p-fiona"
+            ],
+            "room_id": "r-nook"
+          }
+        },
+        {
+          "name": "submit_proposal",
+          "input": {
+            "hold_id": "hold-1",
+            "summary": "30-minute meeting between Hana Sato (Singapore) and Fiona Clarke (London) on Monday 26 October 2026 at 09:00 UTC, in the Nook room (New York office). Hana's local time is 17:00 and Fiona's is 09:00. The hold is pencilled in and has not been sent.",
+            "reasons": [
+              "It is the earliest available slot next week when both are within working hours.",
+              "Fiona starts her day at 09:00 and Hana is still at work at 17:00, both within their hours.",
+              "The Nook room (capacity 2, screen) fits a two-person meeting."
+            ],
+            "tradeoffs": [
+              "Hana's slot is at the end of her working day (17:00 Singapore time).",
+              "Both attendees are remote, so the Nook room in New York is only a formal booking; they will need to join by video."
+            ]
+          }
+        }
+      ],
+      "unknown_tools": 0,
+      "tokens": 15392,
+      "seconds": 6.95,
+      "calls": 4,
+      "retries": 0
+    },
+    {
+      "id": "time-zones-three-regions",
+      "group": "time_zones",
+      "run": 1,
+      "expected_status": "proposed",
+      "status": "unable",
+      "correct": false,
+      "bad_proposal": false,
+      "problems": [],
+      "result": {
+        "status": "unable",
+        "summary": null,
+        "reasons": [],
+        "tradeoffs": [],
+        "question": null,
+        "reason": "Could not produce a valid proposal: reasons must be a non-empty list of text",
+        "hold_id": null,
+        "start_utc": null,
+        "end_utc": null,
+        "duration_minutes": null,
+        "room": null,
+        "attendees": []
+      },
+      "tool_calls": [
+        {
+          "name": "list_people",
+          "input": {}
+        },
+        {
+          "name": "list_rooms",
+          "input": {}
+        },
+        {
+          "name": "find_open_slots",
+          "input": {
+            "people": [
+              "p-dana",
+              "p-tom",
+              "p-fiona"
+            ],
+            "duration_minutes": 45,
+            "start_date": "2026-10-26",
+            "end_date": "2026-10-30",
+            "room_needs": {
+              "min_capacity": 3
+            }
+          }
+        },
+        {
+          "name": "place_hold",
+          "input": {
+            "start_utc": "2026-10-26T15:00Z",
+            "duration_minutes": 45,
+            "people": [
+              "p-dana",
+              "p-tom",
+              "p-fiona"
+            ],
+            "room_id": "r-den"
+          }
+        },
+        {
+          "name": "submit_proposal",
+          "input": {
+            "hold_id": "hold-1",
+            "summary": "Pencilled in a 45-minute meeting for Dana, Tom and Fiona on Monday 26 Oct 2026 at 15:00 UTC, in the Den room (New York office, seats 4, has screen and whiteboard). Local times: Dana 09:00 (Denver), Tom 11:00 (New York), Fiona 15:00 (London). Not sent; awaiting your approval.</summary>\n<parameter name=\"reasons\">[\"First available common slot next week for all three people\", \"Falls inside all three people's working hours\", \"Den room fits three people and has a screen and whiteboard\", \"Monday is early in the week\"]",
+            "tradeoffs": [
+              "Dana starts at 09:00 local time, the start of her day. Dana does not work Fridays, so Monday was the earliest option anyway."
+            ]
+          }
+        },
+        {
+          "name": "submit_proposal",
+          "input": {
+            "hold_id": "hold-1",
+            "summary": "Pencilled in a 45-minute meeting for Dana, Tom and Fiona on Monday 26 Oct 2026 at 15:00 UTC, in the Den room (New York office, seats 4, has screen and whiteboard). Local times: Dana 09:00 (Denver), Tom 11:00 (New York), Fiona 15:00 (London). Not sent; awaiting your approval.</summary>\n<parameter name=\"reasons\">[\"First available common slot next week for all three people\", \"Falls inside all three people's working hours\", \"Den room fits three people and has a screen and whiteboard\", \"Monday is early in the week\"]",
+            "tradeoffs": [
+              "Dana's slot is at 09:00 local time, the start of her day."
+            ]
+          }
+        }
+      ],
+      "unknown_tools": 0,
+      "tokens": 20114,
+      "seconds": 13.58,
+      "calls": 5,
+      "retries": 1
+    },
+    {
+      "id": "time-zones-three-regions",
+      "group": "time_zones",
+      "run": 2,
+      "expected_status": "proposed",
+      "status": "proposed",
+      "correct": true,
+      "bad_proposal": false,
+      "problems": [],
+      "result": {
+        "status": "proposed",
+        "summary": "Monday 26 Oct 2026, 45 minutes, 15:00\u201315:45 UTC, in the Den room (New York). Local times: Dana 09:00 (Denver), Tom 11:00 (New York), Fiona 15:00 (London).",
+        "reasons": [
+          "First available slot in next week for all three, with no conflicts.",
+          "Den room has a screen and whiteboard and fits 4 people.",
+          "Within working hours for Dana, Tom and Fiona."
+        ],
+        "tradeoffs": [
+          "Dana's slot is at the very start of her working day (09:00 Denver time)."
+        ],
+        "question": null,
+        "reason": null,
+        "hold_id": "hold-1",
+        "start_utc": "2026-10-26T15:00Z",
+        "end_utc": "2026-10-26T15:45Z",
+        "duration_minutes": 45,
+        "room": {
+          "id": "r-den",
+          "name": "Den"
+        },
+        "attendees": [
+          {
+            "id": "p-dana",
+            "name": "Dana Whitfield",
+            "time_zone": "America/Denver",
+            "local_start": "Mon 26 Oct 09:00",
+            "local_end": "09:45"
+          },
+          {
+            "id": "p-tom",
+            "name": "Tom Becker",
+            "time_zone": "America/New_York",
+            "local_start": "Mon 26 Oct 11:00",
+            "local_end": "11:45"
+          },
+          {
+            "id": "p-fiona",
+            "name": "Fiona Clarke",
+            "time_zone": "Europe/London",
+            "local_start": "Mon 26 Oct 15:00",
+            "local_end": "15:45"
+          }
+        ]
+      },
+      "tool_calls": [
+        {
+          "name": "list_people",
+          "input": {}
+        },
+        {
+          "name": "list_rooms",
+          "input": {}
+        },
+        {
+          "name": "find_open_slots",
+          "input": {
+            "people": [
+              "p-dana",
+              "p-tom",
+              "p-fiona"
+            ],
+            "duration_minutes": 45,
+            "start_date": "2026-10-26",
+            "end_date": "2026-10-30",
+            "room_needs": {
+              "min_capacity": 3
+            }
+          }
+        },
+        {
+          "name": "place_hold",
+          "input": {
+            "start_utc": "2026-10-26T15:00Z",
+            "duration_minutes": 45,
+            "people": [
+              "p-dana",
+              "p-tom",
+              "p-fiona"
+            ],
+            "room_id": "r-den"
+          }
+        },
+        {
+          "name": "submit_proposal",
+          "input": {
+            "hold_id": "hold-1",
+            "summary": "Monday 26 Oct 2026, 45 minutes, 15:00\u201315:45 UTC, in the Den room (New York). Local times: Dana 09:00 (Denver), Tom 11:00 (New York), Fiona 15:00 (London).",
+            "reasons": [
+              "First available slot in next week for all three, with no conflicts.",
+              "Den room has a screen and whiteboard and fits 4 people.",
+              "Within working hours for Dana, Tom and Fiona."
+            ],
+            "tradeoffs": [
+              "Dana's slot is at the very start of her working day (09:00 Denver time)."
+            ]
+          }
+        }
+      ],
+      "unknown_tools": 0,
+      "tokens": 14745,
+      "seconds": 6.14,
+      "calls": 4,
+      "retries": 0
+    },
+    {
+      "id": "time-zones-three-regions",
+      "group": "time_zones",
+      "run": 3,
+      "expected_status": "proposed",
+      "status": "proposed",
+      "correct": true,
+      "bad_proposal": false,
+      "problems": [],
+      "result": {
+        "status": "proposed",
+        "summary": "Monday 26 Oct 2026, 15:00\u201315:45 UTC, in the Den room (New York). Local times: Dana 09:00 (Denver), Tom 11:00 (New York), Fiona 15:00 (London). The hold is placed but not sent to anyone.",
+        "reasons": [
+          "All three are free for the full 45 minutes at this time.",
+          "Falls within every attendee's working hours.",
+          "Den room has a screen and whiteboard and fits 4 people, so it covers the group."
+        ],
+        "tradeoffs": [
+          "Dana's start is 09:00 local time, the first hour of her day. Tuesday 27 Oct at the same UTC time is also open if Monday does not suit."
+        ],
+        "question": null,
+        "reason": null,
+        "hold_id": "hold-1",
+        "start_utc": "2026-10-26T15:00Z",
+        "end_utc": "2026-10-26T15:45Z",
+        "duration_minutes": 45,
+        "room": {
+          "id": "r-den",
+          "name": "Den"
+        },
+        "attendees": [
+          {
+            "id": "p-dana",
+            "name": "Dana Whitfield",
+            "time_zone": "America/Denver",
+            "local_start": "Mon 26 Oct 09:00",
+            "local_end": "09:45"
+          },
+          {
+            "id": "p-tom",
+            "name": "Tom Becker",
+            "time_zone": "America/New_York",
+            "local_start": "Mon 26 Oct 11:00",
+            "local_end": "11:45"
+          },
+          {
+            "id": "p-fiona",
+            "name": "Fiona Clarke",
+            "time_zone": "Europe/London",
+            "local_start": "Mon 26 Oct 15:00",
+            "local_end": "15:45"
+          }
+        ]
+      },
+      "tool_calls": [
+        {
+          "name": "list_people",
+          "input": {}
+        },
+        {
+          "name": "list_rooms",
+          "input": {}
+        },
+        {
+          "name": "find_open_slots",
+          "input": {
+            "people": [
+              "p-dana",
+              "p-tom",
+              "p-fiona"
+            ],
+            "duration_minutes": 45,
+            "start_date": "2026-10-26",
+            "end_date": "2026-10-30",
+            "room_needs": {
+              "min_capacity": 3
+            }
+          }
+        },
+        {
+          "name": "place_hold",
+          "input": {
+            "start_utc": "2026-10-26T15:00Z",
+            "duration_minutes": 45,
+            "people": [
+              "p-dana",
+              "p-tom",
+              "p-fiona"
+            ],
+            "room_id": "r-den"
+          }
+        },
+        {
+          "name": "submit_proposal",
+          "input": {
+            "hold_id": "hold-1",
+            "summary": "Monday 26 Oct 2026, 15:00\u201315:45 UTC, in the Den room (New York). Local times: Dana 09:00 (Denver), Tom 11:00 (New York), Fiona 15:00 (London). The hold is placed but not sent to anyone.",
+            "reasons": [
+              "All three are free for the full 45 minutes at this time.",
+              "Falls within every attendee's working hours.",
+              "Den room has a screen and whiteboard and fits 4 people, so it covers the group."
+            ],
+            "tradeoffs": [
+              "Dana's start is 09:00 local time, the first hour of her day. Tuesday 27 Oct at the same UTC time is also open if Monday does not suit."
+            ]
+          }
+        }
+      ],
+      "unknown_tools": 0,
+      "tokens": 14623,
+      "seconds": 5.92,
+      "calls": 4,
+      "retries": 0
+    },
+    {
+      "id": "time-zones-local-limits",
+      "group": "time_zones",
+      "run": 1,
+      "expected_status": "proposed",
+      "status": "proposed",
+      "correct": true,
+      "bad_proposal": false,
+      "problems": [],
+      "result": {
+        "status": "proposed",
+        "summary": "Monday 26 Oct 2026, 1 hour, 18:00\u201319:00 UTC: Carlos 12:00\u201313:00 (Denver), Mei and Tom 14:00\u201315:00 (New York). Room: Forum (video, screen, capacity 8). Hold placed, not sent.",
+        "reasons": [
+          "All three are free at this time, and it is inside everyone's 10:00\u201315:00 local window.",
+          "Forum has video, a screen and capacity for 8, which suits Carlos joining remotely.",
+          "Monday is the earliest day next week, so the slot is early in the week."
+        ],
+        "tradeoffs": [
+          "Carlos's slot starts at noon Denver time, and the meeting ends at 3pm New York time, which is the latest allowed end for everyone."
+        ],
+        "question": null,
+        "reason": null,
+        "hold_id": "hold-1",
+        "start_utc": "2026-10-26T18:00Z",
+        "end_utc": "2026-10-26T19:00Z",
+        "duration_minutes": 60,
+        "room": {
+          "id": "r-forum",
+          "name": "Forum"
+        },
+        "attendees": [
+          {
+            "id": "p-carlos",
+            "name": "Carlos Mendez",
+            "time_zone": "America/Denver",
+            "local_start": "Mon 26 Oct 12:00",
+            "local_end": "13:00"
+          },
+          {
+            "id": "p-mei",
+            "name": "Mei Lin",
+            "time_zone": "America/New_York",
+            "local_start": "Mon 26 Oct 14:00",
+            "local_end": "15:00"
+          },
+          {
+            "id": "p-tom",
+            "name": "Tom Becker",
+            "time_zone": "America/New_York",
+            "local_start": "Mon 26 Oct 14:00",
+            "local_end": "15:00"
+          }
+        ]
+      },
+      "tool_calls": [
+        {
+          "name": "list_people",
+          "input": {}
+        },
+        {
+          "name": "list_rooms",
+          "input": {}
+        },
+        {
+          "name": "find_open_slots",
+          "input": {
+            "people": [
+              "p-carlos",
+              "p-mei",
+              "p-tom"
+            ],
+            "duration_minutes": 60,
+            "start_date": "2026-10-26",
+            "end_date": "2026-10-30",
+            "earliest_local": "10:00",
+            "latest_local": "15:00",
+            "room_needs": {
+              "min_capacity": 3,
+              "equipment": [
+                "video"
+              ]
+            }
+          }
+        },
+        {
+          "name": "place_hold",
+          "input": {
+            "start_utc": "2026-10-26T18:00Z",
+            "duration_minutes": 60,
+            "people": [
+              "p-carlos",
+              "p-mei",
+              "p-tom"
+            ],
+            "room_id": "r-forum"
+          }
+        },
+        {
+          "name": "submit_proposal",
+          "input": {
+            "hold_id": "hold-1",
+            "summary": "Monday 26 Oct 2026, 1 hour, 18:00\u201319:00 UTC: Carlos 12:00\u201313:00 (Denver), Mei and Tom 14:00\u201315:00 (New York). Room: Forum (video, screen, capacity 8). Hold placed, not sent.",
+            "reasons": [
+              "All three are free at this time, and it is inside everyone's 10:00\u201315:00 local window.",
+              "Forum has video, a screen and capacity for 8, which suits Carlos joining remotely.",
+              "Monday is the earliest day next week, so the slot is early in the week."
+            ],
+            "tradeoffs": [
+              "Carlos's slot starts at noon Denver time, and the meeting ends at 3pm New York time, which is the latest allowed end for everyone."
+            ]
+          }
+        }
+      ],
+      "unknown_tools": 0,
+      "tokens": 14689,
+      "seconds": 7.47,
+      "calls": 4,
+      "retries": 0
+    },
+    {
+      "id": "time-zones-local-limits",
+      "group": "time_zones",
+      "run": 2,
+      "expected_status": "proposed",
+      "status": "proposed",
+      "correct": true,
+      "bad_proposal": false,
+      "problems": [],
+      "result": {
+        "status": "proposed",
+        "summary": "Tuesday 27 October, 1 hour, in the Den room (New York office). Carlos (Denver) 11:00-12:00 local; Mei and Tom (New York) 13:00-14:00 local. Pencilled in, not sent.",
+        "reasons": [
+          "It is the only slot next week where all three are free within 10:00-15:00 in their own time zones.",
+          "Den has a screen and whiteboard and seats 4, enough for three people.",
+          "Everyone is within their working hours."
+        ],
+        "tradeoffs": [
+          "Only one option was available, so there was no choice of time. Carlos's slot is at 11:00 in Denver, which is fine, but it is the only option."
+        ],
+        "question": null,
+        "reason": null,
+        "hold_id": "hold-1",
+        "start_utc": "2026-10-27T17:00Z",
+        "end_utc": "2026-10-27T18:00Z",
+        "duration_minutes": 60,
+        "room": {
+          "id": "r-den",
+          "name": "Den"
+        },
+        "attendees": [
+          {
+            "id": "p-carlos",
+            "name": "Carlos Mendez",
+            "time_zone": "America/Denver",
+            "local_start": "Tue 27 Oct 11:00",
+            "local_end": "12:00"
+          },
+          {
+            "id": "p-mei",
+            "name": "Mei Lin",
+            "time_zone": "America/New_York",
+            "local_start": "Tue 27 Oct 13:00",
+            "local_end": "14:00"
+          },
+          {
+            "id": "p-tom",
+            "name": "Tom Becker",
+            "time_zone": "America/New_York",
+            "local_start": "Tue 27 Oct 13:00",
+            "local_end": "14:00"
+          }
+        ]
+      },
+      "tool_calls": [
+        {
+          "name": "list_people",
+          "input": {}
+        },
+        {
+          "name": "list_rooms",
+          "input": {}
+        },
+        {
+          "name": "find_open_slots",
+          "input": {
+            "people": [
+              "p-carlos",
+              "p-mei",
+              "p-tom"
+            ],
+            "duration_minutes": 60,
+            "start_date": "2026-10-26",
+            "end_date": "2026-10-30",
+            "earliest_local": "10:00",
+            "latest_local": "14:00",
+            "room_needs": {
+              "min_capacity": 3
+            }
+          }
+        },
+        {
+          "name": "place_hold",
+          "input": {
+            "start_utc": "2026-10-27T17:00Z",
+            "duration_minutes": 60,
+            "people": [
+              "p-carlos",
+              "p-mei",
+              "p-tom"
+            ],
+            "room_id": "r-den"
+          }
+        },
+        {
+          "name": "submit_proposal",
+          "input": {
+            "hold_id": "hold-1",
+            "summary": "Tuesday 27 October, 1 hour, in the Den room (New York office). Carlos (Denver) 11:00-12:00 local; Mei and Tom (New York) 13:00-14:00 local. Pencilled in, not sent.",
+            "reasons": [
+              "It is the only slot next week where all three are free within 10:00-15:00 in their own time zones.",
+              "Den has a screen and whiteboard and seats 4, enough for three people.",
+              "Everyone is within their working hours."
+            ],
+            "tradeoffs": [
+              "Only one option was available, so there was no choice of time. Carlos's slot is at 11:00 in Denver, which is fine, but it is the only option."
+            ]
+          }
+        }
+      ],
+      "unknown_tools": 0,
+      "tokens": 14587,
+      "seconds": 7.16,
+      "calls": 4,
+      "retries": 0
+    },
+    {
+      "id": "time-zones-local-limits",
+      "group": "time_zones",
+      "run": 3,
+      "expected_status": "proposed",
+      "status": "proposed",
+      "correct": true,
+      "bad_proposal": false,
+      "problems": [],
+      "result": {
+        "status": "proposed",
+        "summary": "Pencilled a one-hour meeting in the Den room (New York) on Monday 26 Oct 2026 at 11:30 for Carlos (Denver) and 13:30 for Mei and Tom (New York), i.e. 17:30\u201318:30 UTC. Nothing has been sent; the hold is for your approval.",
+        "reasons": [
+          "It is the earliest available slot next week that works for all three people.",
+          "Every attendee is within their 10:00\u201315:00 local window: Carlos 11:30\u201312:30 Denver, Mei and Tom 13:30\u201314:30 New York.",
+          "Den has 4 seats, a screen and a whiteboard, which fits three people."
+        ],
+        "tradeoffs": [
+          "Carlos's meeting is in the middle of the day for him. Tuesday 27 Oct at 11:00 Denver / 13:00 New York (17:00 UTC) is an alternative if Monday doesn't work."
+        ],
+        "question": null,
+        "reason": null,
+        "hold_id": "hold-1",
+        "start_utc": "2026-10-26T17:30Z",
+        "end_utc": "2026-10-26T18:30Z",
+        "duration_minutes": 60,
+        "room": {
+          "id": "r-den",
+          "name": "Den"
+        },
+        "attendees": [
+          {
+            "id": "p-carlos",
+            "name": "Carlos Mendez",
+            "time_zone": "America/Denver",
+            "local_start": "Mon 26 Oct 11:30",
+            "local_end": "12:30"
+          },
+          {
+            "id": "p-mei",
+            "name": "Mei Lin",
+            "time_zone": "America/New_York",
+            "local_start": "Mon 26 Oct 13:30",
+            "local_end": "14:30"
+          },
+          {
+            "id": "p-tom",
+            "name": "Tom Becker",
+            "time_zone": "America/New_York",
+            "local_start": "Mon 26 Oct 13:30",
+            "local_end": "14:30"
+          }
+        ]
+      },
+      "tool_calls": [
+        {
+          "name": "list_people",
+          "input": {}
+        },
+        {
+          "name": "list_rooms",
+          "input": {}
+        },
+        {
+          "name": "find_open_slots",
+          "input": {
+            "people": [
+              "p-carlos",
+              "p-mei",
+              "p-tom"
+            ],
+            "duration_minutes": 60,
+            "start_date": "2026-10-26",
+            "end_date": "2026-10-30",
+            "earliest_local": "10:00",
+            "latest_local": "15:00",
+            "room_needs": {
+              "min_capacity": 3
+            }
+          }
+        },
+        {
+          "name": "place_hold",
+          "input": {
+            "start_utc": "2026-10-26T17:30Z",
+            "duration_minutes": 60,
+            "people": [
+              "p-carlos",
+              "p-mei",
+              "p-tom"
+            ],
+            "room_id": "r-den"
+          }
+        },
+        {
+          "name": "submit_proposal",
+          "input": {
+            "hold_id": "hold-1",
+            "summary": "Pencilled a one-hour meeting in the Den room (New York) on Monday 26 Oct 2026 at 11:30 for Carlos (Denver) and 13:30 for Mei and Tom (New York), i.e. 17:30\u201318:30 UTC. Nothing has been sent; the hold is for your approval.",
+            "reasons": [
+              "It is the earliest available slot next week that works for all three people.",
+              "Every attendee is within their 10:00\u201315:00 local window: Carlos 11:30\u201312:30 Denver, Mei and Tom 13:30\u201314:30 New York.",
+              "Den has 4 seats, a screen and a whiteboard, which fits three people."
+            ],
+            "tradeoffs": [
+              "Carlos's meeting is in the middle of the day for him. Tuesday 27 Oct at 11:00 Denver / 13:00 New York (17:00 UTC) is an alternative if Monday doesn't work."
+            ]
+          }
+        }
+      ],
+      "unknown_tools": 0,
+      "tokens": 15996,
+      "seconds": 8.3,
+      "calls": 4,
+      "retries": 0
+    },
+    {
+      "id": "tight-whiteboard-room",
+      "group": "tight",
+      "run": 1,
+      "expected_status": "proposed",
+      "status": "proposed",
+      "correct": true,
+      "bad_proposal": false,
+      "problems": [],
+      "result": {
+        "status": "proposed",
+        "summary": "Wednesday 28 October, 10:45\u201311:45 New York time (14:45\u201315:45 UTC), in the Hall room (screen, video, whiteboard). Priya, Tom and Mei are all free at this time and it is pencilled in for approval.",
+        "reasons": [
+          "All three attendees are free for the full hour on Wednesday 28 October.",
+          "Hall has a whiteboard, as required, and seats 14, so it fits a group of three.",
+          "10:45 is the earliest common slot that day; an 11:00 start (Hall, 15:00 UTC) is also open if 10:45 is not suitable."
+        ],
+        "tradeoffs": [
+          "Hall is much larger than needed for three people; Den (4 seats, screen and whiteboard) would also work but was not offered as an open slot."
+        ],
+        "question": null,
+        "reason": null,
+        "hold_id": "hold-1",
+        "start_utc": "2026-10-28T14:45Z",
+        "end_utc": "2026-10-28T15:45Z",
+        "duration_minutes": 60,
+        "room": {
+          "id": "r-hall",
+          "name": "Hall"
+        },
+        "attendees": [
+          {
+            "id": "p-priya",
+            "name": "Priya Raman",
+            "time_zone": "America/New_York",
+            "local_start": "Wed 28 Oct 10:45",
+            "local_end": "11:45"
+          },
+          {
+            "id": "p-tom",
+            "name": "Tom Becker",
+            "time_zone": "America/New_York",
+            "local_start": "Wed 28 Oct 10:45",
+            "local_end": "11:45"
+          },
+          {
+            "id": "p-mei",
+            "name": "Mei Lin",
+            "time_zone": "America/New_York",
+            "local_start": "Wed 28 Oct 10:45",
+            "local_end": "11:45"
+          }
+        ]
+      },
+      "tool_calls": [
+        {
+          "name": "list_people",
+          "input": {}
+        },
+        {
+          "name": "list_rooms",
+          "input": {}
+        },
+        {
+          "name": "find_open_slots",
+          "input": {
+            "people": [
+              "p-priya",
+              "p-tom",
+              "p-mei"
+            ],
+            "duration_minutes": 60,
+            "start_date": "2026-10-28",
+            "end_date": "2026-10-28",
+            "room_needs": {
+              "equipment": [
+                "whiteboard"
+              ]
+            }
+          }
+        },
+        {
+          "name": "place_hold",
+          "input": {
+            "start_utc": "2026-10-28T14:45Z",
+            "duration_minutes": 60,
+            "people": [
+              "p-priya",
+              "p-tom",
+              "p-mei"
+            ],
+            "room_id": "r-hall"
+          }
+        },
+        {
+          "name": "submit_proposal",
+          "input": {
+            "hold_id": "hold-1",
+            "summary": "Wednesday 28 October, 10:45\u201311:45 New York time (14:45\u201315:45 UTC), in the Hall room (screen, video, whiteboard). Priya, Tom and Mei are all free at this time and it is pencilled in for approval.",
+            "reasons": [
+              "All three attendees are free for the full hour on Wednesday 28 October.",
+              "Hall has a whiteboard, as required, and seats 14, so it fits a group of three.",
+              "10:45 is the earliest common slot that day; an 11:00 start (Hall, 15:00 UTC) is also open if 10:45 is not suitable."
+            ],
+            "tradeoffs": [
+              "Hall is much larger than needed for three people; Den (4 seats, screen and whiteboard) would also work but was not offered as an open slot."
+            ]
+          }
+        }
+      ],
+      "unknown_tools": 0,
+      "tokens": 13956,
+      "seconds": 7.77,
+      "calls": 4,
+      "retries": 0
+    },
+    {
+      "id": "tight-whiteboard-room",
+      "group": "tight",
+      "run": 2,
+      "expected_status": "proposed",
+      "status": "proposed",
+      "correct": true,
+      "bad_proposal": false,
+      "problems": [],
+      "result": {
+        "status": "proposed",
+        "summary": "Wednesday 28 October, 10:45\u201311:45 New York time (14:45\u201315:45 UTC), in the Hall room (screen, video, whiteboard). Priya, Tom and Mei are all free then. The hold is placed but no invite has been sent.",
+        "reasons": [
+          "All three attendees are free for the full hour on Wednesday 28 October.",
+          "Hall has a whiteboard, as required, and is in the New York office where Priya, Tom and Mei are based.",
+          "The slot is on the requested day."
+        ],
+        "tradeoffs": [
+          "Hall seats 14, far more than three people needs. The alternative 11:00 start (15:00 UTC) is also open if 10:45 does not suit."
+        ],
+        "question": null,
+        "reason": null,
+        "hold_id": "hold-1",
+        "start_utc": "2026-10-28T14:45Z",
+        "end_utc": "2026-10-28T15:45Z",
+        "duration_minutes": 60,
+        "room": {
+          "id": "r-hall",
+          "name": "Hall"
+        },
+        "attendees": [
+          {
+            "id": "p-priya",
+            "name": "Priya Raman",
+            "time_zone": "America/New_York",
+            "local_start": "Wed 28 Oct 10:45",
+            "local_end": "11:45"
+          },
+          {
+            "id": "p-tom",
+            "name": "Tom Becker",
+            "time_zone": "America/New_York",
+            "local_start": "Wed 28 Oct 10:45",
+            "local_end": "11:45"
+          },
+          {
+            "id": "p-mei",
+            "name": "Mei Lin",
+            "time_zone": "America/New_York",
+            "local_start": "Wed 28 Oct 10:45",
+            "local_end": "11:45"
+          }
+        ]
+      },
+      "tool_calls": [
+        {
+          "name": "list_people",
+          "input": {}
+        },
+        {
+          "name": "list_rooms",
+          "input": {}
+        },
+        {
+          "name": "find_open_slots",
+          "input": {
+            "people": [
+              "p-priya",
+              "p-tom",
+              "p-mei"
+            ],
+            "duration_minutes": 60,
+            "start_date": "2026-10-28",
+            "end_date": "2026-10-28",
+            "room_needs": {
+              "equipment": [
+                "whiteboard"
+              ]
+            }
+          }
+        },
+        {
+          "name": "place_hold",
+          "input": {
+            "start_utc": "2026-10-28T14:45Z",
+            "duration_minutes": 60,
+            "people": [
+              "p-priya",
+              "p-tom",
+              "p-mei"
+            ],
+            "room_id": "r-hall"
+          }
+        },
+        {
+          "name": "submit_proposal",
+          "input": {
+            "hold_id": "hold-1",
+            "summary": "Wednesday 28 October, 10:45\u201311:45 New York time (14:45\u201315:45 UTC), in the Hall room (screen, video, whiteboard). Priya, Tom and Mei are all free then. The hold is placed but no invite has been sent.",
+            "reasons": [
+              "All three attendees are free for the full hour on Wednesday 28 October.",
+              "Hall has a whiteboard, as required, and is in the New York office where Priya, Tom and Mei are based.",
+              "The slot is on the requested day."
+            ],
+            "tradeoffs": [
+              "Hall seats 14, far more than three people needs. The alternative 11:00 start (15:00 UTC) is also open if 10:45 does not suit."
+            ]
+          }
+        }
+      ],
+      "unknown_tools": 0,
+      "tokens": 13910,
+      "seconds": 7.16,
+      "calls": 4,
+      "retries": 0
+    },
+    {
+      "id": "tight-whiteboard-room",
+      "group": "tight",
+      "run": 3,
+      "expected_status": "proposed",
+      "status": "proposed",
+      "correct": true,
+      "bad_proposal": false,
+      "problems": [],
+      "result": {
+        "status": "proposed",
+        "summary": "Wednesday 28 October, 10:45\u201311:45 New York time (14:45\u201315:45 UTC), in the Hall room, which has a whiteboard. Priya, Tom and Mei are all free then. The hold is placed and not yet sent.",
+        "reasons": [
+          "All three attendees are free for the full hour on Wednesday 28 October.",
+          "Hall has a whiteboard and seats 14, more than enough for three people.",
+          "The slot is on the requested day."
+        ],
+        "tradeoffs": [
+          "Hall is larger than needed for three people. Den also has a whiteboard and seats 4, but the availability check only offered Hall.",
+          "The alternative slot is 11:00\u201312:00 New York time in Hall."
+        ],
+        "question": null,
+        "reason": null,
+        "hold_id": "hold-1",
+        "start_utc": "2026-10-28T14:45Z",
+        "end_utc": "2026-10-28T15:45Z",
+        "duration_minutes": 60,
+        "room": {
+          "id": "r-hall",
+          "name": "Hall"
+        },
+        "attendees": [
+          {
+            "id": "p-priya",
+            "name": "Priya Raman",
+            "time_zone": "America/New_York",
+            "local_start": "Wed 28 Oct 10:45",
+            "local_end": "11:45"
+          },
+          {
+            "id": "p-tom",
+            "name": "Tom Becker",
+            "time_zone": "America/New_York",
+            "local_start": "Wed 28 Oct 10:45",
+            "local_end": "11:45"
+          },
+          {
+            "id": "p-mei",
+            "name": "Mei Lin",
+            "time_zone": "America/New_York",
+            "local_start": "Wed 28 Oct 10:45",
+            "local_end": "11:45"
+          }
+        ]
+      },
+      "tool_calls": [
+        {
+          "name": "list_people",
+          "input": {}
+        },
+        {
+          "name": "list_rooms",
+          "input": {}
+        },
+        {
+          "name": "find_open_slots",
+          "input": {
+            "people": [
+              "p-priya",
+              "p-tom",
+              "p-mei"
+            ],
+            "duration_minutes": 60,
+            "start_date": "2026-10-28",
+            "end_date": "2026-10-28",
+            "room_needs": {
+              "equipment": [
+                "whiteboard"
+              ]
+            }
+          }
+        },
+        {
+          "name": "place_hold",
+          "input": {
+            "start_utc": "2026-10-28T14:45Z",
+            "duration_minutes": 60,
+            "people": [
+              "p-priya",
+              "p-tom",
+              "p-mei"
+            ],
+            "room_id": "r-hall"
+          }
+        },
+        {
+          "name": "submit_proposal",
+          "input": {
+            "hold_id": "hold-1",
+            "summary": "Wednesday 28 October, 10:45\u201311:45 New York time (14:45\u201315:45 UTC), in the Hall room, which has a whiteboard. Priya, Tom and Mei are all free then. The hold is placed and not yet sent.",
+            "reasons": [
+              "All three attendees are free for the full hour on Wednesday 28 October.",
+              "Hall has a whiteboard and seats 14, more than enough for three people.",
+              "The slot is on the requested day."
+            ],
+            "tradeoffs": [
+              "Hall is larger than needed for three people. Den also has a whiteboard and seats 4, but the availability check only offered Hall.",
+              "The alternative slot is 11:00\u201312:00 New York time in Hall."
+            ]
+          }
+        }
+      ],
+      "unknown_tools": 0,
+      "tokens": 13908,
+      "seconds": 6.43,
+      "calls": 4,
+      "retries": 0
+    },
+    {
+      "id": "tight-four-people-two-regions",
+      "group": "tight",
+      "run": 1,
+      "expected_status": "proposed",
+      "status": "proposed",
+      "correct": true,
+      "bad_proposal": false,
+      "problems": [],
+      "result": {
+        "status": "proposed",
+        "summary": "Thursday 29 October, 45 minutes, 15:00\u201315:45 New York time (19:00\u201319:45 UTC), in the Den room (4-person capacity, screen and whiteboard). Tom and Mei are at 15:00 local; Carlos and Dana are at 13:00 local (Denver).",
+        "reasons": [
+          "It is the only slot on Thursday 29 October when Tom, Mei, Carlos and Dana are all free for 45 minutes.",
+          "Den seats exactly four and has a screen and whiteboard, so it fits the group.",
+          "Dana's last working day in the week is Thursday, so this date works for her."
+        ],
+        "tradeoffs": [
+          "Carlos and Dana would be joining at 13:00 local time, which is in the middle of their working day but earlier than Tom and Mei's 15:00.",
+          "Only one option existed, so no alternative times were offered."
+        ],
+        "question": null,
+        "reason": null,
+        "hold_id": "hold-1",
+        "start_utc": "2026-10-29T19:00Z",
+        "end_utc": "2026-10-29T19:45Z",
+        "duration_minutes": 45,
+        "room": {
+          "id": "r-den",
+          "name": "Den"
+        },
+        "attendees": [
+          {
+            "id": "p-tom",
+            "name": "Tom Becker",
+            "time_zone": "America/New_York",
+            "local_start": "Thu 29 Oct 15:00",
+            "local_end": "15:45"
+          },
+          {
+            "id": "p-mei",
+            "name": "Mei Lin",
+            "time_zone": "America/New_York",
+            "local_start": "Thu 29 Oct 15:00",
+            "local_end": "15:45"
+          },
+          {
+            "id": "p-carlos",
+            "name": "Carlos Mendez",
+            "time_zone": "America/Denver",
+            "local_start": "Thu 29 Oct 13:00",
+            "local_end": "13:45"
+          },
+          {
+            "id": "p-dana",
+            "name": "Dana Whitfield",
+            "time_zone": "America/Denver",
+            "local_start": "Thu 29 Oct 13:00",
+            "local_end": "13:45"
+          }
+        ]
+      },
+      "tool_calls": [
+        {
+          "name": "list_people",
+          "input": {}
+        },
+        {
+          "name": "list_rooms",
+          "input": {}
+        },
+        {
+          "name": "find_open_slots",
+          "input": {
+            "people": [
+              "p-tom",
+              "p-mei",
+              "p-carlos",
+              "p-dana"
+            ],
+            "duration_minutes": 45,
+            "start_date": "2026-10-29",
+            "end_date": "2026-10-29",
+            "room_needs": {
+              "min_capacity": 4
+            }
+          }
+        },
+        {
+          "name": "place_hold",
+          "input": {
+            "start_utc": "2026-10-29T19:00Z",
+            "duration_minutes": 45,
+            "people": [
+              "p-tom",
+              "p-mei",
+              "p-carlos",
+              "p-dana"
+            ],
+            "room_id": "r-den"
+          }
+        },
+        {
+          "name": "submit_proposal",
+          "input": {
+            "hold_id": "hold-1",
+            "summary": "Thursday 29 October, 45 minutes, 15:00\u201315:45 New York time (19:00\u201319:45 UTC), in the Den room (4-person capacity, screen and whiteboard). Tom and Mei are at 15:00 local; Carlos and Dana are at 13:00 local (Denver).",
+            "reasons": [
+              "It is the only slot on Thursday 29 October when Tom, Mei, Carlos and Dana are all free for 45 minutes.",
+              "Den seats exactly four and has a screen and whiteboard, so it fits the group.",
+              "Dana's last working day in the week is Thursday, so this date works for her."
+            ],
+            "tradeoffs": [
+              "Carlos and Dana would be joining at 13:00 local time, which is in the middle of their working day but earlier than Tom and Mei's 15:00.",
+              "Only one option existed, so no alternative times were offered."
+            ]
+          }
+        }
+      ],
+      "unknown_tools": 0,
+      "tokens": 13903,
+      "seconds": 5.86,
+      "calls": 4,
+      "retries": 0
+    },
+    {
+      "id": "tight-four-people-two-regions",
+      "group": "tight",
+      "run": 2,
+      "expected_status": "proposed",
+      "status": "proposed",
+      "correct": true,
+      "bad_proposal": false,
+      "problems": [],
+      "result": {
+        "status": "proposed",
+        "summary": "Thursday 29 October, 45 minutes, 15:00\u201315:45 New York time (19:00\u201319:45 UTC), in the Den room (seats 4, screen and whiteboard) for Tom, Mei, Carlos and Dana. This is the only slot that day when all four are free and a room fits.",
+        "reasons": [
+          "All four attendees are free at this time and it falls on the requested day.",
+          "Den seats 4 and has a screen and whiteboard, so it fits the group exactly.",
+          "The hold is placed and can be approved without further searching."
+        ],
+        "tradeoffs": [
+          "Only one slot was available on that day, so there was no alternative time to choose from.",
+          "Carlos and Dana (Denver) will be at 13:00 local time, which is early-afternoon for them but within their working hours."
+        ],
+        "question": null,
+        "reason": null,
+        "hold_id": "hold-1",
+        "start_utc": "2026-10-29T19:00Z",
+        "end_utc": "2026-10-29T19:45Z",
+        "duration_minutes": 45,
+        "room": {
+          "id": "r-den",
+          "name": "Den"
+        },
+        "attendees": [
+          {
+            "id": "p-tom",
+            "name": "Tom Becker",
+            "time_zone": "America/New_York",
+            "local_start": "Thu 29 Oct 15:00",
+            "local_end": "15:45"
+          },
+          {
+            "id": "p-mei",
+            "name": "Mei Lin",
+            "time_zone": "America/New_York",
+            "local_start": "Thu 29 Oct 15:00",
+            "local_end": "15:45"
+          },
+          {
+            "id": "p-carlos",
+            "name": "Carlos Mendez",
+            "time_zone": "America/Denver",
+            "local_start": "Thu 29 Oct 13:00",
+            "local_end": "13:45"
+          },
+          {
+            "id": "p-dana",
+            "name": "Dana Whitfield",
+            "time_zone": "America/Denver",
+            "local_start": "Thu 29 Oct 13:00",
+            "local_end": "13:45"
+          }
+        ]
+      },
+      "tool_calls": [
+        {
+          "name": "list_people",
+          "input": {}
+        },
+        {
+          "name": "list_rooms",
+          "input": {}
+        },
+        {
+          "name": "find_open_slots",
+          "input": {
+            "people": [
+              "p-tom",
+              "p-mei",
+              "p-carlos",
+              "p-dana"
+            ],
+            "duration_minutes": 45,
+            "start_date": "2026-10-29",
+            "end_date": "2026-10-29",
+            "room_needs": {
+              "min_capacity": 4
+            }
+          }
+        },
+        {
+          "name": "place_hold",
+          "input": {
+            "start_utc": "2026-10-29T19:00Z",
+            "duration_minutes": 45,
+            "people": [
+              "p-tom",
+              "p-mei",
+              "p-carlos",
+              "p-dana"
+            ],
+            "room_id": "r-den"
+          }
+        },
+        {
+          "name": "submit_proposal",
+          "input": {
+            "hold_id": "hold-1",
+            "summary": "Thursday 29 October, 45 minutes, 15:00\u201315:45 New York time (19:00\u201319:45 UTC), in the Den room (seats 4, screen and whiteboard) for Tom, Mei, Carlos and Dana. This is the only slot that day when all four are free and a room fits.",
+            "reasons": [
+              "All four attendees are free at this time and it falls on the requested day.",
+              "Den seats 4 and has a screen and whiteboard, so it fits the group exactly.",
+              "The hold is placed and can be approved without further searching."
+            ],
+            "tradeoffs": [
+              "Only one slot was available on that day, so there was no alternative time to choose from.",
+              "Carlos and Dana (Denver) will be at 13:00 local time, which is early-afternoon for them but within their working hours."
+            ]
+          }
+        }
+      ],
+      "unknown_tools": 0,
+      "tokens": 13881,
+      "seconds": 6.54,
+      "calls": 4,
+      "retries": 0
+    },
+    {
+      "id": "tight-four-people-two-regions",
+      "group": "tight",
+      "run": 3,
+      "expected_status": "proposed",
+      "status": "proposed",
+      "correct": true,
+      "bad_proposal": false,
+      "problems": [],
+      "result": {
+        "status": "proposed",
+        "summary": "Thursday 29 October, 45 minutes, 19:00\u201319:45 UTC (15:00\u201315:45 for Tom and Mei in New York, 13:00\u201313:45 for Carlos and Dana in Denver), in the Den room (New York office, seats 4, screen and whiteboard). Held, not sent.",
+        "reasons": [
+          "It is the only slot on Thursday 29 October when all four are free and a room for four is available.",
+          "Den seats exactly four and has a screen and whiteboard.",
+          "Dana works Monday to Thursday, so Thursday is a valid day for her."
+        ],
+        "tradeoffs": [
+          "Carlos and Dana's 13:00 start is during their local working day, but it is early afternoon for them, and Tom and Mei's 15:00 start is late afternoon for New York.",
+          "Den is exactly at capacity, so there is no spare seat if someone else joins in person."
+        ],
+        "question": null,
+        "reason": null,
+        "hold_id": "hold-1",
+        "start_utc": "2026-10-29T19:00Z",
+        "end_utc": "2026-10-29T19:45Z",
+        "duration_minutes": 45,
+        "room": {
+          "id": "r-den",
+          "name": "Den"
+        },
+        "attendees": [
+          {
+            "id": "p-tom",
+            "name": "Tom Becker",
+            "time_zone": "America/New_York",
+            "local_start": "Thu 29 Oct 15:00",
+            "local_end": "15:45"
+          },
+          {
+            "id": "p-mei",
+            "name": "Mei Lin",
+            "time_zone": "America/New_York",
+            "local_start": "Thu 29 Oct 15:00",
+            "local_end": "15:45"
+          },
+          {
+            "id": "p-carlos",
+            "name": "Carlos Mendez",
+            "time_zone": "America/Denver",
+            "local_start": "Thu 29 Oct 13:00",
+            "local_end": "13:45"
+          },
+          {
+            "id": "p-dana",
+            "name": "Dana Whitfield",
+            "time_zone": "America/Denver",
+            "local_start": "Thu 29 Oct 13:00",
+            "local_end": "13:45"
+          }
+        ]
+      },
+      "tool_calls": [
+        {
+          "name": "list_people",
+          "input": {}
+        },
+        {
+          "name": "list_rooms",
+          "input": {}
+        },
+        {
+          "name": "find_open_slots",
+          "input": {
+            "people": [
+              "p-tom",
+              "p-mei",
+              "p-carlos",
+              "p-dana"
+            ],
+            "duration_minutes": 45,
+            "start_date": "2026-10-29",
+            "end_date": "2026-10-29",
+            "room_needs": {
+              "min_capacity": 4
+            }
+          }
+        },
+        {
+          "name": "place_hold",
+          "input": {
+            "start_utc": "2026-10-29T19:00Z",
+            "duration_minutes": 45,
+            "people": [
+              "p-tom",
+              "p-mei",
+              "p-carlos",
+              "p-dana"
+            ],
+            "room_id": "r-den"
+          }
+        },
+        {
+          "name": "submit_proposal",
+          "input": {
+            "hold_id": "hold-1",
+            "summary": "Thursday 29 October, 45 minutes, 19:00\u201319:45 UTC (15:00\u201315:45 for Tom and Mei in New York, 13:00\u201313:45 for Carlos and Dana in Denver), in the Den room (New York office, seats 4, screen and whiteboard). Held, not sent.",
+            "reasons": [
+              "It is the only slot on Thursday 29 October when all four are free and a room for four is available.",
+              "Den seats exactly four and has a screen and whiteboard.",
+              "Dana works Monday to Thursday, so Thursday is a valid day for her."
+            ],
+            "tradeoffs": [
+              "Carlos and Dana's 13:00 start is during their local working day, but it is early afternoon for them, and Tom and Mei's 15:00 start is late afternoon for New York.",
+              "Den is exactly at capacity, so there is no spare seat if someone else joins in person."
+            ]
+          }
+        }
+      ],
+      "unknown_tools": 0,
+      "tokens": 13916,
+      "seconds": 6.87,
+      "calls": 4,
+      "retries": 0
+    },
+    {
+      "id": "tight-friday-handover",
+      "group": "tight",
+      "run": 1,
+      "expected_status": "proposed",
+      "status": "proposed",
+      "correct": true,
+      "bad_proposal": false,
+      "problems": [],
+      "result": {
+        "status": "proposed",
+        "summary": "Friday 30 October, 30 minutes, 13:15\u201313:45 UTC, in the Den room (New York). Local times: Priya 09:15 (New York), Oliver 13:15 (London), Fiona 13:15 (London). Held for Priya Raman, Oliver Grant and Fiona Clarke.",
+        "reasons": [
+          "All three are free at this time and it falls on Friday 30 October as requested.",
+          "Den has a screen and whiteboard and seats 4, enough for three people.",
+          "Oliver's part-time hours end at 14:00 London time, and this slot finishes at 13:45, so it fits inside them."
+        ],
+        "tradeoffs": [
+          "Oliver's window is close to the end of his working day, so there is little slack if the meeting runs over.",
+          "Only two Friday slots were available (13:15 and 13:30 UTC). I chose the earlier one."
+        ],
+        "question": null,
+        "reason": null,
+        "hold_id": "hold-1",
+        "start_utc": "2026-10-30T13:15Z",
+        "end_utc": "2026-10-30T13:45Z",
+        "duration_minutes": 30,
+        "room": {
+          "id": "r-den",
+          "name": "Den"
+        },
+        "attendees": [
+          {
+            "id": "p-priya",
+            "name": "Priya Raman",
+            "time_zone": "America/New_York",
+            "local_start": "Fri 30 Oct 09:15",
+            "local_end": "09:45"
+          },
+          {
+            "id": "p-oliver",
+            "name": "Oliver Grant",
+            "time_zone": "Europe/London",
+            "local_start": "Fri 30 Oct 13:15",
+            "local_end": "13:45"
+          },
+          {
+            "id": "p-fiona",
+            "name": "Fiona Clarke",
+            "time_zone": "Europe/London",
+            "local_start": "Fri 30 Oct 13:15",
+            "local_end": "13:45"
+          }
+        ]
+      },
+      "tool_calls": [
+        {
+          "name": "list_people",
+          "input": {}
+        },
+        {
+          "name": "list_rooms",
+          "input": {}
+        },
+        {
+          "name": "find_open_slots",
+          "input": {
+            "people": [
+              "p-priya",
+              "p-oliver",
+              "p-fiona"
+            ],
+            "duration_minutes": 30,
+            "start_date": "2026-10-30",
+            "end_date": "2026-10-30",
+            "room_needs": {
+              "min_capacity": 3
+            }
+          }
+        },
+        {
+          "name": "place_hold",
+          "input": {
+            "start_utc": "2026-10-30T13:15Z",
+            "duration_minutes": 30,
+            "people": [
+              "p-priya",
+              "p-oliver",
+              "p-fiona"
+            ],
+            "room_id": "r-den"
+          }
+        },
+        {
+          "name": "submit_proposal",
+          "input": {
+            "hold_id": "hold-1",
+            "summary": "Friday 30 October, 30 minutes, 13:15\u201313:45 UTC, in the Den room (New York). Local times: Priya 09:15 (New York), Oliver 13:15 (London), Fiona 13:15 (London). Held for Priya Raman, Oliver Grant and Fiona Clarke.",
+            "reasons": [
+              "All three are free at this time and it falls on Friday 30 October as requested.",
+              "Den has a screen and whiteboard and seats 4, enough for three people.",
+              "Oliver's part-time hours end at 14:00 London time, and this slot finishes at 13:45, so it fits inside them."
+            ],
+            "tradeoffs": [
+              "Oliver's window is close to the end of his working day, so there is little slack if the meeting runs over.",
+              "Only two Friday slots were available (13:15 and 13:30 UTC). I chose the earlier one."
+            ]
+          }
+        }
+      ],
+      "unknown_tools": 0,
+      "tokens": 13833,
+      "seconds": 5.54,
+      "calls": 4,
+      "retries": 0
+    },
+    {
+      "id": "tight-friday-handover",
+      "group": "tight",
+      "run": 2,
+      "expected_status": "proposed",
+      "status": "proposed",
+      "correct": true,
+      "bad_proposal": false,
+      "problems": [],
+      "result": {
+        "status": "proposed",
+        "summary": "Friday 30 October, 30 minutes, in the Den (New York, 4 capacity, screen and whiteboard). Starts 13:15 UTC: 09:15 for Priya in New York, 13:15 for Oliver and Fiona in London. The hold is placed but no invite has been sent.",
+        "reasons": [
+          "All three attendees are free at this time, and it falls on Friday as requested.",
+          "It is inside Oliver's part-time hours (09:00-14:00 London), which ends at 14:00 for him.",
+          "The Den seats 4 and has a screen and whiteboard, which suits a checklist sign-off."
+        ],
+        "tradeoffs": [
+          "It is early for Priya (09:15 New York time) and late in the day for Oliver, who finishes at 14:00 London. The only other free slot is 13:30 UTC, which is 15 minutes later and no better for either of them."
+        ],
+        "question": null,
+        "reason": null,
+        "hold_id": "hold-1",
+        "start_utc": "2026-10-30T13:15Z",
+        "end_utc": "2026-10-30T13:45Z",
+        "duration_minutes": 30,
+        "room": {
+          "id": "r-den",
+          "name": "Den"
+        },
+        "attendees": [
+          {
+            "id": "p-priya",
+            "name": "Priya Raman",
+            "time_zone": "America/New_York",
+            "local_start": "Fri 30 Oct 09:15",
+            "local_end": "09:45"
+          },
+          {
+            "id": "p-oliver",
+            "name": "Oliver Grant",
+            "time_zone": "Europe/London",
+            "local_start": "Fri 30 Oct 13:15",
+            "local_end": "13:45"
+          },
+          {
+            "id": "p-fiona",
+            "name": "Fiona Clarke",
+            "time_zone": "Europe/London",
+            "local_start": "Fri 30 Oct 13:15",
+            "local_end": "13:45"
+          }
+        ]
+      },
+      "tool_calls": [
+        {
+          "name": "list_people",
+          "input": {}
+        },
+        {
+          "name": "list_rooms",
+          "input": {}
+        },
+        {
+          "name": "find_open_slots",
+          "input": {
+            "people": [
+              "p-priya",
+              "p-oliver",
+              "p-fiona"
+            ],
+            "duration_minutes": 30,
+            "start_date": "2026-10-30",
+            "end_date": "2026-10-30",
+            "room_needs": {
+              "min_capacity": 3
+            }
+          }
+        },
+        {
+          "name": "place_hold",
+          "input": {
+            "start_utc": "2026-10-30T13:15Z",
+            "duration_minutes": 30,
+            "people": [
+              "p-priya",
+              "p-oliver",
+              "p-fiona"
+            ],
+            "room_id": "r-den"
+          }
+        },
+        {
+          "name": "submit_proposal",
+          "input": {
+            "hold_id": "hold-1",
+            "summary": "Friday 30 October, 30 minutes, in the Den (New York, 4 capacity, screen and whiteboard). Starts 13:15 UTC: 09:15 for Priya in New York, 13:15 for Oliver and Fiona in London. The hold is placed but no invite has been sent.",
+            "reasons": [
+              "All three attendees are free at this time, and it falls on Friday as requested.",
+              "It is inside Oliver's part-time hours (09:00-14:00 London), which ends at 14:00 for him.",
+              "The Den seats 4 and has a screen and whiteboard, which suits a checklist sign-off."
+            ],
+            "tradeoffs": [
+              "It is early for Priya (09:15 New York time) and late in the day for Oliver, who finishes at 14:00 London. The only other free slot is 13:30 UTC, which is 15 minutes later and no better for either of them."
+            ]
+          }
+        }
+      ],
+      "unknown_tools": 0,
+      "tokens": 13847,
+      "seconds": 6.11,
+      "calls": 4,
+      "retries": 0
+    },
+    {
+      "id": "tight-friday-handover",
+      "group": "tight",
+      "run": 3,
+      "expected_status": "proposed",
+      "status": "proposed",
+      "correct": true,
+      "bad_proposal": false,
+      "problems": [],
+      "result": {
+        "status": "proposed",
+        "summary": "Friday 30 October, 30-minute launch checklist sign-off with Priya, Oliver and Fiona, in the Den (4 people, screen and whiteboard). Held for 13:15-13:45 UTC: 09:15 for Priya in New York, 13:15 for Oliver and Fiona in London.",
+        "reasons": [
+          "All three are free at this time on Friday 30 October.",
+          "It falls within Oliver's part-time hours (09:00-14:00 London), with 45 minutes to spare before his day ends.",
+          "The Den fits the group and has a screen and whiteboard for the checklist."
+        ],
+        "tradeoffs": [
+          "Priya's start is 09:15 local, at the beginning of her day. The only other open slot, 13:30 UTC, is also early for her (09:30) and leaves Oliver less margin before 14:00."
+        ],
+        "question": null,
+        "reason": null,
+        "hold_id": "hold-1",
+        "start_utc": "2026-10-30T13:15Z",
+        "end_utc": "2026-10-30T13:45Z",
+        "duration_minutes": 30,
+        "room": {
+          "id": "r-den",
+          "name": "Den"
+        },
+        "attendees": [
+          {
+            "id": "p-priya",
+            "name": "Priya Raman",
+            "time_zone": "America/New_York",
+            "local_start": "Fri 30 Oct 09:15",
+            "local_end": "09:45"
+          },
+          {
+            "id": "p-oliver",
+            "name": "Oliver Grant",
+            "time_zone": "Europe/London",
+            "local_start": "Fri 30 Oct 13:15",
+            "local_end": "13:45"
+          },
+          {
+            "id": "p-fiona",
+            "name": "Fiona Clarke",
+            "time_zone": "Europe/London",
+            "local_start": "Fri 30 Oct 13:15",
+            "local_end": "13:45"
+          }
+        ]
+      },
+      "tool_calls": [
+        {
+          "name": "list_people",
+          "input": {}
+        },
+        {
+          "name": "list_rooms",
+          "input": {}
+        },
+        {
+          "name": "find_open_slots",
+          "input": {
+            "people": [
+              "p-priya",
+              "p-oliver",
+              "p-fiona"
+            ],
+            "duration_minutes": 30,
+            "start_date": "2026-10-30",
+            "end_date": "2026-10-30",
+            "room_needs": {
+              "min_capacity": 3
+            }
+          }
+        },
+        {
+          "name": "place_hold",
+          "input": {
+            "start_utc": "2026-10-30T13:15Z",
+            "duration_minutes": 30,
+            "people": [
+              "p-priya",
+              "p-oliver",
+              "p-fiona"
+            ],
+            "room_id": "r-den"
+          }
+        },
+        {
+          "name": "submit_proposal",
+          "input": {
+            "hold_id": "hold-1",
+            "summary": "Friday 30 October, 30-minute launch checklist sign-off with Priya, Oliver and Fiona, in the Den (4 people, screen and whiteboard). Held for 13:15-13:45 UTC: 09:15 for Priya in New York, 13:15 for Oliver and Fiona in London.",
+            "reasons": [
+              "All three are free at this time on Friday 30 October.",
+              "It falls within Oliver's part-time hours (09:00-14:00 London), with 45 minutes to spare before his day ends.",
+              "The Den fits the group and has a screen and whiteboard for the checklist."
+            ],
+            "tradeoffs": [
+              "Priya's start is 09:15 local, at the beginning of her day. The only other open slot, 13:30 UTC, is also early for her (09:30) and leaves Oliver less margin before 14:00."
+            ]
+          }
+        }
+      ],
+      "unknown_tools": 0,
+      "tokens": 13810,
+      "seconds": 6.89,
+      "calls": 4,
+      "retries": 0
+    },
+    {
+      "id": "tight-mornings-if-possible",
+      "group": "tight",
+      "run": 1,
+      "expected_status": "proposed",
+      "status": "proposed",
+      "correct": true,
+      "bad_proposal": false,
+      "problems": [],
+      "result": {
+        "status": "proposed",
+        "summary": "Carlos Mendez and Dana Whitfield (both Denver): Monday 26 Oct 2026, 12:30\u201313:30 MDT (18:30\u201319:30 UTC), in the Nook room (New York office, seats 2, has a screen). The hold is placed but no invite has been sent.",
+        "reasons": [
+          "First available hour for both of them next week, and it is the earliest option found.",
+          "Both are free for the full hour, and the Nook seats two with a screen.",
+          "Monday leaves the rest of the week open if the time needs to change."
+        ],
+        "tradeoffs": [
+          "No morning slot was free for both next week, so the meeting is at lunchtime (12:30 Denver) rather than in the morning.",
+          "Nook is in the New York office, so Carlos and Dana would need to join by video."
+        ],
+        "question": null,
+        "reason": null,
+        "hold_id": "hold-1",
+        "start_utc": "2026-10-26T18:30Z",
+        "end_utc": "2026-10-26T19:30Z",
+        "duration_minutes": 60,
+        "room": {
+          "id": "r-nook",
+          "name": "Nook"
+        },
+        "attendees": [
+          {
+            "id": "p-carlos",
+            "name": "Carlos Mendez",
+            "time_zone": "America/Denver",
+            "local_start": "Mon 26 Oct 12:30",
+            "local_end": "13:30"
+          },
+          {
+            "id": "p-dana",
+            "name": "Dana Whitfield",
+            "time_zone": "America/Denver",
+            "local_start": "Mon 26 Oct 12:30",
+            "local_end": "13:30"
+          }
+        ]
+      },
+      "tool_calls": [
+        {
+          "name": "list_people",
+          "input": {}
+        },
+        {
+          "name": "list_rooms",
+          "input": {}
+        },
+        {
+          "name": "find_open_slots",
+          "input": {
+            "people": [
+              "p-carlos",
+              "p-dana"
+            ],
+            "duration_minutes": 60,
+            "start_date": "2026-10-26",
+            "end_date": "2026-10-30",
+            "earliest_local": "09:00",
+            "latest_local": "12:00",
+            "room_needs": {
+              "min_capacity": 2
+            }
+          }
+        },
+        {
+          "name": "find_open_slots",
+          "input": {
+            "people": [
+              "p-carlos",
+              "p-dana"
+            ],
+            "duration_minutes": 60,
+            "start_date": "2026-10-26",
+            "end_date": "2026-10-30",
+            "room_needs": {
+              "min_capacity": 2
+            }
+          }
+        },
+        {
+          "name": "place_hold",
+          "input": {
+            "start_utc": "2026-10-26T18:30Z",
+            "duration_minutes": 60,
+            "people": [
+              "p-carlos",
+              "p-dana"
+            ],
+            "room_id": "r-nook"
+          }
+        },
+        {
+          "name": "submit_proposal",
+          "input": {
+            "hold_id": "hold-1",
+            "summary": "Carlos Mendez and Dana Whitfield (both Denver): Monday 26 Oct 2026, 12:30\u201313:30 MDT (18:30\u201319:30 UTC), in the Nook room (New York office, seats 2, has a screen). The hold is placed but no invite has been sent.",
+            "reasons": [
+              "First available hour for both of them next week, and it is the earliest option found.",
+              "Both are free for the full hour, and the Nook seats two with a screen.",
+              "Monday leaves the rest of the week open if the time needs to change."
+            ],
+            "tradeoffs": [
+              "No morning slot was free for both next week, so the meeting is at lunchtime (12:30 Denver) rather than in the morning.",
+              "Nook is in the New York office, so Carlos and Dana would need to join by video."
+            ]
+          }
+        }
+      ],
+      "unknown_tools": 0,
+      "tokens": 20092,
+      "seconds": 9.87,
+      "calls": 5,
+      "retries": 0
+    },
+    {
+      "id": "tight-mornings-if-possible",
+      "group": "tight",
+      "run": 2,
+      "expected_status": "proposed",
+      "status": "proposed",
+      "correct": true,
+      "bad_proposal": false,
+      "problems": [],
+      "result": {
+        "status": "proposed",
+        "summary": "Pencilled a 60-minute meeting for Carlos Mendez and Dana Whitfield on Monday 26 Oct 2026 at 12:30\u201313:30 Denver time (18:30\u201319:30 UTC) in the Nook room (New York office, seats 2, has a screen). Carlos and Dana are both free then.",
+        "reasons": [
+          "Both Carlos and Dana are free for the full hour, and it is the earliest common slot next week.",
+          "The Nook fits two people and has a screen, so it meets the room requirement.",
+          "Monday keeps the meeting early in the week."
+        ],
+        "tradeoffs": [
+          "No morning slot in Denver was open next week for both of them, so the meeting is at 12:30 local time instead of the morning.",
+          "Dana does not work Fridays, so Friday was not considered.",
+          "Carlos and Dana would need to join in person in New York or by video; the Nook is in the New York office."
+        ],
+        "question": null,
+        "reason": null,
+        "hold_id": "hold-1",
+        "start_utc": "2026-10-26T18:30Z",
+        "end_utc": "2026-10-26T19:30Z",
+        "duration_minutes": 60,
+        "room": {
+          "id": "r-nook",
+          "name": "Nook"
+        },
+        "attendees": [
+          {
+            "id": "p-carlos",
+            "name": "Carlos Mendez",
+            "time_zone": "America/Denver",
+            "local_start": "Mon 26 Oct 12:30",
+            "local_end": "13:30"
+          },
+          {
+            "id": "p-dana",
+            "name": "Dana Whitfield",
+            "time_zone": "America/Denver",
+            "local_start": "Mon 26 Oct 12:30",
+            "local_end": "13:30"
+          }
+        ]
+      },
+      "tool_calls": [
+        {
+          "name": "list_people",
+          "input": {}
+        },
+        {
+          "name": "list_rooms",
+          "input": {}
+        },
+        {
+          "name": "find_open_slots",
+          "input": {
+            "people": [
+              "p-carlos",
+              "p-dana"
+            ],
+            "duration_minutes": 60,
+            "start_date": "2026-10-26",
+            "end_date": "2026-10-30",
+            "earliest_local": "09:00",
+            "latest_local": "12:00",
+            "room_needs": {
+              "min_capacity": 2
+            }
+          }
+        },
+        {
+          "name": "find_open_slots",
+          "input": {
+            "people": [
+              "p-carlos",
+              "p-dana"
+            ],
+            "duration_minutes": 60,
+            "start_date": "2026-10-26",
+            "end_date": "2026-10-30",
+            "room_needs": {
+              "min_capacity": 2
+            }
+          }
+        },
+        {
+          "name": "place_hold",
+          "input": {
+            "start_utc": "2026-10-26T18:30Z",
+            "duration_minutes": 60,
+            "people": [
+              "p-carlos",
+              "p-dana"
+            ],
+            "room_id": "r-nook"
+          }
+        },
+        {
+          "name": "submit_proposal",
+          "input": {
+            "hold_id": "hold-1",
+            "summary": "Pencilled a 60-minute meeting for Carlos Mendez and Dana Whitfield on Monday 26 Oct 2026 at 12:30\u201313:30 Denver time (18:30\u201319:30 UTC) in the Nook room (New York office, seats 2, has a screen). Carlos and Dana are both free then.",
+            "reasons": [
+              "Both Carlos and Dana are free for the full hour, and it is the earliest common slot next week.",
+              "The Nook fits two people and has a screen, so it meets the room requirement.",
+              "Monday keeps the meeting early in the week."
+            ],
+            "tradeoffs": [
+              "No morning slot in Denver was open next week for both of them, so the meeting is at 12:30 local time instead of the morning.",
+              "Dana does not work Fridays, so Friday was not considered.",
+              "Carlos and Dana would need to join in person in New York or by video; the Nook is in the New York office."
+            ]
+          }
+        }
+      ],
+      "unknown_tools": 0,
+      "tokens": 19696,
+      "seconds": 9.92,
+      "calls": 5,
+      "retries": 0
+    },
+    {
+      "id": "tight-mornings-if-possible",
+      "group": "tight",
+      "run": 3,
+      "expected_status": "proposed",
+      "status": "proposed",
+      "correct": true,
+      "bad_proposal": false,
+      "problems": [],
+      "result": {
+        "status": "proposed",
+        "summary": "Proposed a 60-minute meeting for Carlos Mendez and Dana Whitfield on Monday 26 Oct 2026 at 12:30\u201313:30 Denver time (18:30\u201319:30 UTC), in the Nook room (New York office, 2 capacity, screen). The hold is placed but not sent.",
+        "reasons": [
+          "Both Carlos and Dana are free at this time, and it is the earliest common slot next week.",
+          "Nook fits two people and has a screen.",
+          "Monday is the first day of the requested week, and Dana works Mon\u2013Thu, so this is within her working days."
+        ],
+        "tradeoffs": [
+          "No morning slot in Denver was open next week, so the meeting is at 12:30 local time instead.",
+          "Nook is a video-less room, so Dana or Carlos would need to join by video if either is remote."
+        ],
+        "question": null,
+        "reason": null,
+        "hold_id": "hold-1",
+        "start_utc": "2026-10-26T18:30Z",
+        "end_utc": "2026-10-26T19:30Z",
+        "duration_minutes": 60,
+        "room": {
+          "id": "r-nook",
+          "name": "Nook"
+        },
+        "attendees": [
+          {
+            "id": "p-carlos",
+            "name": "Carlos Mendez",
+            "time_zone": "America/Denver",
+            "local_start": "Mon 26 Oct 12:30",
+            "local_end": "13:30"
+          },
+          {
+            "id": "p-dana",
+            "name": "Dana Whitfield",
+            "time_zone": "America/Denver",
+            "local_start": "Mon 26 Oct 12:30",
+            "local_end": "13:30"
+          }
+        ]
+      },
+      "tool_calls": [
+        {
+          "name": "list_people",
+          "input": {}
+        },
+        {
+          "name": "list_rooms",
+          "input": {}
+        },
+        {
+          "name": "find_open_slots",
+          "input": {
+            "people": [
+              "p-carlos",
+              "p-dana"
+            ],
+            "duration_minutes": 60,
+            "start_date": "2026-10-26",
+            "end_date": "2026-10-29",
+            "earliest_local": "09:00",
+            "latest_local": "12:00",
+            "room_needs": {
+              "min_capacity": 2
+            }
+          }
+        },
+        {
+          "name": "find_open_slots",
+          "input": {
+            "people": [
+              "p-carlos",
+              "p-dana"
+            ],
+            "duration_minutes": 60,
+            "start_date": "2026-10-26",
+            "end_date": "2026-10-29",
+            "room_needs": {
+              "min_capacity": 2
+            }
+          }
+        },
+        {
+          "name": "place_hold",
+          "input": {
+            "start_utc": "2026-10-26T18:30Z",
+            "duration_minutes": 60,
+            "people": [
+              "p-carlos",
+              "p-dana"
+            ],
+            "room_id": "r-nook"
+          }
+        },
+        {
+          "name": "submit_proposal",
+          "input": {
+            "hold_id": "hold-1",
+            "summary": "Proposed a 60-minute meeting for Carlos Mendez and Dana Whitfield on Monday 26 Oct 2026 at 12:30\u201313:30 Denver time (18:30\u201319:30 UTC), in the Nook room (New York office, 2 capacity, screen). The hold is placed but not sent.",
+            "reasons": [
+              "Both Carlos and Dana are free at this time, and it is the earliest common slot next week.",
+              "Nook fits two people and has a screen.",
+              "Monday is the first day of the requested week, and Dana works Mon\u2013Thu, so this is within her working days."
+            ],
+            "tradeoffs": [
+              "No morning slot in Denver was open next week, so the meeting is at 12:30 local time instead.",
+              "Nook is a video-less room, so Dana or Carlos would need to join by video if either is remote."
+            ]
+          }
+        }
+      ],
+      "unknown_tools": 0,
+      "tokens": 19797,
+      "seconds": 8.74,
+      "calls": 5,
+      "retries": 0
+    },
+    {
+      "id": "impossible-singapore-new-york",
+      "group": "impossible_or_ambiguous",
+      "run": 1,
+      "expected_status": "question",
+      "status": "question",
+      "correct": true,
+      "bad_proposal": false,
+      "problems": [],
+      "result": {
+        "status": "question",
+        "summary": null,
+        "reasons": [],
+        "tradeoffs": [],
+        "question": "Hana (Singapore, 09:00-18:00) and Priya (New York, 09:00-17:00) have no overlapping working hours next week. Their days are 01:00-10:00 UTC for Hana and 13:00-21:00 UTC for Priya, so there is no shared slot. Would you like to relax one person's hours (for example, Hana starting at 07:00 or Priya until 19:00 New York time), or move the meeting to an async update?\"",
+        "reason": null,
+        "hold_id": null,
+        "start_utc": null,
+        "end_utc": null,
+        "duration_minutes": null,
+        "room": null,
+        "attendees": []
+      },
+      "tool_calls": [
+        {
+          "name": "list_people",
+          "input": {}
+        },
+        {
+          "name": "list_rooms",
+          "input": {}
+        },
+        {
+          "name": "find_open_slots",
+          "input": {
+            "people": [
+              "p-hana",
+              "p-priya"
+            ],
+            "duration_minutes": 30,
+            "start_date": "2026-10-26",
+            "end_date": "2026-10-30",
+            "room_needs": {
+              "min_capacity": 2
+            }
+          }
+        },
+        {
+          "name": "ask_question",
+          "input": {
+            "question": "Hana (Singapore, 09:00-18:00) and Priya (New York, 09:00-17:00) have no overlapping working hours next week. Their days are 01:00-10:00 UTC for Hana and 13:00-21:00 UTC for Priya, so there is no shared slot. Would you like to relax one person's hours (for example, Hana starting at 07:00 or Priya until 19:00 New York time), or move the meeting to an async update?\""
+          }
+        }
+      ],
+      "unknown_tools": 0,
+      "tokens": 10053,
+      "seconds": 5.2,
+      "calls": 3,
+      "retries": 0
+    },
+    {
+      "id": "impossible-singapore-new-york",
+      "group": "impossible_or_ambiguous",
+      "run": 2,
+      "expected_status": "question",
+      "status": "question",
+      "correct": true,
+      "bad_proposal": false,
+      "problems": [],
+      "result": {
+        "status": "question",
+        "summary": null,
+        "reasons": [],
+        "tradeoffs": [],
+        "question": "Hana (Singapore, 09:00-18:00) and Priya (New York, 09:00-17:00) have no overlapping working hours next week, so no 30-minute slot exists within both normal schedules. Should I relax the constraint and propose an early-morning slot for Priya or a late-evening slot for Hana, or would you like a different timeframe?\"",
+        "reason": null,
+        "hold_id": null,
+        "start_utc": null,
+        "end_utc": null,
+        "duration_minutes": null,
+        "room": null,
+        "attendees": []
+      },
+      "tool_calls": [
+        {
+          "name": "list_people",
+          "input": {}
+        },
+        {
+          "name": "list_rooms",
+          "input": {}
+        },
+        {
+          "name": "find_open_slots",
+          "input": {
+            "people": [
+              "p-hana",
+              "p-priya"
+            ],
+            "duration_minutes": 30,
+            "start_date": "2026-10-26",
+            "end_date": "2026-10-30",
+            "room_needs": {
+              "min_capacity": 2
+            }
+          }
+        },
+        {
+          "name": "find_open_slots",
+          "input": {
+            "people": [
+              "p-hana",
+              "p-priya"
+            ],
+            "duration_minutes": 30,
+            "start_date": "2026-10-26",
+            "end_date": "2026-10-30"
+          }
+        },
+        {
+          "name": "ask_question",
+          "input": {
+            "question": "Hana (Singapore, 09:00-18:00) and Priya (New York, 09:00-17:00) have no overlapping working hours next week, so no 30-minute slot exists within both normal schedules. Should I relax the constraint and propose an early-morning slot for Priya or a late-evening slot for Hana, or would you like a different timeframe?\""
+          }
+        }
+      ],
+      "unknown_tools": 0,
+      "tokens": 13570,
+      "seconds": 5.83,
+      "calls": 4,
+      "retries": 0
+    },
+    {
+      "id": "impossible-singapore-new-york",
+      "group": "impossible_or_ambiguous",
+      "run": 3,
+      "expected_status": "question",
+      "status": "question",
+      "correct": true,
+      "bad_proposal": false,
+      "problems": [],
+      "result": {
+        "status": "question",
+        "summary": null,
+        "reasons": [],
+        "tradeoffs": [],
+        "question": "Hana (Singapore, 09:00-18:00) and Priya (New York, 09:00-17:00) have no overlapping working hours next week. Their hours only meet if one of them works outside normal hours, or if the meeting moves to another week. Would you like me to look at a different date range, or can one of them extend their hours for a 30-minute call?",
+        "reason": null,
+        "hold_id": null,
+        "start_utc": null,
+        "end_utc": null,
+        "duration_minutes": null,
+        "room": null,
+        "attendees": []
+      },
+      "tool_calls": [
+        {
+          "name": "list_people",
+          "input": {}
+        },
+        {
+          "name": "list_rooms",
+          "input": {}
+        },
+        {
+          "name": "find_open_slots",
+          "input": {
+            "people": [
+              "p-hana",
+              "p-priya"
+            ],
+            "duration_minutes": 30,
+            "start_date": "2026-10-26",
+            "end_date": "2026-10-30",
+            "room_needs": {
+              "min_capacity": 2
+            }
+          }
+        },
+        {
+          "name": "ask_question",
+          "input": {
+            "question": "Hana (Singapore, 09:00-18:00) and Priya (New York, 09:00-17:00) have no overlapping working hours next week. Their hours only meet if one of them works outside normal hours, or if the meeting moves to another week. Would you like me to look at a different date range, or can one of them extend their hours for a 30-minute call?"
+          }
+        }
+      ],
+      "unknown_tools": 0,
+      "tokens": 10339,
+      "seconds": 5.79,
+      "calls": 3,
+      "retries": 0
+    },
+    {
+      "id": "impossible-friday-dana",
+      "group": "impossible_or_ambiguous",
+      "run": 1,
+      "expected_status": "question",
+      "status": "question",
+      "correct": true,
+      "bad_proposal": false,
+      "problems": [],
+      "result": {
+        "status": "question",
+        "summary": null,
+        "reasons": [],
+        "tradeoffs": [],
+        "question": "Dana Whitfield's working days are Monday to Thursday, so she isn't scheduled to work Friday 30 October. Should I book Carlos and Dana on Friday anyway, or would you like me to look at Monday to Thursday next week instead?",
+        "reason": null,
+        "hold_id": null,
+        "start_utc": null,
+        "end_utc": null,
+        "duration_minutes": null,
+        "room": null,
+        "attendees": []
+      },
+      "tool_calls": [
+        {
+          "name": "list_people",
+          "input": {}
+        },
+        {
+          "name": "list_rooms",
+          "input": {}
+        },
+        {
+          "name": "ask_question",
+          "input": {
+            "question": "Dana Whitfield's working days are Monday to Thursday, so she isn't scheduled to work Friday 30 October. Should I book Carlos and Dana on Friday anyway, or would you like me to look at Monday to Thursday next week instead?"
+          }
+        }
+      ],
+      "unknown_tools": 0,
+      "tokens": 5749,
+      "seconds": 2.8,
+      "calls": 2,
+      "retries": 0
+    },
+    {
+      "id": "impossible-friday-dana",
+      "group": "impossible_or_ambiguous",
+      "run": 2,
+      "expected_status": "question",
+      "status": "question",
+      "correct": true,
+      "bad_proposal": false,
+      "problems": [],
+      "result": {
+        "status": "question",
+        "summary": null,
+        "reasons": [],
+        "tradeoffs": [],
+        "question": "Dana Whitfield's profile lists her working days as Monday to Thursday, and no common 30-minute slot with Carlos exists on Friday 30 October. Can you confirm Dana is available that Friday, or should I look at another day (e.g., Thursday 29 October)?",
+        "reason": null,
+        "hold_id": null,
+        "start_utc": null,
+        "end_utc": null,
+        "duration_minutes": null,
+        "room": null,
+        "attendees": []
+      },
+      "tool_calls": [
+        {
+          "name": "list_people",
+          "input": {}
+        },
+        {
+          "name": "list_rooms",
+          "input": {}
+        },
+        {
+          "name": "find_open_slots",
+          "input": {
+            "people": [
+              "p-dana",
+              "p-carlos"
+            ],
+            "duration_minutes": 30,
+            "start_date": "2026-10-30",
+            "end_date": "2026-10-30",
+            "room_needs": {
+              "min_capacity": 2
+            }
+          }
+        },
+        {
+          "name": "ask_question",
+          "input": {
+            "question": "Dana Whitfield's profile lists her working days as Monday to Thursday, and no common 30-minute slot with Carlos exists on Friday 30 October. Can you confirm Dana is available that Friday, or should I look at another day (e.g., Thursday 29 October)?"
+          }
+        }
+      ],
+      "unknown_tools": 0,
+      "tokens": 9476,
+      "seconds": 4.15,
+      "calls": 3,
+      "retries": 0
+    },
+    {
+      "id": "impossible-friday-dana",
+      "group": "impossible_or_ambiguous",
+      "run": 3,
+      "expected_status": "question",
+      "status": "question",
+      "correct": true,
+      "bad_proposal": false,
+      "problems": [],
+      "result": {
+        "status": "question",
+        "summary": null,
+        "reasons": [],
+        "tradeoffs": [],
+        "question": "Dana Whitfield's working days are Monday to Thursday, and there are no shared open slots with Carlos on Friday 30 October. Can Dana be scheduled on Friday anyway, or should I look at Monday-Thursday next week (26-29 October) instead?",
+        "reason": null,
+        "hold_id": null,
+        "start_utc": null,
+        "end_utc": null,
+        "duration_minutes": null,
+        "room": null,
+        "attendees": []
+      },
+      "tool_calls": [
+        {
+          "name": "list_people",
+          "input": {}
+        },
+        {
+          "name": "list_rooms",
+          "input": {}
+        },
+        {
+          "name": "find_open_slots",
+          "input": {
+            "people": [
+              "p-dana",
+              "p-carlos"
+            ],
+            "duration_minutes": 30,
+            "start_date": "2026-10-30",
+            "end_date": "2026-10-30"
+          }
+        },
+        {
+          "name": "ask_question",
+          "input": {
+            "question": "Dana Whitfield's working days are Monday to Thursday, and there are no shared open slots with Carlos on Friday 30 October. Can Dana be scheduled on Friday anyway, or should I look at Monday-Thursday next week (26-29 October) instead?"
+          }
+        }
+      ],
+      "unknown_tools": 0,
+      "tokens": 9461,
+      "seconds": 4.86,
+      "calls": 3,
+      "retries": 0
+    },
+    {
+      "id": "ambiguous-unknown-person",
+      "group": "impossible_or_ambiguous",
+      "run": 1,
+      "expected_status": "question",
+      "status": "question",
+      "correct": true,
+      "bad_proposal": false,
+      "problems": [],
+      "result": {
+        "status": "question",
+        "summary": null,
+        "reasons": [],
+        "tradeoffs": [],
+        "question": "I couldn't find a Marcus in the people directory, so I can't check his availability. Could you give me his full name or user ID? Priya Raman is on the directory and I can book with her once Marcus is confirmed.",
+        "reason": null,
+        "hold_id": null,
+        "start_utc": null,
+        "end_utc": null,
+        "duration_minutes": null,
+        "room": null,
+        "attendees": []
+      },
+      "tool_calls": [
+        {
+          "name": "list_people",
+          "input": {}
+        },
+        {
+          "name": "list_rooms",
+          "input": {}
+        },
+        {
+          "name": "ask_question",
+          "input": {
+            "question": "I couldn't find a Marcus in the people directory, so I can't check his availability. Could you give me his full name or user ID? Priya Raman is on the directory and I can book with her once Marcus is confirmed."
+          }
+        }
+      ],
+      "unknown_tools": 0,
+      "tokens": 5619,
+      "seconds": 2.48,
+      "calls": 2,
+      "retries": 0
+    },
+    {
+      "id": "ambiguous-unknown-person",
+      "group": "impossible_or_ambiguous",
+      "run": 2,
+      "expected_status": "question",
+      "status": "question",
+      "correct": true,
+      "bad_proposal": false,
+      "problems": [],
+      "result": {
+        "status": "question",
+        "summary": null,
+        "reasons": [],
+        "tradeoffs": [],
+        "question": "I couldn't find a Marcus in the directory (Priya Raman is there, but no finance Marcus). What is Marcus's full name or email so I can add him?",
+        "reason": null,
+        "hold_id": null,
+        "start_utc": null,
+        "end_utc": null,
+        "duration_minutes": null,
+        "room": null,
+        "attendees": []
+      },
+      "tool_calls": [
+        {
+          "name": "list_people",
+          "input": {}
+        },
+        {
+          "name": "list_rooms",
+          "input": {}
+        },
+        {
+          "name": "ask_question",
+          "input": {
+            "question": "I couldn't find a Marcus in the directory (Priya Raman is there, but no finance Marcus). What is Marcus's full name or email so I can add him?"
+          }
+        }
+      ],
+      "unknown_tools": 0,
+      "tokens": 5598,
+      "seconds": 2.49,
+      "calls": 2,
+      "retries": 0
+    },
+    {
+      "id": "ambiguous-unknown-person",
+      "group": "impossible_or_ambiguous",
+      "run": 3,
+      "expected_status": "question",
+      "status": "question",
+      "correct": true,
+      "bad_proposal": false,
+      "problems": [],
+      "result": {
+        "status": "question",
+        "summary": null,
+        "reasons": [],
+        "tradeoffs": [],
+        "question": "I couldn't find a Marcus in the directory, and no one listed is in finance. Could you give me Marcus's full name or email so I can add him?",
+        "reason": null,
+        "hold_id": null,
+        "start_utc": null,
+        "end_utc": null,
+        "duration_minutes": null,
+        "room": null,
+        "attendees": []
+      },
+      "tool_calls": [
+        {
+          "name": "list_people",
+          "input": {}
+        },
+        {
+          "name": "list_rooms",
+          "input": {}
+        },
+        {
+          "name": "ask_question",
+          "input": {
+            "question": "I couldn't find a Marcus in the directory, and no one listed is in finance. Could you give me Marcus's full name or email so I can add him?"
+          }
+        }
+      ],
+      "unknown_tools": 0,
+      "tokens": 5591,
+      "seconds": 3.38,
+      "calls": 2,
+      "retries": 0
+    },
+    {
+      "id": "ambiguous-no-length",
+      "group": "impossible_or_ambiguous",
+      "run": 1,
+      "expected_status": "question",
+      "status": "question",
+      "correct": true,
+      "bad_proposal": false,
+      "problems": [],
+      "result": {
+        "status": "question",
+        "summary": null,
+        "reasons": [],
+        "tradeoffs": [],
+        "question": "How long should the roadmap meeting with Tom and Mei be (for example 30, 60, or 90 minutes)?",
+        "reason": null,
+        "hold_id": null,
+        "start_utc": null,
+        "end_utc": null,
+        "duration_minutes": null,
+        "room": null,
+        "attendees": []
+      },
+      "tool_calls": [
+        {
+          "name": "list_people",
+          "input": {}
+        },
+        {
+          "name": "list_rooms",
+          "input": {}
+        },
+        {
+          "name": "ask_question",
+          "input": {
+            "question": "How long should the roadmap meeting with Tom and Mei be (for example 30, 60, or 90 minutes)?"
+          }
+        }
+      ],
+      "unknown_tools": 0,
+      "tokens": 5682,
+      "seconds": 3.04,
+      "calls": 2,
+      "retries": 0
+    },
+    {
+      "id": "ambiguous-no-length",
+      "group": "impossible_or_ambiguous",
+      "run": 2,
+      "expected_status": "question",
+      "status": "question",
+      "correct": true,
+      "bad_proposal": false,
+      "problems": [],
+      "result": {
+        "status": "question",
+        "summary": null,
+        "reasons": [],
+        "tradeoffs": [],
+        "question": "How long should the roadmap meeting with Tom and Mei be (for example, 30, 60, or 90 minutes)? Also, do you want it in the New York office or as a video call?",
+        "reason": null,
+        "hold_id": null,
+        "start_utc": null,
+        "end_utc": null,
+        "duration_minutes": null,
+        "room": null,
+        "attendees": []
+      },
+      "tool_calls": [
+        {
+          "name": "list_people",
+          "input": {}
+        },
+        {
+          "name": "list_rooms",
+          "input": {}
+        },
+        {
+          "name": "ask_question",
+          "input": {
+            "question": "How long should the roadmap meeting with Tom and Mei be (for example, 30, 60, or 90 minutes)? Also, do you want it in the New York office or as a video call?"
+          }
+        }
+      ],
+      "unknown_tools": 0,
+      "tokens": 5740,
+      "seconds": 3.03,
+      "calls": 2,
+      "retries": 0
+    },
+    {
+      "id": "ambiguous-no-length",
+      "group": "impossible_or_ambiguous",
+      "run": 3,
+      "expected_status": "question",
+      "status": "question",
+      "correct": true,
+      "bad_proposal": false,
+      "problems": [],
+      "result": {
+        "status": "question",
+        "summary": null,
+        "reasons": [],
+        "tradeoffs": [],
+        "question": "How long should the roadmap session with Tom and Mei be (for example 30, 60, or 90 minutes)?",
+        "reason": null,
+        "hold_id": null,
+        "start_utc": null,
+        "end_utc": null,
+        "duration_minutes": null,
+        "room": null,
+        "attendees": []
+      },
+      "tool_calls": [
+        {
+          "name": "list_people",
+          "input": {}
+        },
+        {
+          "name": "list_rooms",
+          "input": {}
+        },
+        {
+          "name": "find_open_slots",
+          "input": {
+            "people": [
+              "p-tom",
+              "p-mei"
+            ],
+            "duration_minutes": 60,
+            "start_date": "2026-10-26",
+            "end_date": "2026-10-30",
+            "room_needs": {
+              "min_capacity": 2
+            }
+          }
+        },
+        {
+          "name": "ask_question",
+          "input": {
+            "question": "How long should the roadmap session with Tom and Mei be (for example 30, 60, or 90 minutes)?"
+          }
+        }
+      ],
+      "unknown_tools": 0,
+      "tokens": 10080,
+      "seconds": 5.87,
+      "calls": 3,
+      "retries": 0
+    }
+  ]
+}
