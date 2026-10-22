@@ -27,18 +27,28 @@ KNOWN_TOOLS = {schema["name"] for schema in TOOL_SCHEMAS}
 def run_case(scenario, model, run_number, runner=run_agent, world=None):
     """Run one scenario once and grade it."""
     world = world or get_world()
-    events = list(runner(scenario["request"], model=model))
-    final = events[-1]
-    result = final["result"]
-    correct, bad = grade(scenario, result, world)
-    calls = [{"name": e["name"], "input": e["input"]} for e in events if e["type"] == "tool_call"]
-    return {"id": scenario["id"], "group": scenario["group"], "run": run_number,
-            "expected_status": scenario["expected_status"], "status": result["status"], "correct": correct,
-            "bad_proposal": bad,
-            "problems": proposal_problems(scenario, result, world) if result["status"] == "proposed" else [],
-            "result": result, "tool_calls": calls, "unknown_tools": sum(c["name"] not in KNOWN_TOOLS for c in calls),
-            "tokens": final["usage"]["input_tokens"] + final["usage"]["output_tokens"],
-            "seconds": final["elapsed_seconds"], "calls": final["turns"], "retries": final["proposal_retries"]}
+    base = {"id": scenario["id"], "group": scenario["group"], "run": run_number,
+            "expected_status": scenario["expected_status"]}
+    try:
+        events = list(runner(scenario["request"], model=model))
+        final = events[-1]
+        if final["type"] != "result":
+            raise RuntimeError("no result event")
+        result = final["result"]
+        correct, bad = grade(scenario, result, world)
+        calls = [{"name": e["name"], "input": e["input"]} for e in events if e["type"] == "tool_call"]
+        return {**base, "status": result.get("status"), "correct": correct, "bad_proposal": bad,
+                "problems": proposal_problems(scenario, result, world) if result.get("status") == "proposed" else [],
+                "result": result, "tool_calls": calls,
+                "unknown_tools": sum(c["name"] not in KNOWN_TOOLS for c in calls),
+                "tokens": final["usage"]["input_tokens"] + final["usage"]["output_tokens"],
+                "seconds": final["elapsed_seconds"], "calls": final["turns"], "retries": final["proposal_retries"]}
+    except Exception as error:
+        # A crashed run becomes an "unable" row so the rest of the eval and its summary survive.
+        # It has no seconds or calls keys, so it stays out of the timing numbers.
+        return {**base, "status": "unable", "correct": False, "bad_proposal": False,
+                "problems": [f"run crashed: {type(error).__name__}"], "result": {}, "tool_calls": [],
+                "unknown_tools": 0, "tokens": 0, "retries": 0}
 
 
 def main():

@@ -9,7 +9,18 @@ def _ratio(part, whole):
 
 
 def proposal_problems(scenario, result, world):
-    """Hard-constraint violations of a proposed result, checked against the world (empty = none)."""
+    """Hard-constraint violations of a proposed result, checked against the world (empty = none).
+
+    A malformed result (missing or odd fields) is reported as a problem instead of raising,
+    so one bad model answer cannot abort a whole paid eval.
+    """
+    try:
+        return _check_proposal(scenario, result, world)
+    except Exception as error:
+        return [f"malformed result: {type(error).__name__}"]
+
+
+def _check_proposal(scenario, result, world):
     problems = []
     attendees = [a["id"] for a in result["attendees"]]
     if sorted(attendees) != sorted(scenario["attendees"]):

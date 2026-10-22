@@ -81,3 +81,41 @@ def test_run_case_grades_and_counts_tools():
                  "turns": 2, "proposal_retries": 0, "elapsed_seconds": 1.5}]
     r = run_eval.run_case(SCENARIO, "m", 1, runner=fake, world=W)
     assert r["correct"] and r["tokens"] == 10 and r["unknown_tools"] == 1 and r["result"]["start_utc"]
+
+
+def load_run_eval():
+    import importlib.util
+    import sys
+    from pathlib import Path
+    root = Path(__file__).resolve().parent.parent
+    sys.path.insert(0, str(root / "eval"))
+    spec = importlib.util.spec_from_file_location("run_eval", root / "eval" / "run_eval.py")
+    run_eval = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(run_eval)
+    return run_eval
+
+
+def test_malformed_proposals_grade_as_bad_without_raising():
+    missing = {"status": "proposed"}
+    unparseable = proposed(start="not-a-time")
+    no_room = proposed()
+    no_room["room"] = None
+    for bad_result in (missing, unparseable, no_room):
+        assert grade(SCENARIO, bad_result, W) == (False, True), bad_result
+        assert proposal_problems(SCENARIO, bad_result, W)[0].startswith("malformed result: ")
+
+
+def test_run_case_records_a_crashed_run_as_unable():
+    run_eval = load_run_eval()
+
+    def boom(request, model):
+        raise ValueError("network went away")
+
+    def no_result(request, model):
+        return [{"type": "tool_call", "id": "a", "name": "list_people", "input": {}}]
+
+    for runner in (boom, no_result):
+        r = run_eval.run_case(SCENARIO, "m", 2, runner=runner, world=W)
+        assert r["status"] == "unable" and r["correct"] is False and r["bad_proposal"] is False
+        assert r["problems"] == [f"run crashed: {'ValueError' if runner is boom else 'RuntimeError'}"]
+        assert r["run"] == 2 and r["id"] == "x"
