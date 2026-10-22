@@ -137,6 +137,41 @@ def test_question_and_unable_results():
                                 "start_utc", "end_utc", "duration_minutes", "room", "attendees"}
 
 
+@pytest.mark.parametrize("start", ["2026-10-26T15:00", "2026-10-26 15:00", 5])
+def test_place_hold_refuses_naive_or_non_text_start(start):
+    with pytest.raises(ValueError, match="UTC time"):
+        run_tool(ws(), "place_hold", {"start_utc": start, "duration_minutes": 60,
+                                      "people": ["ana", "ben"], "room_id": "loft"})
+
+
+@pytest.mark.parametrize("start", ["2026-10-26T15:00:30Z", "2026-10-26T15:00:00.5Z"])
+def test_place_hold_refuses_fractional_seconds(start):
+    with pytest.raises(ValueError, match="15-minute"):
+        run_tool(ws(), "place_hold", {"start_utc": start, "duration_minutes": 60,
+                                      "people": ["ana", "ben"], "room_id": "loft"})
+
+
+ODD_INPUTS = [
+    ("find_open_slots", {"people": [{}], "duration_minutes": 60, "start_date": "2026-10-26",
+                         "end_date": "2026-10-26"}),
+    ("find_open_slots", {"people": ["ana"], "duration_minutes": 60, "start_date": "2026-10-26",
+                         "end_date": "2026-10-26", "room_needs": "x"}),
+    ("find_open_slots", {"people": ["ana"], "duration_minutes": 60, "start_date": "2026-10-26",
+                         "end_date": "2026-10-26", "earliest_local": 5}),
+    ("place_hold", {"start_utc": "2026-10-26T15:00Z", "duration_minutes": 60, "people": ["ana", "ben"],
+                    "room_id": []}),
+    ("place_hold", {"start_utc": 5, "duration_minutes": 60, "people": ["ana", "ben"], "room_id": "loft"}),
+    ("release_hold", {"hold_id": []}),
+    ("list_people", None),
+]
+
+
+@pytest.mark.parametrize("name, args", ODD_INPUTS)
+def test_odd_typed_inputs_raise_value_error(name, args):
+    with pytest.raises(ValueError):
+        run_tool(ws(), name, args)
+
+
 def test_release_all():
     space = ws()
     hold(space)

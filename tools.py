@@ -8,7 +8,7 @@ by code, never copied from what the model wrote.
 import itertools
 from datetime import date, datetime, time, timedelta
 
-from world import UTC, get_world, parse_utc, utc_text
+from world import UTC, get_world, utc_text
 
 MAX_SLOTS = 10
 STATUSES = ("proposed", "question")
@@ -110,11 +110,26 @@ def _check_slot(space, start, end, people, room, ignore=None):
     return problems
 
 
+def _start_moment(text):
+    """A start such as '2026-10-26T15:00Z' (or with an explicit offset). Naive times are refused,
+    because they would be read in the machine's own time zone."""
+    message = "start_utc must be a UTC time such as 2026-10-26T15:00Z"
+    if not isinstance(text, str):
+        raise ValueError(message)
+    try:
+        moment = datetime.fromisoformat(text.replace("Z", "+00:00"))
+    except ValueError:
+        raise ValueError(message) from None
+    if moment.tzinfo is None:
+        raise ValueError(message)
+    return moment.astimezone(UTC)
+
+
 def place_hold(space, args):
     people = _people(space, args["people"])
     minutes = _duration(args["duration_minutes"])
-    start = parse_utc(args["start_utc"])
-    if start.minute % 15 or start.second:
+    start = _start_moment(args["start_utc"])
+    if start.minute % 15 or start.second or start.microsecond:
         raise ValueError("start_utc must be on a 15-minute step")
     room = space.world.rooms.get(args["room_id"])
     if room is None:
@@ -147,7 +162,14 @@ def run_tool(space, name, args):
     """Run one tool. Raises on an unknown tool or bad arguments; the loop reports that back."""
     if name not in _TOOLS:
         raise ValueError(f"unknown tool {name!r}")
-    return _TOOLS[name](space, args)
+    if not isinstance(args, dict):
+        raise ValueError(f"input for {name} must be an object")
+    try:
+        return _TOOLS[name](space, args)
+    except (ValueError, KeyError):
+        raise
+    except Exception as error:  # odd-typed input (e.g. a list where an id belongs) becomes a plain ValueError
+        raise ValueError(f"bad input for {name}: {type(error).__name__}") from error
 
 
 def _texts(value):
