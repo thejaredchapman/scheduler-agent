@@ -1,0 +1,137 @@
+[
+ {
+  "id": "p-priya",
+  "name": "Priya Raman",
+  "role": "Engineering Manager",
+  "time_zone": "America/New_York",
+  "working_hours": [
+   "09:00",
+   "17:00"
+  ],
+  "working_days": [
+   "Mon",
+   "Tue",
+   "Wed",
+   "Thu",
+   "Fri"
+  ]
+ },
+ {
+  "id": "p-tom",
+  "name": "Tom Becker",
+  "role": "Product Manager",
+  "time_zone": "America/New_York",
+  "working_hours": [
+   "09:00",
+   "17:00"
+  ],
+  "working_days": [
+   "Mon",
+   "Tue",
+   "Wed",
+   "Thu",
+   "Fri"
+  ]
+ },
+ {
+  "id": "p-mei",
+  "name": "Mei Lin",
+  "role": "Designer",
+  "time_zone": "America/New_York",
+  "working_hours": [
+   "09:00",
+   "17:00"
+  ],
+  "working_days": [
+   "Mon",
+   "Tue",
+   "Wed",
+   "Thu",
+   "Fri"
+  ]
+ },
+ {
+  "id": "p-oliver",
+  "name": "Oliver Grant",
+  "role": "Support Lead (part-time)",
+  "time_zone": "Europe/London",
+  "working_hours": [
+   "09:00",
+   "14:00"
+  ],
+  "working_days": [
+   "Mon",
+   "Tue",
+   "Wed",
+   "Thu",
+   "Fri"
+  ]
+ },
+ {
+  "id": "p-fiona",
+  "name": "Fiona Clarke",
+  "role": "Sales Director",
+  "time_zone": "Europe/London",
+  "working_hours": [
+   "09:00",
+   "17:00"
+  ],
+  "working_days": [
+   "Mon",
+   "Tue",
+   "Wed",
+   "Thu",
+   "Fri"
+  ]
+ },
+ {
+  "id": "p-carlos",
+  "name": "Carlos Mendez",
+  "role": "Data Engineer",
+  "time_zone": "America/Denver",
+  "working_hours": [
+   "09:00",
+   "17:00"
+  ],
+  "working_days": [
+   "Mon",
+   "Tue",
+   "Wed",
+   "Thu",
+   "Fri"
+  ]
+ },
+ {
+  "id": "p-dana",
+  "name": "Dana Whitfield",
+  "role": "Operations Manager",
+  "time_zone": "America/Denver",
+  "working_hours": [
+   "09:00",
+   "17:00"
+  ],
+  "working_days": [
+   "Mon",
+   "Tue",
+   "Wed",
+   "Thu"
+  ]
+ },
+ {
+  "id": "p-hana",
+  "name": "Hana Sato",
+  "role": "Regional Lead",
+  "time_zone": "Asia/Singapore",
+  "working_hours": [
+   "09:00",
+   "18:00"
+  ],
+  "working_days": [
+   "Mon",
+   "Tue",
+   "Wed",
+   "Thu",
+   "Fri"
+  ]
+ }
+]

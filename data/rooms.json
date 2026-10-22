@@ -1,0 +1,42 @@
+[
+ {
+  "id": "r-nook",
+  "name": "Nook",
+  "capacity": 2,
+  "equipment": [
+   "screen"
+  ],
+  "time_zone": "America/New_York"
+ },
+ {
+  "id": "r-den",
+  "name": "Den",
+  "capacity": 4,
+  "equipment": [
+   "screen",
+   "whiteboard"
+  ],
+  "time_zone": "America/New_York"
+ },
+ {
+  "id": "r-forum",
+  "name": "Forum",
+  "capacity": 8,
+  "equipment": [
+   "screen",
+   "video"
+  ],
+  "time_zone": "America/New_York"
+ },
+ {
+  "id": "r-hall",
+  "name": "Hall",
+  "capacity": 14,
+  "equipment": [
+   "screen",
+   "video",
+   "whiteboard"
+  ],
+  "time_zone": "America/New_York"
+ }
+]
