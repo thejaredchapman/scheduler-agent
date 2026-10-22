@@ -44,6 +44,26 @@ class SessionStore:
         self._sessions = OrderedDict()  # oldest first, so eviction is easy
         self._lock = threading.Lock()
 
+    def find(self, sid):
+        """The live session for this id, or None. Never creates or evicts anyone.
+
+        Used by endpoints that anyone can call without a cookie, so a flood of cookieless
+        requests cannot push real visitors out. An expired session counts as missing.
+        """
+        if not sid:
+            return None
+        now = self.clock()
+        with self._lock:
+            session = self._sessions.get(sid)
+            if session is None:
+                return None
+            if now - session.last_seen > self.idle_seconds:
+                del self._sessions[sid]
+                return None
+            session.last_seen = now
+            self._sessions.move_to_end(sid)
+            return session
+
     def get(self, sid):
         """(sid, session, created). Unknown, expired or missing ids get a fresh session."""
         now = self.clock()

@@ -168,7 +168,13 @@ def create_app(agent_runner=run_agent, limiter=None, budget=None, sessions=None,
     world = sessions.world or get_world()
 
     def visitor(request):
+        """Only /schedule (which is rate limited) may create a session."""
         return sessions.get(request.cookies.get(COOKIE))
+
+    def known_visitor(request):
+        """(sid, session) for a visitor who already has a session, else (None, None). Creates nothing."""
+        sid = request.cookies.get(COOKIE)
+        return sid, sessions.find(sid)
 
     def tagged(events, session):
         """Give each proposal an id the browser can use, and remember it for this visitor."""
@@ -204,7 +210,9 @@ def create_app(agent_runner=run_agent, limiter=None, budget=None, sessions=None,
 
     def act(request, proposal_id, action, consume):
         """Look up the proposal this server made for this visitor, run `action` on it, answer in JSON."""
-        sid, session, _ = visitor(request)
+        sid, session = known_visitor(request)
+        if session is None:  # no cookie, or it expired: nothing of theirs is on file
+            return JSONResponse({"detail": "No such proposal"}, status_code=404)
         with session.lock:  # one action at a time per visitor: no double-approve from a double-click
             proposal = session.proposals.get(proposal_id)
             if proposal is None:
@@ -242,7 +250,9 @@ def create_app(agent_runner=run_agent, limiter=None, budget=None, sessions=None,
 
     @app.post("/undo")
     def undo(body: UndoAction, request: Request):
-        sid, session, _ = visitor(request)
+        sid, session = known_visitor(request)
+        if session is None:
+            return JSONResponse({"detail": "Nothing to undo."}, status_code=409)
         with session.lock:
             try:
                 cancelled = session.outbox.undo(body.send_id)
@@ -252,8 +262,8 @@ def create_app(agent_runner=run_agent, limiter=None, budget=None, sessions=None,
         return _with_cookie(JSONResponse({"cancelled": cancelled, "outbox": listing}), sid)
 
     @app.get("/api/world")
-    def world_view(request: Request):
-        sid, _, _ = visitor(request)
+    def world_view():
+        # The same for everyone, so no session and no cookie are needed.
         monday, friday = next_week(DEMO_TODAY)
         # Pad the window by 14 hours each side so time zones far from UTC still get their edges.
         start = datetime.combine(date.fromisoformat(monday), time(0), UTC) - timedelta(hours=14)
@@ -263,12 +273,14 @@ def create_app(agent_runner=run_agent, limiter=None, budget=None, sessions=None,
         people = [{key: p[key] for key in ("id", "name", "role", "time_zone", "working_hours", "working_days")}
                   for p in world.people.values()]
         rooms = [{key: r[key] for key in ("id", "name", "capacity", "equipment")} for r in world.rooms.values()]
-        return _with_cookie(JSONResponse({"week": {"monday": monday, "friday": friday}, "people": people,
-                                          "rooms": rooms, "busy": busy}), sid)
+        return JSONResponse({"week": {"monday": monday, "friday": friday}, "people": people,
+                             "rooms": rooms, "busy": busy})
 
     @app.get("/api/outbox")
     def outbox_view(request: Request):
-        sid, session, _ = visitor(request)
+        sid, session = known_visitor(request)
+        if session is None:  # a first-time visitor has sent nothing; do not make a session for them
+            return JSONResponse({"sent": []})
         return _with_cookie(JSONResponse({"sent": session.outbox.listing()}), sid)
 
     @app.get("/api/samples")

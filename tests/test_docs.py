@@ -95,3 +95,9 @@ def test_contact_and_honest_wording():
     assert "nothing has been deployed" in read(DEVELOPER).lower()
     assert "Claude's note" in read(DEVELOPER)
     assert "Sent without approval" in read(BUSINESS) or "sent without approval" in read(BUSINESS)
+
+
+def test_business_guide_drops_the_unsupported_claims():
+    text = (Path(__file__).resolve().parent.parent / "docs" / "business-guide.md").read_text()
+    for phrase in ("four-hour overlap", "because code checks every proposal", "most likely to go wrong"):
+        assert phrase not in text

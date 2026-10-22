@@ -128,6 +128,24 @@ def test_replay_mode_remembers_recorded_proposals(tmp_path):
     assert c.post("/approve", json={"proposal_id": "prop-1"}).status_code == 200
 
 
+def test_cookieless_requests_create_no_sessions_and_evict_nobody():
+    store = SessionStore(max_sessions=2, world=W)
+    c = app_client(sessions=store)
+    schedule(c)  # this visitor now has a session and prop-1
+    assert len(store._sessions) == 1
+    for _ in range(10):
+        stranger = TestClient(c.app)  # no cookie, like a crawler
+        assert stranger.get("/api/world").status_code == 200
+        assert stranger.get("/api/outbox").json() == {"sent": []}
+        assert stranger.post("/approve", json={"proposal_id": "prop-1"}).status_code == 404
+        assert stranger.post("/reject", json={"proposal_id": "prop-1"}).status_code == 404
+        assert stranger.post("/dry-run", json={"proposal_id": "prop-1"}).json() == {"detail": "No such proposal"}
+        assert stranger.post("/undo", json={"send_id": "send-1"}).status_code == 409
+        assert "set-cookie" not in stranger.get("/api/outbox").headers
+    assert len(store._sessions) == 1
+    assert c.post("/approve", json={"proposal_id": "prop-1"}).status_code == 200  # the real visitor is untouched
+
+
 def test_world_samples_and_cookie(tmp_path):
     (tmp_path / "b.json").write_text(json.dumps({"id": "b", "label": "B", "request": "RB", "events": []}))
     c = app_client(tmp_path=tmp_path)
@@ -136,7 +154,9 @@ def test_world_samples_and_cookie(tmp_path):
     assert body["week"] == {"monday": "2026-10-26", "friday": "2026-10-30"}
     assert {p["id"] for p in body["people"]} == {"ana", "ben", "chen", "dev"}
     assert body["busy"]["ana"] == [{"start_utc": "2026-10-26T14:00Z", "end_utc": "2026-10-26T15:00Z"}]
-    cookie = world.headers["set-cookie"].lower()
+    assert "set-cookie" not in world.headers  # the world page is the same for everyone: no session, no cookie
+    first = c.post("/schedule", json={"request": "Find an hour for Ana and Ben"})
+    cookie = first.headers["set-cookie"].lower()  # only /schedule starts a session
     assert "sid=" in cookie and "httponly" in cookie and "samesite=strict" in cookie
     assert c.get("/api/samples").json() == [{"id": "b", "label": "B", "request": "RB"}]
 

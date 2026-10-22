@@ -27,7 +27,7 @@ These points come from features the demo really has. Where something was not mea
 
 **A person stays in charge.** The assistant has no tool for sending. It can only look things up, pencil in a hold, and hand you a proposal or a question. Sending happens only after a person approves, and it can be undone for 10 minutes.
 
-**Time zones handled by software.** In the tests, requests that crossed London, New York, Denver and Singapore were the cases most likely to go wrong. Because the arithmetic is done by code, the times shown to each attendee come from the same calculation every time.
+**Time zones handled by software.** Time-zone arithmetic is easy to get wrong by hand. Here code does it, so the times shown to each attendee come from the same calculation every time.
 
 **Honest "this cannot be done" answers.** If a request cannot be met, for example a meeting that has to fit working hours in both Singapore and New York with no overlap, the assistant is told to ask you a short question instead of forcing a bad slot. In our test it asked a question every time one was needed.
 
@@ -48,7 +48,7 @@ Someone technical has to start the demo on a computer, using the steps in the de
 5. Within 10 minutes you can undo a send from the outbox.
 6. If the assistant asks a question instead, type your answer and send it.
 
-The four samples are: a simple meeting, London and New York (the four-hour overlap in the working week), four people in two regions where only one slot fits, and an impossible request that makes the assistant ask a question.
+The four samples are: a simple meeting, London and New York (London is 4 hours ahead that week, and because the London attendee works only 09:00 to 14:00, the shared window is short), four people in two regions where only one slot fits, and an impossible request that makes the assistant ask a question.
 
 Nothing is really sent. The "outbox" is a list on the page, kept in memory for your visit and forgotten after about 30 minutes of inactivity.
 
@@ -84,7 +84,7 @@ We wrote 16 scheduling requests and ran each one three times, one at a time, for
 
 **The re-run: 98% success.** Forty-seven of 48 runs were right. The one miss was a time-zone request that ended as "unable" after the same markup problem. The leaked-markup problem did not disappear: it happened in 3 of the 38 proposal submissions, down from 25 of 63. We do not know why the AI sometimes does it.
 
-**Bad proposals: 0%.** No proposal in either run double-booked anyone, broke working hours or missed a hard requirement. This is because code checks every proposal before it is shown, so a bad one is rejected rather than shown.
+**Bad proposals: 0%.** No proposal in either run double-booked anyone, broke working hours or put people in a room that was too small. Code checks every proposal for exactly those things (free time, working hours, room size and the hold) before it is shown, so a bad one is rejected rather than shown. Whether a proposal matched the request (the right people, length and day) is not checked by code while the demo runs. The test scoring graded that.
 
 **Questions when needed: 100%.** Every time the request was impossible or unclear, the assistant asked a question.
 

@@ -38,3 +38,26 @@ def test_idle_expiry_and_cap():
     b, _, _ = s.get(None)
     c, _, _ = s.get(None)
     assert s.get(a2)[2]                         # the oldest was evicted to keep at most 2
+
+
+def test_find_never_creates_or_evicts():
+    s, now = store(max_sessions=1)
+    assert s.find(None) is None and s.find("nope") is None
+    assert len(s._sessions) == 0  # looking for a missing session makes none
+    sid, session, _ = s.get(None)
+    assert s.find(sid) is session
+    for _ in range(5):
+        s.find("someone-else")
+    assert s.find(sid) is session  # nobody was evicted
+
+
+def test_find_refreshes_last_seen_and_treats_expired_as_missing():
+    s, now = store(idle_seconds=100)
+    sid, session, _ = s.get(None)
+    now[0] = 90
+    assert s.find(sid) is session and session.last_seen == 90
+    now[0] = 180  # 90 since the refresh: still alive
+    assert s.find(sid) is session
+    now[0] = 400
+    assert s.find(sid) is None
+    assert s.find(sid) is None and len(s._sessions) == 0
