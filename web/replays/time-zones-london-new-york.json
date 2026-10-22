@@ -1,0 +1,362 @@
+{
+  "id": "time-zones-london-new-york",
+  "label": "London and New York (the 4-hour week)",
+  "request": "Find 30 minutes next week for Oliver in London with Priya and Tom in New York, and book a room for it.",
+  "model": "claude-haiku-5-5",
+  "recorded_on": "2026-10-22",
+  "events": [
+    {
+      "type": "tool_call",
+      "id": "toolu_019unBKe6seWUJNKY7pZ5w2R",
+      "name": "list_people",
+      "input": {}
+    },
+    {
+      "type": "tool_result",
+      "id": "toolu_019unBKe6seWUJNKY7pZ5w2R",
+      "name": "list_people",
+      "output": {
+        "people": [
+          {
+            "id": "p-priya",
+            "name": "Priya Raman",
+            "role": "Engineering Manager",
+            "time_zone": "America/New_York",
+            "working_hours": "09:00-17:00",
+            "working_days": [
+              "Mon",
+              "Tue",
+              "Wed",
+              "Thu",
+              "Fri"
+            ]
+          },
+          {
+            "id": "p-tom",
+            "name": "Tom Becker",
+            "role": "Product Manager",
+            "time_zone": "America/New_York",
+            "working_hours": "09:00-17:00",
+            "working_days": [
+              "Mon",
+              "Tue",
+              "Wed",
+              "Thu",
+              "Fri"
+            ]
+          },
+          {
+            "id": "p-mei",
+            "name": "Mei Lin",
+            "role": "Designer",
+            "time_zone": "America/New_York",
+            "working_hours": "09:00-17:00",
+            "working_days": [
+              "Mon",
+              "Tue",
+              "Wed",
+              "Thu",
+              "Fri"
+            ]
+          },
+          {
+            "id": "p-oliver",
+            "name": "Oliver Grant",
+            "role": "Support Lead (part-time)",
+            "time_zone": "Europe/London",
+            "working_hours": "09:00-14:00",
+            "working_days": [
+              "Mon",
+              "Tue",
+              "Wed",
+              "Thu",
+              "Fri"
+            ]
+          },
+          {
+            "id": "p-fiona",
+            "name": "Fiona Clarke",
+            "role": "Sales Director",
+            "time_zone": "Europe/London",
+            "working_hours": "09:00-17:00",
+            "working_days": [
+              "Mon",
+              "Tue",
+              "Wed",
+              "Thu",
+              "Fri"
+            ]
+          },
+          {
+            "id": "p-carlos",
+            "name": "Carlos Mendez",
+            "role": "Data Engineer",
+            "time_zone": "America/Denver",
+            "working_hours": "09:00-17:00",
+            "working_days": [
+              "Mon",
+              "Tue",
+              "Wed",
+              "Thu",
+              "Fri"
+            ]
+          },
+          {
+            "id": "p-dana",
+            "name": "Dana Whitfield",
+            "role": "Operations Manager",
+            "time_zone": "America/Denver",
+            "working_hours": "09:00-17:00",
+            "working_days": [
+              "Mon",
+              "Tue",
+              "Wed",
+              "Thu"
+            ]
+          },
+          {
+            "id": "p-hana",
+            "name": "Hana Sato",
+            "role": "Regional Lead",
+            "time_zone": "Asia/Singapore",
+            "working_hours": "09:00-18:00",
+            "working_days": [
+              "Mon",
+              "Tue",
+              "Wed",
+              "Thu",
+              "Fri"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "type": "tool_call",
+      "id": "toolu_018vYVeEyFKKwodPbd7KMfiQ",
+      "name": "list_rooms",
+      "input": {}
+    },
+    {
+      "type": "tool_result",
+      "id": "toolu_018vYVeEyFKKwodPbd7KMfiQ",
+      "name": "list_rooms",
+      "output": {
+        "rooms": [
+          {
+            "id": "r-nook",
+            "name": "Nook",
+            "capacity": 2,
+            "equipment": [
+              "screen"
+            ]
+          },
+          {
+            "id": "r-den",
+            "name": "Den",
+            "capacity": 4,
+            "equipment": [
+              "screen",
+              "whiteboard"
+            ]
+          },
+          {
+            "id": "r-forum",
+            "name": "Forum",
+            "capacity": 8,
+            "equipment": [
+              "screen",
+              "video"
+            ]
+          },
+          {
+            "id": "r-hall",
+            "name": "Hall",
+            "capacity": 14,
+            "equipment": [
+              "screen",
+              "video",
+              "whiteboard"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "type": "tool_call",
+      "id": "toolu_01EhB5Xik4DVY2iYNRhNDxcf",
+      "name": "find_open_slots",
+      "input": {
+        "people": [
+          "p-oliver",
+          "p-priya",
+          "p-tom"
+        ],
+        "duration_minutes": 30,
+        "start_date": "2026-10-26",
+        "end_date": "2026-10-30",
+        "room_needs": {
+          "min_capacity": 3
+        }
+      }
+    },
+    {
+      "type": "tool_result",
+      "id": "toolu_01EhB5Xik4DVY2iYNRhNDxcf",
+      "name": "find_open_slots",
+      "output": {
+        "slots": [
+          {
+            "start_utc": "2026-10-26T13:00Z",
+            "room_id": "r-hall",
+            "local": {
+              "p-oliver": "Mon 26 Oct 13:00",
+              "p-priya": "Mon 26 Oct 09:00",
+              "p-tom": "Mon 26 Oct 09:00"
+            }
+          },
+          {
+            "start_utc": "2026-10-27T13:00Z",
+            "room_id": "r-den",
+            "local": {
+              "p-oliver": "Tue 27 Oct 13:00",
+              "p-priya": "Tue 27 Oct 09:00",
+              "p-tom": "Tue 27 Oct 09:00"
+            }
+          },
+          {
+            "start_utc": "2026-10-27T13:15Z",
+            "room_id": "r-den",
+            "local": {
+              "p-oliver": "Tue 27 Oct 13:15",
+              "p-priya": "Tue 27 Oct 09:15",
+              "p-tom": "Tue 27 Oct 09:15"
+            }
+          },
+          {
+            "start_utc": "2026-10-30T13:15Z",
+            "room_id": "r-den",
+            "local": {
+              "p-oliver": "Fri 30 Oct 13:15",
+              "p-priya": "Fri 30 Oct 09:15",
+              "p-tom": "Fri 30 Oct 09:15"
+            }
+          },
+          {
+            "start_utc": "2026-10-30T13:30Z",
+            "room_id": "r-den",
+            "local": {
+              "p-oliver": "Fri 30 Oct 13:30",
+              "p-priya": "Fri 30 Oct 09:30",
+              "p-tom": "Fri 30 Oct 09:30"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "type": "tool_call",
+      "id": "toolu_01E4MzPcQWnZsAoaPfQC8DyF",
+      "name": "place_hold",
+      "input": {
+        "start_utc": "2026-10-26T13:00Z",
+        "duration_minutes": 30,
+        "people": [
+          "p-oliver",
+          "p-priya",
+          "p-tom"
+        ],
+        "room_id": "r-hall"
+      }
+    },
+    {
+      "type": "tool_result",
+      "id": "toolu_01E4MzPcQWnZsAoaPfQC8DyF",
+      "name": "place_hold",
+      "output": {
+        "hold_id": "hold-1",
+        "start_utc": "2026-10-26T13:00Z",
+        "end_utc": "2026-10-26T13:30Z",
+        "room_id": "r-hall",
+        "people": [
+          "p-oliver",
+          "p-priya",
+          "p-tom"
+        ],
+        "state": "held"
+      }
+    },
+    {
+      "type": "tool_call",
+      "id": "toolu_01Cnv8p5LEE3Zj9hHdJU8nq4",
+      "name": "submit_proposal",
+      "input": {
+        "hold_id": "hold-1",
+        "summary": "I've pencilled in a 30-minute meeting for Oliver Grant, Priya Raman and Tom Becker on Monday 26 October at 13:00 UTC, in the Hall room in the New York office. Oliver's local time is 13:00 in London and Priya's and Tom's is 09:00 in New York.",
+        "reasons": [
+          "It is the earliest common slot next week, and it falls inside Oliver's part-time hours (09:00-14:00 London).",
+          "All three attendees are free for the full 30 minutes.",
+          "Hall seats 14 and has a screen, video and whiteboard, so it fits the group and allows Oliver to join by video if needed."
+        ],
+        "tradeoffs": [
+          "Hall is much larger than a group of three needs; Den (4 seats, screen and whiteboard) would also work if you prefer a smaller room. Oliver's slot ends at 14:00 London, so it is close to the end of his working day."
+        ]
+      }
+    },
+    {
+      "type": "result",
+      "result": {
+        "status": "proposed",
+        "summary": "I've pencilled in a 30-minute meeting for Oliver Grant, Priya Raman and Tom Becker on Monday 26 October at 13:00 UTC, in the Hall room in the New York office. Oliver's local time is 13:00 in London and Priya's and Tom's is 09:00 in New York.",
+        "reasons": [
+          "It is the earliest common slot next week, and it falls inside Oliver's part-time hours (09:00-14:00 London).",
+          "All three attendees are free for the full 30 minutes.",
+          "Hall seats 14 and has a screen, video and whiteboard, so it fits the group and allows Oliver to join by video if needed."
+        ],
+        "tradeoffs": [
+          "Hall is much larger than a group of three needs; Den (4 seats, screen and whiteboard) would also work if you prefer a smaller room. Oliver's slot ends at 14:00 London, so it is close to the end of his working day."
+        ],
+        "question": null,
+        "reason": null,
+        "hold_id": "hold-1",
+        "start_utc": "2026-10-26T13:00Z",
+        "end_utc": "2026-10-26T13:30Z",
+        "duration_minutes": 30,
+        "room": {
+          "id": "r-hall",
+          "name": "Hall"
+        },
+        "attendees": [
+          {
+            "id": "p-oliver",
+            "name": "Oliver Grant",
+            "time_zone": "Europe/London",
+            "local_start": "Mon 26 Oct 13:00",
+            "local_end": "13:30"
+          },
+          {
+            "id": "p-priya",
+            "name": "Priya Raman",
+            "time_zone": "America/New_York",
+            "local_start": "Mon 26 Oct 09:00",
+            "local_end": "09:30"
+          },
+          {
+            "id": "p-tom",
+            "name": "Tom Becker",
+            "time_zone": "America/New_York",
+            "local_start": "Mon 26 Oct 09:00",
+            "local_end": "09:30"
+          }
+        ]
+      },
+      "usage": {
+        "input_tokens": 13717,
+        "output_tokens": 949
+      },
+      "turns": 4,
+      "proposal_retries": 0,
+      "elapsed_seconds": 7.11
+    }
+  ]
+}
