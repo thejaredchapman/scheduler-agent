@@ -54,9 +54,8 @@ def check_recordings(results):
             problems.append(f"{sample['id']}: the run hit an error: {reason}")
         elif result.get("status") != sample["expected_status"]:
             problems.append(f"{sample['id']}: got {result.get('status')!r}, expected {sample['expected_status']!r}")
-        elif result["status"] == "proposed" and proposal_problems(scenario, result, world):
-            found = "; ".join(proposal_problems(scenario, result, world))
-            problems.append(f"{sample['id']}: the proposal is not valid: {found}")
+        elif result["status"] == "proposed" and (found := proposal_problems(scenario, result, world)):
+            problems.append(f"{sample['id']}: the proposal is not valid: {'; '.join(found)}")
         elif grade(scenario, result, world)[0] is not True:
             # Valid, but not what the eval counts as a correct answer (for example, an unaccepted start).
             problems.append(f"{sample['id']}: the eval would not count this answer as correct")

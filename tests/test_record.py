@@ -97,21 +97,16 @@ def test_check_refuses_an_invalid_proposal():
                for p in problems)
 
 
-def test_check_refuses_a_valid_but_unacceptable_start():
-    # A legal proposal for the tight day that is not the one accepted start still must not be published.
-    scenario = SCENARIOS["tight-four-people-two-regions"]
-    world = get_world()
-    slots = world.open_slots(scenario["attendees"], 45, "2026-10-29", "2026-10-29", limit=None)
-    other = [s for s in slots if utc_text(s["start"]) not in scenario["acceptable_starts"]]
-    if not other:
-        return  # nothing else fits that day; the check cannot be exercised
-    space = Workspace(world)
-    held = run_tool(space, "place_hold", {"start_utc": utc_text(other[0]["start"]), "duration_minutes": 45,
-                                          "people": scenario["attendees"], "room_id": other[0]["room"]["id"]})
-    event = result_event(build_result({"hold_id": held["hold_id"], "summary": "s", "reasons": ["r"]}, space))
+def test_check_refuses_a_valid_but_unacceptable_start(monkeypatch):
+    # A legal proposal that the eval would not count as correct (its start is not an accepted one)
+    # must not be published. Make the tight scenario accept a different start than the valid one.
+    sid = "tight-four-people-two-regions"
     results = good_results()
-    results[scenario["id"]] = [event]
-    assert any(p.startswith(scenario["id"]) for p in check_recordings(results))
+    assert check_recordings(results) == []
+    strict = dict(SCENARIOS[sid], acceptable_starts=["2026-10-29T00:00Z"])
+    monkeypatch.setitem(SCENARIOS, sid, strict)
+    problems = check_recordings(results)
+    assert f"{sid}: the eval would not count this answer as correct" in problems
 
 
 def test_main_writes_nothing_unless_every_run_is_good(tmp_path):
