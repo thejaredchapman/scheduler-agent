@@ -1,0 +1,250 @@
+/* The front desk: a calm planner on a reception counter.
+   Graphite pencils in a hold; blue-black ink marks what a person approved and sent.
+   Light is morning light on pale stone; dark is the desk lamp after hours.
+   Every colour lives here as a custom property, once per theme. */
+:root {
+  --paper: #eef1ee;       /* the counter top */
+  --sheet: #fbfcfa;       /* planner pages and cards */
+  --ink: #17223a;         /* blue-black fountain-pen ink */
+  --muted: #4b5567;
+  --accent: #23429a;      /* the same ink, for actions and bookings */
+  --on-accent: #f7f9fc;
+  --line: #c9d0c9;
+  --rule: #dfe4de;        /* hour lines */
+  --busy: #d3d9e2;        /* a busy block */
+  --busy-edge: #8792a6;
+  --off: #e3e7e2;         /* outside working hours */
+  --hatch: #cfd5cf;
+  --pencil: #555c68;      /* graphite */
+  --pencil-wash: #5a62701f;
+  --brass: #7d5f12;       /* the bell on the desk: the PROPOSED stamp */
+  --stamp-question: #6b3f8f;
+  --stamp-unable: #9e2631;
+  --shade: #1d283e24;
+  color-scheme: light;
+}
+:root[data-theme="dark"] {
+  --paper: #0f1520;
+  --sheet: #161e2c;
+  --ink: #e5e9f0;
+  --muted: #a5afbf;
+  --accent: #93b1ff;
+  --on-accent: #0f1520;
+  --line: #2c3749;
+  --rule: #222c3c;
+  --busy: #2e3a50;
+  --busy-edge: #6d7d99;
+  --off: #121a26;
+  --hatch: #1c2534;
+  --pencil: #c2c9d4;
+  --pencil-wash: #c2c9d41f;
+  --brass: #dcbc6a;
+  --stamp-question: #cfa6f0;
+  --stamp-unable: #f48f98;
+  --shade: #00000066;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0; min-height: 100vh; color: var(--ink); background: var(--paper);
+  font: 400 1rem/1.55 "Public Sans", system-ui, sans-serif;
+  font-variant-numeric: tabular-nums;
+}
+h1, h2, .stamp, .question-text, .note-summary { font-family: "Young Serif", Georgia, serif; font-weight: 400; }
+
+.visually-hidden { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; border: 0;
+  overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; }
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+[tabindex="-1"]:focus:not(:focus-visible) { outline: none; }
+/* `hidden` must win over any display rule below. */
+[hidden] { display: none !important; }
+
+/* ---------- masthead ---------- */
+.masthead { display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem;
+  max-width: 82rem; margin: 0 auto; padding: 2.5rem 16px 1.75rem; }
+.masthead h1 { margin: 0; font-size: clamp(2.3rem, 6.5vw, 3.9rem); line-height: 1; letter-spacing: -.015em; }
+.lede { max-width: 40rem; margin: .9rem 0 0; color: var(--muted); font-size: 1.08rem; }
+.icon-btn { flex-shrink: 0; width: 2.75rem; height: 2.75rem; min-height: 2.75rem; border-radius: 50%;
+  border: 1px solid var(--muted); background: var(--sheet); color: var(--ink); font-size: 1.2rem; cursor: pointer; }
+.icon-btn:hover { border-color: var(--ink); }
+
+/* ---------- layout: the counter (left) and the planner (right) ---------- */
+.desk { display: grid; grid-template-columns: minmax(0, 23rem) minmax(0, 1fr); gap: 2.5rem;
+  max-width: 82rem; margin: 0 auto; padding: 0 16px 3rem; align-items: start; }
+.counter, .planner { display: flex; flex-direction: column; gap: 2rem; min-width: 0; }
+.section-heading { margin: 0 0 .6rem; font-size: 1.4rem; line-height: 1.2; }
+.minor-heading { margin: 0 0 .5rem; font-size: .95rem; font-weight: 700; }
+.hint { margin: 0; color: var(--muted); font-size: .88rem; }
+.empty { margin: 0; color: var(--muted); font-size: .92rem; }
+
+/* ---------- the request ---------- */
+.request-form, .reply-form { display: flex; flex-direction: column; gap: .5rem; }
+label { font-weight: 700; font-size: .92rem; }
+textarea { width: 100%; padding: .6rem .7rem; border: 1px solid var(--muted); border-radius: 4px;
+  background: var(--sheet); color: var(--ink); font: 400 1rem/1.5 "Public Sans", system-ui, sans-serif; resize: vertical; }
+textarea:hover { border-color: var(--ink); }
+.samples-block { margin-top: 1.5rem; }
+.samples { display: flex; flex-direction: column; gap: .45rem; }
+.sample { min-height: 2.75rem; padding: .5rem .8rem; text-align: left; border: 1px solid var(--line); border-radius: 4px;
+  background: transparent; color: var(--ink); font: 400 .93rem/1.35 "Public Sans", sans-serif; cursor: pointer; }
+.sample:hover { border-color: var(--muted); background: var(--sheet); }
+.sample[aria-pressed="true"] { border-color: var(--accent); box-shadow: inset 4px 0 0 var(--accent); background: var(--sheet); }
+
+.primary-btn, .quiet-btn { min-height: 2.75rem; min-width: 2.75rem; padding: .6rem 1.1rem; border-radius: 4px;
+  font: 700 .97rem "Public Sans", sans-serif; cursor: pointer; }
+.primary-btn { align-self: flex-start; border: 2px solid var(--accent); background: var(--accent); color: var(--on-accent); }
+.primary-btn:hover:not([aria-disabled="true"]) { background: var(--ink); border-color: var(--ink); color: var(--sheet); }
+.quiet-btn { border: 1px solid var(--muted); background: transparent; color: var(--ink); }
+.quiet-btn:hover:not([aria-disabled="true"]) { border-color: var(--ink); background: var(--paper); }
+[aria-disabled="true"] { opacity: .55; cursor: progress; }
+
+/* ---------- the desk log: one quiet line per step ---------- */
+.notice { margin: 0 0 .8rem; padding: .7rem .9rem; border-left: 4px solid var(--accent); background: var(--sheet); }
+.trail { margin: .2rem 0 0; padding: 0 0 0 2rem; display: flex; flex-direction: column; gap: .35rem; font-size: .92rem; }
+.trail:empty { display: none; }
+.step { padding-left: .2rem; overflow-wrap: anywhere; }
+.step::marker { color: var(--muted); font-size: .85rem; }
+.step-what { display: block; }
+.step-result { display: block; color: var(--muted); }
+.step.pending .step-result::after { content: "working\2026"; font-style: italic; animation: blink 1.1s steps(2) infinite; }
+.step.error .step-result { color: var(--stamp-unable); }
+.step.error::marker { color: var(--stamp-unable); }
+
+/* ---------- cards: the proposal, the question, the refusal ---------- */
+.card { position: relative; padding: 1.25rem 1.25rem 1.1rem; background: var(--sheet); border: 1px solid var(--line);
+  border-radius: 6px; box-shadow: 0 14px 30px -22px var(--shade); }
+/* The status stamp, inked a little crooked like a rubber stamp at a reception desk. */
+.stamp { display: inline-block; margin: 0 0 .9rem; padding: .1rem .7rem; border: 2px solid currentColor; border-radius: 3px;
+  font-size: 1.15rem; letter-spacing: .06em; line-height: 1.4; transform: rotate(-2deg); color: var(--brass); }
+.stamp[data-status="question"] { color: var(--stamp-question); }
+.stamp[data-status="unable"] { color: var(--stamp-unable); }
+.card-heading { margin: 0; font-size: 1rem; font-weight: 700; }
+.card-source { margin: .1rem 0 .7rem; color: var(--muted); font-size: .84rem; }
+.times { display: flex; flex-direction: column; gap: .5rem; padding-bottom: 1rem; }
+.times ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: .45rem; }
+.time-row { display: grid; grid-template-columns: minmax(0, 1fr); }
+.time-name { font-weight: 700; }
+.time-when { font-size: 1.02rem; }
+.time-zone { color: var(--muted); font-size: .84rem; }
+.room-line { margin: 0; padding-top: .5rem; border-top: 1px solid var(--rule); }
+.claude-note { margin: 0 0 1rem; padding: .9rem 0 0; border-top: 1px dashed var(--line); }
+.note-summary { margin: 0 0 .6rem; font-size: 1.1rem; line-height: 1.45; }
+.note-heading { margin: .5rem 0 .2rem; font-size: .88rem; font-weight: 700; color: var(--muted); }
+.note-list { margin: 0; padding-left: 1.2rem; font-size: .93rem; }
+.note-list li + li { margin-top: .2rem; }
+.actions { display: flex; flex-wrap: wrap; gap: .5rem; margin-bottom: .5rem; }
+.actions .primary-btn { align-self: auto; }
+.actions .hint { flex-basis: 100%; }
+.outcome { margin: .2rem 0 .6rem; padding: .6rem .8rem; border-left: 4px solid var(--accent); background: var(--paper); }
+.preview { margin: .8rem 0; padding: .8rem .9rem; border: 1px dashed var(--pencil); border-radius: 4px; font-size: .92rem; }
+.preview h4 { margin: 0 0 .3rem; font-size: .95rem; }
+.preview p { margin: 0 0 .4rem; }
+.preview ul { margin: 0; padding-left: 1.2rem; }
+.usage { margin: .6rem 0 0; color: var(--muted); font-size: .82rem; }
+.usage:empty { display: none; }
+.question-text { margin: 0 0 1rem; font-size: 1.2rem; line-height: 1.45; }
+
+/* ---------- the week ---------- */
+.week-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: .75rem 1.5rem; }
+.zone-picker { display: flex; flex-direction: column; gap: .25rem; }
+select { min-height: 2.75rem; padding: .4rem 2rem .4rem .7rem; border: 1px solid var(--muted); border-radius: 4px;
+  background: var(--sheet); color: var(--ink); font: 400 1rem "Public Sans", sans-serif; }
+.zone-note { max-width: 44rem; margin: .7rem 0 .9rem; color: var(--muted); font-size: .86rem; }
+.legend { list-style: none; margin: 0 0 .8rem; padding: 0; display: flex; flex-wrap: wrap; gap: .35rem .9rem; font-size: .85rem; }
+.legend li { display: flex; align-items: baseline; gap: .4rem; }
+.legend .who-zone { color: var(--muted); }
+.initials { display: inline-block; min-width: 1.9rem; padding: 0 .25rem; border: 1px solid var(--busy-edge); border-radius: 3px;
+  font-size: .75rem; font-weight: 700; text-align: center; background: var(--busy); color: var(--ink); }
+
+/* The grid scrolls inside this box, so the page itself never scrolls sideways. */
+.grid-scroll { overflow-x: auto; border: 1px solid var(--line); border-radius: 6px; background: var(--sheet); }
+.week-grid { --hour: 2rem; --hours: 10; --lanes: 1; --day-min: 7rem;
+  min-width: calc(3.6rem + 5 * var(--day-min)); }
+.grid-row { display: grid; grid-template-columns: 3.6rem repeat(5, minmax(var(--day-min), 1fr)); }
+.grid-head { position: sticky; top: 0; z-index: 2; background: var(--sheet); border-bottom: 1px solid var(--line); }
+.col-head { padding: .55rem .5rem .45rem; font-size: .88rem; font-weight: 700; border-left: 1px solid var(--rule); }
+.col-head .date { display: block; font-weight: 400; color: var(--muted); font-size: .8rem; }
+.corner { padding: .55rem .4rem; font-size: .75rem; color: var(--muted); }
+.ruler { position: relative; height: calc(var(--hours) * var(--hour)); }
+.tick { position: absolute; right: .4rem; top: calc(var(--at) * var(--hour)); transform: translateY(-50%);
+  font-size: .72rem; color: var(--muted); }
+.tick.first { transform: none; }
+.day { position: relative; height: calc(var(--hours) * var(--hour)); border-left: 1px solid var(--rule);
+  background-image: linear-gradient(to bottom, var(--rule) 1px, transparent 1px);
+  background-size: 100% var(--hour); }
+.day-list { list-style: none; margin: 0; padding: 0; }
+
+/* Lanes: one thin column per person in each day, hatched where they are not at work. */
+.lanes { position: absolute; inset: 0; display: grid; grid-template-columns: repeat(var(--lanes), minmax(0, 1fr)); }
+.lane { position: relative; background: repeating-linear-gradient(135deg, var(--off) 0 5px, var(--hatch) 5px 6px); }
+.lane + .lane { box-shadow: inset 1px 0 0 var(--rule); }
+.at-work { position: absolute; left: 0; right: 0; top: calc(var(--from) * var(--hour));
+  height: calc(var(--len) * var(--hour)); background: var(--sheet);
+  background-image: linear-gradient(to bottom, var(--rule) 1px, transparent 1px); background-size: 100% var(--hour);
+  background-position: 0 calc(var(--from) * var(--hour) * -1); }
+
+.block { position: absolute; top: calc(var(--from) * var(--hour)); height: calc(var(--len) * var(--hour));
+  min-height: .9rem; overflow: hidden; border-radius: 3px; font-size: .68rem; font-weight: 700; line-height: 1.15; }
+.busy { left: calc(var(--lane) * 100% / var(--lanes) + 2px); width: calc(100% / var(--lanes) - 4px);
+  padding: .1rem 0 0; text-align: center; background: var(--busy); border-left: 2px solid var(--busy-edge); color: var(--ink); }
+/* Holds and bookings cover the whole day width: they are for everyone in the meeting. */
+.hold, .booked { left: 3px; right: 3px; z-index: 1; padding: .15rem .35rem; font-size: .74rem; }
+.hold { border: 2px dashed var(--pencil); background: var(--pencil-wash); color: var(--ink);
+  backdrop-filter: blur(1px); }
+.booked { border: 2px solid var(--accent); color: var(--on-accent);
+  background: linear-gradient(var(--accent), var(--accent)) no-repeat 0 0 / 100% 100%; }
+.block-label { display: block; overflow: hidden; white-space: nowrap; }
+.hold .block-label, .booked .block-label { text-overflow: ellipsis; }
+.hold .block-label { font-style: italic; font-weight: 600; }
+
+/* The memorable moment: on Approve, the pencilled hold inks in, top to bottom, like a pen filling it. */
+.booked.ink-in { animation: ink-fill .9s cubic-bezier(.5, 0, .2, 1) both; }
+.booked.ink-in .block-label { animation: fade .3s .6s ease both; }
+.booked.ink-in::before { content: ""; position: absolute; inset: -2px; border: 2px dashed var(--pencil); border-radius: 3px;
+  animation: pencil-out .9s ease both; pointer-events: none; }
+
+.key { list-style: none; margin: .7rem 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: .4rem 1.2rem; font-size: .82rem; color: var(--muted); }
+.key li { display: flex; align-items: center; gap: .4rem; }
+.swatch { display: inline-block; width: 1.4rem; height: .9rem; border-radius: 2px; }
+.swatch-busy { background: var(--busy); border-left: 3px solid var(--busy-edge); }
+.swatch-off { background: repeating-linear-gradient(135deg, var(--off) 0 4px, var(--hatch) 4px 5px); border: 1px solid var(--line); }
+.swatch-hold { border: 2px dashed var(--pencil); background: var(--pencil-wash); }
+.swatch-booked { background: var(--accent); }
+
+/* ---------- the outbox ---------- */
+.outbox { list-style: none; margin: .6rem 0 0; padding: 0; display: flex; flex-direction: column; gap: .6rem; }
+.outbox:empty { display: none; }
+.sent { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: .6rem 1rem;
+  padding: .8rem 1rem; background: var(--sheet); border: 1px solid var(--line); border-left: 4px solid var(--accent); border-radius: 4px; }
+.sent:focus-visible { outline-offset: 2px; }
+.sent-what { display: flex; flex-direction: column; min-width: 0; }
+.sent-when { font-weight: 700; }
+.sent-who { color: var(--muted); font-size: .88rem; }
+.sent-undo { display: flex; align-items: center; gap: .6rem; }
+.undo-left { color: var(--muted); font-size: .85rem; }
+.by-design { margin: .9rem 0 0; font-size: .86rem; color: var(--muted); }
+
+.colophon { max-width: 82rem; margin: 0 auto; padding: 0 16px 2rem; color: var(--muted); font-size: .85rem; }
+
+@keyframes blink { 50% { opacity: .35; } }
+@keyframes fade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes ink-fill { from { background-size: 100% 0%; border-color: transparent; color: transparent; }
+  to { background-size: 100% 100%; } }
+@keyframes pencil-out { 0%, 40% { opacity: 1; } 100% { opacity: 0; } }
+
+/* Less motion: the booking simply fades in; nothing blinks. */
+@media (prefers-reduced-motion: reduce) {
+  .step.pending .step-result::after { animation: none; }
+  .booked.ink-in, .booked.ink-in .block-label { animation: fade .4s ease both; }
+  .booked.ink-in::before { display: none; }
+}
+
+@media (max-width: 900px) {
+  .desk { grid-template-columns: minmax(0, 1fr); gap: 2rem; }
+  .masthead { padding-top: 1.5rem; }
+}
+@media (max-width: 420px) {
+  .card { padding-left: 1rem; padding-right: 1rem; }
+}

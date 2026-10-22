@@ -4,9 +4,135 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>The Front Desk</title>
+<meta name="description" content="Ask for a meeting in plain words. Claude checks eight calendars across four time zones and pencils in a time and a room. Nothing is sent until a person clicks Approve.">
 <script>(function(){var t=null;try{t=localStorage.getItem("theme")}catch(e){}if(t!=="light"&&t!=="dark"){t=matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"}document.documentElement.dataset.theme=t})();</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,400;0,600;0,700;1,400&family=Young+Serif&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
 </head>
 <body>
-<p>Placeholder page, replaced in Task 4.</p>
+  <header class="masthead">
+    <div class="masthead-text">
+      <h1>The Front Desk</h1>
+      <p class="lede">Ask for a meeting in plain words. Claude reads the calendars and pencils in a time and a room. Nothing is sent until you click Approve, and then plain code sends the invites, not the AI.</p>
+    </div>
+    <button id="theme-toggle" class="icon-btn" type="button" aria-label="Switch between light and dark theme">
+      <span id="theme-icon" aria-hidden="true">&#9790;</span>
+    </button>
+  </header>
+
+  <main class="desk">
+    <div class="counter">
+      <section class="slip" aria-labelledby="request-heading">
+        <h2 id="request-heading" class="section-heading">New request</h2>
+        <form id="request-form" class="request-form" method="post" action="/schedule">
+          <label for="request">What should be booked?</label>
+          <textarea id="request" name="request" rows="4" maxlength="500" required
+            aria-describedby="request-hint"></textarea>
+          <p id="request-hint" class="hint">Up to 500 characters. Name the people, how long, and any wishes, such as &#8220;Priya, Oliver and Hana, 30 minutes, any morning.&#8221;</p>
+          <button id="schedule" class="primary-btn" type="submit">Find a time</button>
+        </form>
+        <div class="samples-block">
+          <h3 id="samples-heading" class="minor-heading">Sample requests</h3>
+          <div id="samples" class="samples" role="group" aria-labelledby="samples-heading"></div>
+        </div>
+      </section>
+
+      <section class="log" aria-labelledby="trail-heading">
+        <h2 id="trail-heading" class="section-heading">Desk log</h2>
+        <p id="notice" class="notice" role="status" hidden></p>
+        <p id="log-empty" class="empty">Each step Claude takes appears here as it works: whose calendars it read, which times it searched, what it pencilled in.</p>
+        <ol id="trail" class="trail" aria-live="polite"></ol>
+      </section>
+
+      <article id="proposal" class="card proposal" role="region" aria-label="Proposal" tabindex="-1" hidden>
+        <p id="proposal-status" class="stamp" data-status="proposed"></p>
+        <h3 class="card-heading">Times and room</h3>
+        <p class="card-source">Worked out by code from the calendars, for each person in their own time zone.</p>
+        <div id="proposal-times" class="times"></div>
+        <section id="claude-note" class="claude-note" aria-labelledby="claude-note-heading">
+          <h3 id="claude-note-heading" class="card-heading">Claude's note</h3>
+          <p class="card-source">In Claude's own words: why this slot, and what it could not fit.</p>
+          <p id="note-summary" class="note-summary"></p>
+          <h4 class="note-heading">Reasons</h4>
+          <ul id="note-reasons" class="note-list"></ul>
+          <div id="note-tradeoffs-block">
+            <h4 class="note-heading">Trade-offs</h4>
+            <ul id="note-tradeoffs" class="note-list"></ul>
+          </div>
+        </section>
+        <div id="proposal-actions" class="actions" role="group" aria-label="Decide on this proposal">
+          <button id="approve" class="primary-btn" type="button">Approve and send</button>
+          <button id="dry-run" class="quiet-btn" type="button">Dry run</button>
+          <button id="reject" class="quiet-btn" type="button">Reject</button>
+          <p class="hint">Dry run shows the exact invites without sending anything.</p>
+        </div>
+        <p id="proposal-outcome" class="outcome" hidden></p>
+        <div id="preview" class="preview" hidden></div>
+        <p id="usage" class="usage"></p>
+      </article>
+
+      <article id="question-card" class="card question" tabindex="-1" aria-labelledby="question-stamp" hidden>
+        <p id="question-stamp" class="stamp" data-status="question"></p>
+        <p id="question-text" class="question-text"></p>
+        <form id="reply-form" class="reply-form" method="post" action="/schedule">
+          <label for="clarification">Your answer</label>
+          <textarea id="clarification" name="clarification" rows="3" maxlength="500" required></textarea>
+          <button id="reply" class="primary-btn" type="submit">Send answer</button>
+        </form>
+        <p id="question-usage" class="usage"></p>
+      </article>
+
+      <article id="unable-card" class="card unable" hidden>
+        <p id="unable-stamp" class="stamp" data-status="unable"></p>
+        <p id="unable-reason" class="question-text"></p>
+        <p id="unable-usage" class="usage"></p>
+      </article>
+    </div>
+
+    <div class="planner">
+      <section class="week" aria-labelledby="week-heading">
+        <div class="week-head">
+          <div>
+            <h2 id="week-heading" class="section-heading">The week of 26 October 2026</h2>
+            <p id="week-who" class="hint">Showing everyone&#8217;s busy times.</p>
+          </div>
+          <div class="zone-picker">
+            <label for="zone">Show times in</label>
+            <select id="zone" name="zone" aria-describedby="zone-note">
+              <option value="America/New_York">New York</option>
+              <option value="Europe/London">London</option>
+              <option value="America/Denver">Denver</option>
+              <option value="Asia/Singapore">Singapore</option>
+            </select>
+          </div>
+        </div>
+        <p id="zone-note" class="zone-note">This week London is only 4 hours ahead of New York, not the usual 5: UK clocks went back on 25 October, US clocks wait until 1 November.</p>
+        <ul id="legend" class="legend" aria-label="People shown, in column order"></ul>
+        <div class="grid-scroll" tabindex="0" role="region" aria-label="Week planner, scrolls sideways on narrow screens">
+          <div id="week-grid" class="week-grid" role="table" aria-label="Busy times for the week"></div>
+        </div>
+        <ul class="key" aria-label="Key">
+          <li><span class="swatch swatch-busy" aria-hidden="true"></span>Busy</li>
+          <li><span class="swatch swatch-off" aria-hidden="true"></span>Outside working hours</li>
+          <li><span class="swatch swatch-hold" aria-hidden="true"></span>Pencilled in, not sent</li>
+          <li><span class="swatch swatch-booked" aria-hidden="true"></span>Approved and sent</li>
+        </ul>
+      </section>
+
+      <section class="outbox-panel" aria-labelledby="outbox-heading">
+        <h2 id="outbox-heading" class="section-heading" tabindex="-1">Outbox</h2>
+        <p class="hint">Meetings you approved. You can undo each one for 10 minutes.</p>
+        <p id="outbox-empty" class="empty">Nothing sent yet.</p>
+        <ul id="outbox" class="outbox"></ul>
+        <p class="by-design">Sent without your approval: 0. That is by design: Claude has no tool that can send. Only plain code sends, after you click Approve.</p>
+      </section>
+    </div>
+    <p id="announce" class="visually-hidden" aria-live="polite"></p>
+  </main>
+
+  <footer class="colophon">A demo with made-up people, rooms and calendars. Nothing is emailed: &#8220;sent&#8221; means added to your outbox on this page, which is kept for 30 minutes. Live requests are sent to Anthropic's API to work out a time, so do not type anything private.</footer>
+  <script src="app.js" defer></script>
 </body>
 </html>
