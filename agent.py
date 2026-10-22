@@ -65,6 +65,9 @@ def _check_final(call, space):
 def _final_result(call, space):
     """The result for a valid final call. A question books nothing, so it releases every hold."""
     if call.name == "submit_proposal":
+        for hold in space.active_holds():  # keep only the proposed hold; free the rest
+            if hold["id"] != call.input["hold_id"]:
+                hold["state"] = "released"
         return build_result(call.input, space)
     space.release_all()
     return question_result(call.input)
@@ -170,10 +173,14 @@ def print_event(event):
         result = event["result"]
         print(f"\n{result['status'].upper()}")
         if result["status"] == "proposed":
-            print(result["summary"])
+            # First the lines code computed (times and room), then the model's own words, labelled.
             for person in result["attendees"]:
                 print(f"  {person['name']}: {person['local_start']}-{person['local_end']} ({person['time_zone']})")
             print(f"  Room: {result['room']['name']}")
+            print("Claude's note:")
+            print(f"  {result['summary']}")
+            for item in result["reasons"]:
+                print(f"  Reason: {item}")
             for item in result["tradeoffs"]:
                 print(f"  Trade-off: {item}")
         else:

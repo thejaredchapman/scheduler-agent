@@ -103,15 +103,24 @@ class Outbox:
 
     def dry_run(self, result):
         checked = self._checked(result)
-        return copy.deepcopy({"dry_run": True, **self._letters(checked)})
+        free = self._all_free(checked)  # only looks; nothing is changed
+        return copy.deepcopy({"dry_run": True, "still_free": free, **self._letters(checked)})
+
+    def _not_free(self, checked):
+        """The first person or room that is no longer free for this slot (None if all are free)."""
+        for owner in checked["ids"] + [checked["room_id"]]:
+            if not self.world.is_free(owner, checked["start"], checked["end"], self._as_holds()):
+                return owner
+        return None
+
+    def _all_free(self, checked):
+        return self._not_free(checked) is None
 
     def approve(self, result):
         checked = self._checked(result)
-        start, end = checked["start"], checked["end"]
-        owners = checked["ids"] + [checked["room_id"]]
-        for owner in owners:  # the world may have changed since the proposal: check again
-            if not self.world.is_free(owner, start, end, self._as_holds()):
-                raise ValueError(f"{owner} is no longer free at that time. Nothing was sent.")
+        owner = self._not_free(checked)  # the world may have changed since the proposal: check again
+        if owner is not None:
+            raise ValueError(f"{owner} is no longer free at that time. Nothing was sent.")
         send = {"send_id": f"send-{next(self._numbers)}", "cancelled": False, "sent_at": self.clock(),
                 **self._letters(checked)}
         self.sent.append(send)

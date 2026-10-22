@@ -1,9 +1,16 @@
 """Only an approving person sends; code re-checks; undo has a time limit."""
+import subprocess
+import sys
+from pathlib import Path
+
 import pytest
 
 from outbox import UNDO_SECONDS, Outbox
 from tests.fixtures import fixture_world
 from tools import Workspace, build_result, question_result, run_tool
+
+
+ROOT = Path(__file__).resolve().parent.parent
 
 
 def proposal(start="2026-10-26T15:00Z"):
@@ -171,10 +178,22 @@ def test_returned_copies_cannot_change_what_was_sent():
 
 
 def test_nothing_else_can_write_to_the_outbox():
-    for path in ("tools.py", "agent.py"):
-        try:
-            source = open(path).read()
-        except FileNotFoundError:
-            continue  # agent.py arrives in Task 4; Task 4 re-runs this test
+    for name in ("tools.py", "agent.py"):
+        source = (ROOT / name).read_text()
         for banned in ("import outbox", "from outbox", "Outbox("):
-            assert banned not in source, (path, banned)
+            assert banned not in source, (name, banned)
+
+
+def test_importing_the_agent_does_not_load_the_outbox():
+    """In a fresh Python, importing agent and tools must not pull in outbox."""
+    subprocess.run([sys.executable, "-c", "import sys, agent, tools; assert 'outbox' not in sys.modules"],
+                   check=True, cwd=ROOT)
+
+
+def test_dry_run_says_whether_approve_would_succeed_now():
+    box, _ = outbox()
+    first = proposal()
+    assert box.dry_run(first)["still_free"] is True
+    box.approve(first)
+    assert box.dry_run(first)["still_free"] is False  # the slot is taken now
+    assert len(box.sent) == 1  # the preview changed nothing

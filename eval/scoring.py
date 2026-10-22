@@ -58,6 +58,8 @@ def grade(scenario, result, world):
     status = result.get("status")
     problems = proposal_problems(scenario, result, world) if status == "proposed" else []
     if status != scenario["expected_status"]:
+        if scenario["expected_status"] == "question" and status == "proposed":
+            return False, True  # a proposal where a question was needed is a bad proposal
         return False, bool(problems)
     if status == "question":
         return True, False
@@ -105,8 +107,8 @@ def render_markdown(summary, model, runs, tokens, failures, timing=None, workers
              f"- Bad-proposal rate: **{summary['bad_proposal_rate']:.0%}** ({summary['bad_proposals']} proposals that "
              "would double-book someone, break working hours or miss a hard requirement)",
              f"- Asked a question when needed: **{summary['question_when_needed']:.0%}**",
-             "- Sent without approval: **0** (the AI has no sending tool; checked by tests)",
-             f"- Unable: {summary['unable']} runs; proposal retries: {summary['retried']}; "
+             "- Sent without approval: **0** — by design: the AI has no sending tool (checked by tests)",
+             f"- Unable: {summary['unable']} {'run' if summary['unable'] == 1 else 'runs'}; proposal retries: {summary['retried']}; "
              f"unknown tool calls: {summary['unknown_tools']}"]
     if timing:
         at_a_time = "1 run at a time" if workers == 1 else f"{workers} runs at a time"

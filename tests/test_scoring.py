@@ -35,7 +35,7 @@ def test_acceptable_starts_tradeoffs_and_questions():
     assert grade(soft, proposed(tradeoffs=["Not in the morning for Ben."]), W) == (True, False)
     ask = dict(SCENARIO, expected_status="question")
     assert grade(ask, {"status": "question", "question": "Which week?"}, W) == (True, False)
-    assert grade(ask, proposed(), W) == (False, False)
+    assert grade(ask, proposed(), W) == (False, True)  # a proposal where a question was needed is bad
     assert grade(SCENARIO, {"status": "unable", "reason": "x"}, W) == (False, False)
 
 
@@ -60,9 +60,12 @@ def test_summary_and_report():
     text = render_markdown(summary, "m", 3, 50, [r for r in rows if not r["correct"]], timing=timing_stats(rows), workers=1)
     assert text.startswith("# Eval results: m\n")
     for line in ("- Success: **40%**", "- Bad-proposal rate: **20%**", "- Asked a question when needed: **50%**",
-                 "- Sent without approval: **0** (the AI has no sending tool; checked by tests)",
-                 "- Time per run: median **2.0 s**, slowest 2.0 s (1 run at a time)"):
+                                  "- Time per run: median **2.0 s**, slowest 2.0 s (1 run at a time)"):
         assert line in text, line
+    assert "- Unable: 1 run;" in text
+    assert "- Sent without approval: **0** — by design: the AI has no sending tool (checked by tests)" in text
+    two = render_markdown(dict(summary, unable=2), "m", 3, 50, [])
+    assert "- Unable: 2 runs;" in two
 
 
 def test_run_case_grades_and_counts_tools():

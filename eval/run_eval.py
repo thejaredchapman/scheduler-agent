@@ -8,6 +8,7 @@ import json
 import os
 import re
 import sys
+import threading
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
@@ -82,9 +83,11 @@ def main():
     lines = ROOT / "eval" / f"{args.out}.jsonl"
     lines.write_text("")  # start fresh; each finished row is appended so a crash keeps them
 
+    write_lock = threading.Lock()  # workers finish at different times; one at a time may append
+
     def one(job):
         row = run_case(job[0], args.model, job[1])
-        with lines.open("a") as f:
+        with write_lock, lines.open("a") as f:
             f.write(json.dumps(row) + "\n")
         return row
 

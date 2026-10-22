@@ -132,9 +132,43 @@ def test_a_proposal_missing_reasons_is_rejected():
     assert validate_proposal(args, space) == ["reasons must be a non-empty list of text"]
 
 
+LEAK_MESSAGE = ("your reasons ended up inside summary; send reasons as its own JSON array field, "
+                "and keep summary to one or two plain sentences")
+
+
+@pytest.mark.parametrize("field,value", [
+    ("summary", 'Monday works.</summary>\n<parameter name="reasons">["x"]'),
+    ("summary", "Monday <parameter name=reasons>"),
+    ("summary", "Monday </b>"),
+    ("reasons", ["fine", "oops </summary>"]),
+    ("tradeoffs", ["<parameter name=x>"]),
+])
+def test_leaked_markup_is_rejected_with_a_plain_message(field, value):
+    space = ws()
+    hold(space)
+    assert validate_proposal(good(space, **{field: value}), space) == [LEAK_MESSAGE]
+
+
+def test_submit_proposal_schema_puts_summary_last():
+    schemas = {s["name"]: s["input_schema"] for s in TOOL_SCHEMAS}
+    assert list(schemas["submit_proposal"]["properties"]) == ["hold_id", "reasons", "tradeoffs", "summary"]
+    assert sorted(schemas["submit_proposal"]["required"]) == ["hold_id", "reasons", "summary", "tradeoffs"]
+
+
+def test_date_ranges_are_capped_and_ordered():
+    space = ws()
+    for name, extra in (("find_open_slots", {"duration_minutes": 60}), ("get_busy_times", {})):
+        base = {"people": ["ana"], **extra}
+        run_tool(space, name, {**base, "start_date": "2026-10-01", "end_date": "2026-10-31"})  # 31 days: fine
+        with pytest.raises(ValueError, match="31 days"):
+            run_tool(space, name, {**base, "start_date": "2026-10-01", "end_date": "2026-11-01"})
+        with pytest.raises(ValueError, match="before"):
+            run_tool(space, name, {**base, "start_date": "2026-10-27", "end_date": "2026-10-26"})
+
+
 def test_submit_proposal_schema_requires_all_four_fields():
     schemas = {s["name"]: s["input_schema"] for s in TOOL_SCHEMAS}
-    assert schemas["submit_proposal"]["required"] == ["hold_id", "summary", "reasons", "tradeoffs"]
+    assert sorted(schemas["submit_proposal"]["required"]) == ["hold_id", "reasons", "summary", "tradeoffs"]
     assert schemas["submit_proposal"]["properties"]["reasons"]["minItems"] == 1
     assert "status" not in schemas["submit_proposal"]["properties"]
     assert schemas["ask_question"]["required"] == ["question"]

@@ -1,6 +1,6 @@
 """Command line: run the scheduler, then let a PERSON approve, reject or preview.
 
-Usage:  python cli.py "Find 45 minutes next week for Ana and Ben"   (needs ANTHROPIC_API_KEY)
+Usage:  python cli.py "Find 45 minutes next week for Priya and Tom"   (needs ANTHROPIC_API_KEY)
 """
 import argparse
 import json

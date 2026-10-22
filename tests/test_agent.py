@@ -1,4 +1,6 @@
 """The loop, with a fake client playing the model and the fixture world."""
+from pathlib import Path
+
 import agent
 from agent import MAX_TURNS, next_week, print_event, run_agent
 from tests.fakes import FakeClient, response, text, tool_use
@@ -104,6 +106,16 @@ def test_unable_releases_holds_and_a_proposal_keeps_its_hold(monkeypatch):
     assert [h["id"] for h in made[1].active_holds()] == ["hold-1"]
 
 
+def test_accepting_a_proposal_releases_the_other_holds(monkeypatch):
+    made = capture_workspaces(monkeypatch)
+    second = tool_use("place_hold", {"start_utc": "2026-10-27T15:00Z", "duration_minutes": 60,
+                                     "people": ["ana", "ben"], "room_id": "loft"}, "h2")
+    propose_two = dict(PROPOSE, hold_id="hold-2")
+    events, _ = run([response(HOLD, second), response(tool_use("submit_proposal", propose_two, "p"))])
+    assert last(events)["result"]["hold_id"] == "hold-2"
+    assert [h["id"] for h in made[0].active_holds()] == ["hold-2"]
+
+
 def test_failures_end_as_unable():
     events, _ = run([RuntimeError("down")])
     assert last(events)["result"]["reason"] == "The model call failed (RuntimeError)"
@@ -157,7 +169,7 @@ def test_request_tags_are_neutralised():
 
 
 def test_agent_never_touches_the_outbox():
-    source = open("agent.py").read()
+    source = (Path(__file__).resolve().parent.parent / "agent.py").read_text()
     for banned in ("import outbox", "from outbox", "Outbox("):
         assert banned not in source
 
@@ -167,3 +179,8 @@ def test_print_event(capsys):
     print_event(events[-1])
     out = capsys.readouterr().out
     assert "PROPOSED" in out and "Ana Ortiz: Mon 26 Oct 11:00-12:00" in out and "Tokens: 20 in, 10 out, 2 turns" in out
+    # code-computed lines come first; model-written text sits under its own label
+    assert out.index("Room: Loft") < out.index("Claude's note:")
+    note = out[out.index("Claude's note:"):]
+    assert "Monday 11:00 New York." in note and "Everyone is free." in note
+    assert "Monday 11:00 New York." not in out[:out.index("Claude's note:")]

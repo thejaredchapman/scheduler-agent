@@ -11,6 +11,7 @@ from datetime import date, datetime, time, timedelta
 from world import UTC, get_world, utc_text
 
 MAX_SLOTS = 10
+MAX_DAYS = 31  # the longest date range a search may cover
 RESULT_KEYS = ("status", "summary", "reasons", "tradeoffs", "question", "reason", "hold_id", "start_utc",
                "end_utc", "duration_minutes", "room", "attendees")
 
@@ -52,9 +53,19 @@ def _duration(value):
     return value
 
 
+def _dates(args):
+    """The first and last day of a search. The end must not be before the start, and at most 31 days."""
+    first, last = date.fromisoformat(args["start_date"]), date.fromisoformat(args["end_date"])
+    if last < first:
+        raise ValueError("end_date is before start_date")
+    if (last - first).days + 1 > MAX_DAYS:
+        raise ValueError(f"the date range is longer than {MAX_DAYS} days; ask for a shorter one")
+    return first, last
+
+
 def _day_range(args):
     """The UTC range that covers start_date..end_date in every time zone."""
-    first, last = date.fromisoformat(args["start_date"]), date.fromisoformat(args["end_date"])
+    first, last = _dates(args)
     return (datetime.combine(first, time(0), UTC) - timedelta(hours=14),
             datetime.combine(last + timedelta(days=1), time(0), UTC) + timedelta(hours=14))
 
@@ -85,6 +96,7 @@ def get_busy_times(space, args):
 
 def find_open_slots(space, args):
     people = _people(space, args["people"])
+    _dates(args)
     slots = space.world.open_slots(people, _duration(args["duration_minutes"]), args["start_date"],
                                    args["end_date"], args.get("earliest_local"), args.get("latest_local"),
                                    args.get("room_needs"), space.active_holds(), MAX_SLOTS)
@@ -171,6 +183,20 @@ def run_tool(space, name, args):
         raise ValueError(f"bad input for {name}: {type(error).__name__}") from error
 
 
+_LEAK_MARKS = ("<parameter", "</")  # "</" also catches "</summary>"
+LEAK_MESSAGE = ("your reasons ended up inside summary; send reasons as its own JSON array field, "
+                "and keep summary to one or two plain sentences")
+
+
+def _leaked(args):
+    """True if the model's own words contain tag markup (its reasons spilled into another field)."""
+    texts = [args.get("summary")]
+    for key in ("reasons", "tradeoffs"):
+        if isinstance(args.get(key), list):
+            texts += args[key]
+    return any(isinstance(t, str) and any(mark in t for mark in _LEAK_MARKS) for t in texts)
+
+
 def _texts(value):
     return isinstance(value, list) and all(isinstance(v, str) and v.strip() for v in value)
 
@@ -190,6 +216,8 @@ def validate_proposal(args, space):
         errors.append("reasons must be a non-empty list of text")
     if not _texts(args.get("tradeoffs", [])):
         errors.append("tradeoffs must be a list of text")
+    if _leaked(args):
+        errors.append(LEAK_MESSAGE)
     return errors
 
 
@@ -265,11 +293,11 @@ TOOL_SCHEMAS = [
      "description": "Finish with a proposal for a person to approve. You cannot send anything.",
      "input_schema": {"type": "object", "properties": {
          "hold_id": {"type": "string", "description": "A hold you placed and still hold."},
-         "summary": {"type": "string"},
          "reasons": {"type": "array", "items": {"type": "string"}, "minItems": 1,
                      "description": "At least one reason this slot is a good choice."},
          "tradeoffs": {"type": "array", "items": {"type": "string"},
-                       "description": "Preferences not met; an empty list if none."}},
+                       "description": "Preferences not met; an empty list if none."},
+         "summary": {"type": "string", "description": "One or two plain sentences. No reasons in here."}},
          "required": ["hold_id", "summary", "reasons", "tradeoffs"]}},
     {"name": "ask_question",
      "description": "Finish by asking the person one short, specific question when the request is unclear "
